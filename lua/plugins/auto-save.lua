@@ -1,0 +1,23 @@
+return {
+  "immortal521/auto-save.nvim",
+  event = { "InsertEnter" },
+  opts = {
+    debounced_dekay = 1000,
+    print_enabled = false,
+    trigger_events = { "Textchanged" },
+    condition = function(buf)
+      local fn = vim.fn
+      local utils = require("auto-save.utils.data")
+
+      if fn.getbufvar(buf, "&modifiable") == 1 then
+        if fn.mode() ~= "n" then
+          return false
+        else
+          return true
+        end
+      end
+
+      return false
+    end,
+  },
+}
