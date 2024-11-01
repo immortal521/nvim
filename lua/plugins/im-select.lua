@@ -1,3 +1,5 @@
+if true then return {} end
+
 return {
   "keaising/im-select.nvim",
   config = function()

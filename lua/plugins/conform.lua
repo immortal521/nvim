@@ -6,6 +6,7 @@ return {
         vue = {  "prettier" },
         javascript = {  "prettier" },
         typescript = {  "prettier" },
+        less = { "prettier" },
       },
       formatters = {
         injected = { options = { ignore_errors = true } },
