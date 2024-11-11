@@ -3,17 +3,43 @@ return {
   opts = function()
     local opts = {
       formatters_by_ft = {
-        vue = {  "prettier" },
-        javascript = {  "prettier" },
-        typescript = {  "prettier" },
+        css = { "prettier" },
+        go = { "goimports" },
+        html = { "prettier" },
+        java = { "google-java-format" },
+        javascript = { "prettier" },
+        json = { "prettier" },
+        lua = { "stylua" },
         less = { "prettier" },
+        python = function(bufnr)
+          if require("conform").get_formatter_info("ruff_format", bufnr).available then
+            return { "ruff_format" }
+          else
+            return { "isort", "black" }
+          end
+        end,
+        rust = { "rustfmt", lsp_format = "fallback" },
+        scss = { "prettier " },
+        typescript = { "prettier" },
+        vue = { "prettier" },
+        yml = { "prettier" },
+        yaml = { "prettier" },
+
+        -- Use the "*" filetype to run formatters on all filetypes.
+        ["*"] = { "codespell" },
+        -- Use the "_" filetype to run formatters on filetypes that don't
+        -- have other formatters configured.
+        ["_"] = { "trim_whitespace" },
       },
       formatters = {
         injected = { options = { ignore_errors = true } },
         prettier = {
-        condition = function(ctx)
-            return vim.fs.find({ ".prettierrc.json" }, { path = ctx.filename, upward = true })[1] ~= nil
-        end,
+          condition = function(ctx)
+            return vim.fs.find(
+              { ".prettierrc", ".prettierrc.json", ".prettierrc.js", ".prettierrc.yaml", ".prettierrc.yml" },
+              { path = ctx.filename, upward = true }
+            )[1] ~= nil
+          end,
         },
       },
     }
