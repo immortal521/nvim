@@ -57,6 +57,13 @@ return {
         end,
         desc = "ToggleTerm (tab cwd_dir)",
       },
+      {
+        "<leaderTm>",
+        function()
+          require("toggleterm").exec("music-player", 9, 0, LazyVim.root.get(), "float")
+        end,
+        desc = "Open music-player",
+      },
     },
     opts = {
       -- size can be a number or function which is passed the current terminal

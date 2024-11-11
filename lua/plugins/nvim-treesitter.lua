@@ -23,6 +23,7 @@ return {
       "python",
       "query",
       "regex",
+      "scss",
       "toml",
       "tsx",
       "typescript",
