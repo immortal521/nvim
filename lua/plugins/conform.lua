@@ -25,22 +25,20 @@ return {
         yml = { "prettier" },
         yaml = { "prettier" },
 
-        -- Use the "*" filetype to run formatters on all filetypes.
-        ["*"] = { "codespell" },
-        -- Use the "_" filetype to run formatters on filetypes that don't
-        -- have other formatters configured.
+        ["*"] = { "codespell", "prettier" },
         ["_"] = { "trim_whitespace" },
       },
       formatters = {
         injected = { options = { ignore_errors = true } },
-        prettier = {
-          condition = function(ctx)
-            return vim.fs.find(
-              { ".prettierrc", ".prettierrc.json", ".prettierrc.js", ".prettierrc.yaml", ".prettierrc.yml" },
-              { path = ctx.filename, upward = true }
-            )[1] ~= nil
-          end,
-        },
+        -- prettier = {
+
+        -- condition = function(ctx)
+        -- return vim.fs.find(
+        -- { ".prettierrc", ".prettierrc.json", ".prettierrc.js", ".prettierrc.yaml", ".prettierrc.yml" },
+        -- { path = ctx.filename, upward = true }
+        -- )[1] ~= nil
+        -- end,
+        -- },
       },
     }
     return opts
