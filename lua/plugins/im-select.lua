@@ -6,7 +6,7 @@ return {
   "keaising/im-select.nvim",
   config = function()
     require("im_select").setup({
-      default_command = "im-select",
+      default_command = "ibus",
       default_im_select = "2057",
       set_default_events = { "VimEnter", "FocusGained", "InsertLeave", "CmdlineLeave" },
       set_previous_events = { "InsertEnter" },
