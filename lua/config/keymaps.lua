@@ -10,7 +10,7 @@ vim.keymap.set(
 )
 
 vim.keymap.set("n", "<leader>Tm", function()
-require("toggleterm").exec("music-player", 9, 0, LazyVim.root.get(), "float")
+  require("toggleterm").exec("music-player", 9, 0, LazyVim.root.get(), "float")
 end, { noremap = true, silent = true, desc = "Open music-player" })
 
 function _G.set_terminal_keymaps()
