@@ -2,7 +2,11 @@ local os_name = vim.loop.os_uname().sysname
 
 if os_name == "Linux" then
   -- 使用 Linux 下的终端，例如 xterm 或 gnome-terminal
-  vim.o.shell = "/bin/zsh"
+  if vim.fn.executable("/bin/zsh") == 1 then
+    vim.o.shell = "/bin/zsh"
+  else
+    vim.o.shell = "/bin/bash"
+  end
   vim.o.shellcmdflag = "-c"
   vim.o.shellredir = ">%s 2>&1"
   vim.o.shellpipe = "2>&1 | tee %s"
