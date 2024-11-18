@@ -1,8 +1,8 @@
 return {
   "nvim-treesitter/nvim-treesitter",
   opts = {
-    highlight= {
-      enable = true
+    highlight = {
+      enable = true,
     },
     ensure_installed = {
       "bash",
@@ -10,6 +10,7 @@ return {
       "css",
       "diff",
       "html",
+      "java",
       "javascript",
       "jsdoc",
       "json",
