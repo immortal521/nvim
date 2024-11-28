@@ -13,9 +13,6 @@ vim.keymap.set("n", "<leader>Tm", function()
   require("toggleterm").exec("music-player", 9, 0, LazyVim.root.get(), "float")
 end, { noremap = true, silent = true, desc = "Open music-player" })
 
-vim.keymap.set("n", "<leader>a", "", { desc = "AI" })
-vim.keymap.set("n", "<leader>ac", ":Fitten start_chat<CR>", { noremap = true, silent = true, desc = "Start chat" })
-vim.keymap.set("n", "<leader>at", ":Fitten toggle_chat<CR>", { noremap = true, silent = true, desc = "Toggle chat" })
 
 function _G.set_terminal_keymaps()
   local opts = { buffer = 0 }
