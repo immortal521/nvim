@@ -6,7 +6,7 @@ return {
     require("llm").setup({
       prompt = "请用中文回答",
       url = "http://localhost:11434/api/chat", -- your url
-      model = "llama3.2",
+      model = "qwen2.5-coder",
       LLM_KEY = "NONE",
       prefix = {
         user = { text = " ", hl = "Title" },
