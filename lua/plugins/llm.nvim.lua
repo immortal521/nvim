@@ -56,12 +56,6 @@ return {
       },
     })
     require("which-key").add({
-      { "<leader>a", group = "ai", icon = "" },
     })
   end,
-  keys = {
-    { "<leader>ac", mode = "n", "<cmd>LLMSessionToggle<cr>", desc = "Start Chat" },
-    { "<leader>ae", mode = "v", "<cmd>LLMSelectedTextHandler 请解释下面这段代码<cr>", desc = "Explain Code" },
-    { "<leader>at", mode = "x", "<cmd>LLMSelectedTextHandler 英译汉<cr>", desc = "Translate" },
-  },
 }

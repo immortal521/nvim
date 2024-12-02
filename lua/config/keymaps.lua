@@ -13,10 +13,21 @@ vim.keymap.set("n", "<leader>Tm", function()
   require("toggleterm").exec("music-player", 9, 0, LazyVim.root.get(), "float")
 end, { noremap = true, silent = true, desc = "Open music-player" })
 
-
 function _G.set_terminal_keymaps()
   local opts = { buffer = 0 }
   vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], opts)
 end
 
 vim.cmd("autocmd! TermOpen term://*toggleterm#* lua set_terminal_keymaps()")
+
+require("which-key").add({
+  { "<leader>a", mode = "nxv", group = "ai", icon = "" },
+  { "<leader>ac", mode = "n", "<cmd>LLMSessionToggle<cr>", desc = "Start Chat" },
+  {
+    "<leader>ae",
+    mode = "v",
+    "<cmd>LLMSelectedTextHandler 请解释下面这段代码<cr>",
+    desc = "Explain Code",
+  },
+  { "<leader>at", mode = "x", "<cmd>LLMSelectedTextHandler 英译汉<cr>", desc = "Translate" },
+})
