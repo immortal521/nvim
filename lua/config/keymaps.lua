@@ -22,12 +22,4 @@ vim.cmd("autocmd! TermOpen term://*toggleterm#* lua set_terminal_keymaps()")
 
 require("which-key").add({
   { "<leader>a", mode = "nxv", group = "ai", icon = "" },
-  { "<leader>ac", mode = "n", "<cmd>LLMSessionToggle<cr>", desc = "Start Chat" },
-  {
-    "<leader>ae",
-    mode = "v",
-    "<cmd>LLMSelectedTextHandler 请解释下面这段代码<cr>",
-    desc = "Explain Code",
-  },
-  { "<leader>at", mode = "x", "<cmd>LLMSelectedTextHandler 英译汉<cr>", desc = "Translate" },
 })
