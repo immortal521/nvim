@@ -13,6 +13,7 @@ return {
         json = { "prettier" },
         lua = { "stylua" },
         less = { "prettier" },
+        nu = { "shfmt" },
         python = { "ruff" },
         rust = { "rustfmt", lsp_format = "fallback" },
         scss = { "prettier " },

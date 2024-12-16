@@ -7,4 +7,4 @@ vim.opt.scrolloff = 10
 vim.opt.virtualedit = "onemore"
 vim.g.autoformat = false
 vim.opt.wrap = true
-
+vim.opt.jumpoptions = "stack"

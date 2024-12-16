@@ -1,50 +1,89 @@
+local function local_llm_streaming_handler(chunk, line, assistant_output, bufnr, winid, F)
+  if not chunk then
+    return assistant_output
+  end
+  local tail = chunk:sub(-1, -1)
+  if tail:sub(1, 1) ~= "}" then
+    line = line .. chunk
+  else
+    line = line .. chunk
+    local status, data = pcall(vim.fn.json_decode, line)
+    if not status or not data.message.content then
+      return assistant_output
+    end
+    assistant_output = assistant_output .. data.message.content
+    F.WriteContent(bufnr, winid, data.message.content)
+    line = ""
+  end
+  return assistant_output
+end
+
+local function local_llm_parse_handler(chunk)
+  local assistant_output = chunk.message.content
+  return assistant_output
+end
+
 return {
-  "immortal521/llm.nvim",
+  "Kurama622/llm.nvim",
   dependencies = { "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim" },
   cmd = { "LLMSesionToggle", "LLMSelectedTextHandler", "LLMAppHandler" },
   config = function()
     local tools = require("llm.common.tools")
     require("llm").setup({
-      prompt = "请用中文回答",
-      url = "http://localhost:11434/api/chat", -- your url
+      url = "http://localhost:11434/api/chat",
       model = "qwen2.5-coder",
-      LLM_KEY = "NONE",
+      fetch_key = function()
+        return "NONE"
+      end,
       prefix = {
         user = { text = " ", hl = "Title" },
         assistant = { text = " ", hl = "Added" },
       },
-      save_session = false,
+      save_session = true,
       max_history = 15,
-      history_path = vim.fn.stdpath("cache") .. "/ai_history",
+      max_hiastory_name_length = 20,
+      history_path = vim.fn.stdpath("cache") .. "/history",
+
+      streaming_handler = local_llm_streaming_handler,
+      parse_handler = local_llm_parse_handler,
 
       app_handler = {
         OptimizeCode = {
           handler = tools.side_by_side_handler,
         },
+        TestCode = {
+          handler = tools.side_by_side_handler,
+          prompt = [[ Write some test cases for the following code, only return the test cases.
+                        Give the code content directly, do not use code blocks or other tags to wrap it. Reply with Chinese ]],
+          opts = {
+            right = {
+              title = " Test Cases ",
+            },
+          },
+        },
         Translate = {
           handler = tools.qa_handler,
         },
+        OptimCompare = {
+          handler = tools.action_handler,
+        },
+        WordTranslate = {
+          handler = tools.flexi_handler,
+          prompt = "Translate the following text to Chinese, please only return the translation",
+          opts = {
+            exit_on_move = true,
+            enter_flexible_window = false,
+          },
+        },
+        CodeExplain = {
+          handler = tools.flexi_handler,
+          prompt = "Explain the following code, please only return the explanation, and answer in Chinese",
+          opts = {
+            enter_flexible_window = true,
+          },
+        },
       },
 
-      streaming_handler = function(chunk, line, assistant_output, bufnr, winid, F)
-        if not chunk then
-          return assistant_output
-        end
-        local tail = chunk:sub(-1, -1)
-        if tail:sub(1, 1) ~= "}" then
-          line = line .. chunk
-        else
-          line = line .. chunk
-          local status, data = pcall(vim.fn.json_decode, line)
-          if not status or not data.message.content then
-            return assistant_output
-          end
-          assistant_output = assistant_output .. data.message.content
-          F.WriteContent(bufnr, winid, data.message.content)
-          line = ""
-        end
-        return assistant_output
-      end,
       keys = {
         -- The keyboard mapping for the input window.
         ["Input:Submit"] = { mode = "n", key = "<cr>" },
@@ -68,14 +107,14 @@ return {
   end,
   keys = {
     { "<leader>ac", mode = "n", "<cmd>LLMSessionToggle<cr>", desc = "Start Chat" },
-    {
-      "<leader>ae",
-      mode = "v",
-      "<cmd>LLMSelectedTextHandler 请解释下面这段代码<cr>",
-      desc = "Explain Code",
-    },
-    { "<leader>at", mode = "x", "<cmd>LLMSelectedTextHandler 英译汉<cr>", desc = "Translate" },
-    { "<leader>at", mode = "n", "<cmd>LLMAppHandler Translate<cr>" ,desc = "Translate Window"},
-    { "<leader>ao", mode = "x", "<cmd>LLMAppHandler OptimizeCode<cr>", desc= "Optimize"},
+    -- { "<leader>ae", mode = "v", "<cmd>LLMAppHandler CodeExplain<cr>", desc = "Code Explain" },
+    { "<leader>at", mode = "x", "<cmd>LLMAppHandler WordTranslate<cr>", desc = "Translate" },
+    { "<leader>at", mode = "n", "<cmd>LLMAppHandler Translate<cr>", desc = "Translation Window" },
+    -- { "<leader>ao", mode = "x", "<cmd>LLMAppHandler OptimizeCode<cr>", desc = "Optimize" },
+    { "<leader>tc", mode = "x", "<cmd>LLMAppHandler TestCode<cr>", desc = "Generate Test Code" },
+    { "<leader>ao", mode = "x", "<cmd>LLMAppHandler OptimCompare<cr>", desc = "Optimize Code" },
+    -- { "<leader>ao", mode = "x", "<cmd>LLMAppHandler OptimizeCode<cr>" },
+    { "<leader>ae", mode = "v", "<cmd>LLMSelectedTextHandler 请解释下面这段代码<cr>", desc = "Code Explain" },
+    -- { "<leader>at", mode = "x", "<cmd>LLMSelectedTextHandler 英译汉<cr>", desc = "Translate" },
   },
 }

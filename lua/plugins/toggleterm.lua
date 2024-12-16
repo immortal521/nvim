@@ -1,6 +1,6 @@
 return {
   {
-    "akinsho/toggleterm.nvim",
+    "immortal521/toggleterm.nvim",
     lazy = true,
     cmd = { "ToggleTerm" },
     keys = {
