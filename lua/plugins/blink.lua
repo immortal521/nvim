@@ -15,7 +15,7 @@ return {
       -- ["<C-e>"] = { "hide" },
       -- stylua: ignore start
       ['<S-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
-      ['<cr>'] = { 'select_and_accept', 'fallback' },
+      ['<cr>'] = { 'accept', 'fallback' },
       ['<S-Tab>'] = { 'select_prev', 'snippet_forward', 'fallback' },
       ['<Tab>'] = { 'select_next', 'snippet_backward', 'fallback' },
       ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
@@ -37,6 +37,10 @@ return {
       documentation = {
         auto_show = true,
         auto_show_delay_ms = 500,
+      },
+      -- INFO: 临时禁用, 以解决选择补全时在 neovide 中光标移动到左上角再返回的 BUG
+      accept = {
+        dot_repeat = false,
       },
     },
 

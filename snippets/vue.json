@@ -1,0 +1,19 @@
+{
+  "template": {
+    "prefix": "tem",
+    "body": [
+      "<script setup lang=\"${1:ts}\">",
+      "",
+      "</script>",
+      "",
+      "<template>",
+      "",
+      "</template>",
+      "",
+      "<style lang=\"${2:scss}\" scoped>",
+      "",
+      "</style>"
+    ],
+    "description": "Vue 3 Single File Component Template"
+  }
+}

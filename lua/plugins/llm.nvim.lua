@@ -12,7 +12,11 @@ local function local_llm_streaming_handler(chunk, line, assistant_output, bufnr,
       return assistant_output
     end
     assistant_output = assistant_output .. data.message.content
-    F.WriteContent(bufnr, winid, data.message.content)
+    local content = data.message.content
+    if data.message.content == "<think>" or data.message.content == "</think>" then
+      content = ""
+    end
+    F.WriteContent(bufnr, winid, content)
     line = ""
   end
   return assistant_output
@@ -63,13 +67,17 @@ return {
         },
         Translate = {
           handler = tools.qa_handler,
+          prompt = "Please translate the content after the newline character to Chinese, if it's already in Chinese, translate it to English. Only return the translated content.\n",
         },
         OptimCompare = {
           handler = tools.action_handler,
+          opts = {
+            language = "Chinese",
+          },
         },
         WordTranslate = {
           handler = tools.flexi_handler,
-          prompt = "Translate the following text to Chinese, please only return the translation",
+          prompt = "Please translate the content after the newline character to Chinese, if it's already in Chinese, translate it to English. Only return the translated content.\n",
           opts = {
             exit_on_move = true,
             enter_flexible_window = false,
@@ -86,13 +94,13 @@ return {
 
       keys = {
         -- The keyboard mapping for the input window.
-        ["Input:Submit"] = { mode = "n", key = "<cr>" },
-        ["Input:Cancel"] = { mode = "n", key = "<C-c>" },
-        ["Input:Resend"] = { mode = "n", key = "<C-r>" },
+        ["Input:Submit"] = { mode = { "i", "n" }, key = "<C-g>" },
+        ["Input:Cancel"] = { mode = { "i", "n" }, key = "<C-c>" },
+        ["Input:Resend"] = { mode = { "i", "n" }, key = "<C-r>" },
 
         -- only works when "save_session = true"
-        ["Input:HistoryNext"] = { mode = "n", key = "<C-j>" },
-        ["Input:HistoryPrev"] = { mode = "n", key = "<C-k>" },
+        ["Input:HistoryNext"] = { mode = { "i", "n" }, key = "<C-j>" },
+        ["Input:HistoryPrev"] = { mode = { "i", "n" }, key = "<C-k>" },
 
         -- The keyboard mapping for the output window in "split" style.
         ["Output:Ask"] = { mode = "n", key = "i" },
@@ -113,7 +121,6 @@ return {
     -- { "<leader>ao", mode = "x", "<cmd>LLMAppHandler OptimizeCode<cr>", desc = "Optimize" },
     { "<leader>tc", mode = "x", "<cmd>LLMAppHandler TestCode<cr>", desc = "Generate Test Code" },
     { "<leader>ao", mode = "x", "<cmd>LLMAppHandler OptimCompare<cr>", desc = "Optimize Code" },
-    -- { "<leader>ao", mode = "x", "<cmd>LLMAppHandler OptimizeCode<cr>" },
     { "<leader>ae", mode = "v", "<cmd>LLMSelectedTextHandler 请解释下面这段代码<cr>", desc = "Code Explain" },
     -- { "<leader>at", mode = "x", "<cmd>LLMSelectedTextHandler 英译汉<cr>", desc = "Translate" },
   },
