@@ -8,6 +8,8 @@
     "lazyvim.plugins.extras.editor.aerial",
     "lazyvim.plugins.extras.editor.dial",
     "lazyvim.plugins.extras.editor.mini-diff",
+    "lazyvim.plugins.extras.editor.snacks_explorer",
+    "lazyvim.plugins.extras.editor.snacks_picker",
     "lazyvim.plugins.extras.formatting.prettier",
     "lazyvim.plugins.extras.lang.clangd",
     "lazyvim.plugins.extras.lang.git",
@@ -23,8 +25,7 @@
     "lazyvim.plugins.extras.lang.typescript",
     "lazyvim.plugins.extras.lang.vue",
     "lazyvim.plugins.extras.lang.yaml",
-    "lazyvim.plugins.extras.test.core",
-    "lazyvim.plugins.extras.ui.alpha"
+    "lazyvim.plugins.extras.test.core"
   ],
   "install_version": 7,
   "news": {
