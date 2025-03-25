@@ -1,13 +1,12 @@
 return {
   "immortal521/auto-save.nvim",
-  event = { "InsertEnter" },
+  event = { "VeryLazy" },
   opts = {
     debounced_dekay = 1000,
     print_enabled = false,
     trigger_events = { "InsertLeave" },
     condition = function(buf)
       local fn = vim.fn
-      local utils = require("auto-save.utils.data")
 
       if fn.getbufvar(buf, "&modifiable") == 1 then
         if fn.mode() ~= "n" then

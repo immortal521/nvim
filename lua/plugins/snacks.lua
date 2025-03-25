@@ -3,7 +3,6 @@ return {
   lazy = false,
   ---@type snacks.Config
   opts = {
-    dim = { enabled = true },
     dashboard = {
       preset = {
         pick = function(cmd, opts)
