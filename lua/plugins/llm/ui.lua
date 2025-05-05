@@ -72,6 +72,26 @@ return {
         size = { height = "30%", width = "60%" },
       },
     },
+    models = {
+      float = {
+        size = { height = "100%", width = "20%" },
+        border = {
+          text = {
+            top = Text(" Models ", "LlmPurpleNormal"),
+            top_align = "center",
+          },
+        },
+        win_options = {
+          winblend = 0,
+          winhighlight = "Normal:LlmRedLight,FloatBorder:LlmPurpleNormal",
+        },
+        order = 3,
+      },
+      split = {
+        relative = "win",
+        size = { height = "30%", width = "60%" },
+      },
+    },
   },
 
   -- popup window options

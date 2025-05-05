@@ -1,6 +1,6 @@
+local models = require("plugins.llm.models")
 local keymaps = require("plugins.llm.keymaps")
 local ui = require("plugins.llm.ui")
-local ollama = require("plugins.llm.models").Ollama
 
 return {
   "Kurama622/llm.nvim",
@@ -36,9 +36,13 @@ return {
       max_history = 15,
       max_history_name_length = 20,
       history_path = vim.fn.stdpath("cache") .. "/llm-history",
+
+      models = {
+        models.Ollama,
+      },
     }
 
-    for _, conf in pairs({ ui, ollama, apps, keymaps }) do
+    for _, conf in pairs({ ui, apps, keymaps }) do
       opts = vim.tbl_deep_extend("force", opts, conf)
     end
 

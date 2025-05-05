@@ -10,6 +10,9 @@ return {
     ["Input:HistoryNext"] = { mode = { "i", "n" }, key = "<C-j>" },
     ["Input:HistoryPrev"] = { mode = { "i", "n" }, key = "<C-k>" },
 
+    ["Input:ModelsNext"]  = { mode = {"n", "i"}, key = "<C-S-J>" },
+    ["Input:ModelsPrev"]  = { mode = {"n", "i"}, key = "<C-S-K>" },
+
     -- The keyboard mapping for the output window in "split" style.
     ["Output:Ask"]        = { mode = "n", key = "i" },
     ["Output:Cancel"]     = { mode = "n", key = "<C-c>" },

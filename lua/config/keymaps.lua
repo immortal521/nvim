@@ -2,23 +2,36 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 
-local Terminal = require("toggleterm.terminal").Terminal
-local musicPlayer = Terminal:new({ cmd = "music-player", hidden = false, id = 9 })
+local map = LazyVim.safe_keymap_set
 
-local function _music_player_toggle()
-  musicPlayer:toggle(0, "float")
-end
+local term_normal = {
+  "jk",
+  function()
+    vim.cmd("stopinsert")
+  end,
+  mode = "t",
+  expr = false,
+  desc = "Single escape to normal mode",
+}
 
-vim.keymap.set("n", "<leader>Tm", _music_player_toggle, { noremap = true, silent = true, desc = "Open music-player" })
+local win = {
+  position = "float",
+  border = "rounded",
+  keys = {
+    term_normal = term_normal,
+  },
+}
 
-function _G.set_terminal_keymaps()
-  local opts = { buffer = 0 }
-  vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], opts)
-end
+map("n", "<leader>tf", function()
+  Snacks.terminal(nil, { win = win })
+end, { desc = "Terminal Float" })
 
-vim.cmd("autocmd! TermOpen term://*toggleterm#* lua set_terminal_keymaps()")
+map("n", "<leader>tm", function()
+  Snacks.terminal("music-player", { win = win })
+end, { desc = "Music Player" })
 
 require("which-key").add({
   { "<leader>a", mode = "nxv", group = "ai", icon = "" },
-  { "<leader>t", mode = "x", group = "test" },
+  { "<leader>t", mode = "n", group = "terminal", icon = "" },
+  { "<leader>o", mode = "n", group = "overseer", icon = "" },
 })
