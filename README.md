@@ -3,10 +3,11 @@
 支持Vue、React、Typescript、Go、Java、C/CPP、Python、Markdown、Sql
 
 ```shell
--- windows
+# windows
 git clone https://github.com/immortal521/nvim.git $env:LOCALAPPDATA\nvim
+# 如果Windows设置了 XDG_CONFIG_HOME 环境变量为 ~/.config 可以直接使用下面的语句
 
--- Linux or MacOS
+# Linux or MacOS
 git clone https://github.com/immortal521/nvim.git ~/.config/nvim
 ```
 
@@ -30,7 +31,7 @@ git clone https://github.com/immortal521/nvim.git ~/.config/nvim
 
 ## music-player 配置
 
-`<leader>Tm`打开 music-player
+`<leader>tm`打开 music-player
 
 需要下载 music-player 并加入环境变量
 

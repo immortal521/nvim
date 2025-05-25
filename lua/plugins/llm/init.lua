@@ -37,6 +37,7 @@ return {
       max_history_name_length = 20,
       history_path = vim.fn.stdpath("cache") .. "/llm-history",
 
+
       models = {
         models.Ollama,
       },

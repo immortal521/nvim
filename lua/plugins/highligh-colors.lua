@@ -1,3 +1,7 @@
+if true  then
+  return {}
+end
+
 return {
     "brenoprata10/nvim-highlight-colors",
     opts = {

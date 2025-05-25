@@ -75,14 +75,6 @@ return {
     },
     sources = {
       default = { "lsp", "path", "snippets", "buffer" },
-      compat = { "codeium" },
-      providers = {
-        codeium = {
-          kind = "Codeium",
-          score_offset = 100,
-          async = true,
-        },
-      },
     },
   },
   opts_extend = { "sources.default" },

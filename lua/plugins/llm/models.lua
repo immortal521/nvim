@@ -10,6 +10,8 @@ return {
     end,
     streaming_handler = utils.local_llm_streaming_handler,
     parse_handler = utils.local_llm_parse_handler,
+    enable_thinking = true,
+    thinking_budget = 512,
   },
   Cloudflare = {
     -- model = "@cf/qwen/qwen1.5-14b-chat-awq",
