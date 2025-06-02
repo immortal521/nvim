@@ -37,7 +37,6 @@ return {
       max_history_name_length = 20,
       history_path = vim.fn.stdpath("cache") .. "/llm-history",
 
-
       models = {
         models.Ollama,
       },
@@ -56,7 +55,7 @@ return {
     { "<leader>ae", mode = "v", "<cmd>LLMAppHandler CodeExplain<cr>", desc = "Code Explain" },
     { "<leader>at", mode = "x", "<cmd>LLMAppHandler WordTranslate<cr>", desc = "Translate" },
     { "<leader>at", mode = "n", "<cmd>LLMAppHandler Translate<cr>", desc = "Translation Window" },
-    { "<leader>tc", mode = "x", "<cmd>LLMAppHandler TestCode<cr>", desc = "Generate Test Code" },
+    { "<leader>aT", mode = "x", "<cmd>LLMAppHandler TestCode<cr>", desc = "Generate Test Code" },
     { "<leader>ao", mode = "x", "<cmd>LLMAppHandler OptimCompare<cr>", desc = "Optimize Code" },
     { "<leader>ag", mode = "n", "<cmd>LLMAppHandler CommitMsg<cr>", desc = "Generate Git Message" },
     { "<leader>ad", mode = "v", "<cmd>LLMAppHandler DocString<cr>", desc = "Generate Document" },
