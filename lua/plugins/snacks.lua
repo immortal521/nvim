@@ -13,7 +13,7 @@ return {
       },
       scope = {
         enabled = true,
-        underline = true,
+        underline = false,
       },
       chunk = {
         enabled = true,

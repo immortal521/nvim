@@ -12,6 +12,7 @@ return {
     ensure_installed = {
       "clang-format",
       "codespell",
+      "css-lsp",
       "goimports",
       "google-java-format",
       "prettier",

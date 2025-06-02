@@ -16,7 +16,7 @@ return {
         nu = { "shfmt" },
         python = { "ruff" },
         rust = { "rustfmt", lsp_format = "fallback" },
-        scss = { "prettier " },
+        scss = { "prettier" },
         typescript = { "prettier" },
         vue = { "prettier" },
         xml = { "xmlformatter" },
