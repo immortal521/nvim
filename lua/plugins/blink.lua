@@ -1,20 +1,19 @@
 return {
   "saghen/blink.cmp",
+  build = "cargo build --release",
   dependencies = "rafamadriz/friendly-snippets",
   ---@module 'blink.cmp'
   ---@type blink.cmp.Config
   opts = {
-
     appearance = {
-      use_nvim_cmp_as_default = true,
       nerd_font_variant = "mono",
     },
 
     keymap = {
       preset = "none",
-      -- ["<C-e>"] = { "hide" },
       -- stylua: ignore start
       ['<S-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
+      ['<C-h>'] = { 'hide', 'show' },
       ['<cr>'] = { 'accept', 'fallback' },
       ['<S-Tab>'] = { 'select_prev', 'snippet_forward', 'fallback' },
       ['<Tab>'] = { 'select_next', 'snippet_backward', 'fallback' },
@@ -44,7 +43,7 @@ return {
       },
     },
     signature = {
-      window = { border = "single" },
+      window = { show_documentation = false },
     },
     completion = {
       menu = {
@@ -71,10 +70,13 @@ return {
       -- INFO: 临时禁用, 以解决选择补全时在 neovide 中光标移动到左上角再返回的 BUG
       accept = {
         dot_repeat = false,
+        auto_brackets = {
+          enabled = true,
+        },
       },
     },
     sources = {
-      default = { "lsp", "path", "snippets", "buffer" },
+      default = { "lsp", "path", "buffer", "snippets" },
     },
   },
   opts_extend = { "sources.default" },

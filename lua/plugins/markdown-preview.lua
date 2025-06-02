@@ -2,8 +2,8 @@ return {
   "iamcco/markdown-preview.nvim",
   -- build = "cd app && pnpm install",
   init = function()
-    vim.g.mkdp_auto_start = true
-    vim.g.mkdp_auto_close = true
+    vim.g.mkdp_auto_start = false
+    vim.g.mkdp_auto_close = false
     vim.g.mkdp_open_to_the_world = false
     vim.g.mkdp_open_ip = "localhost"
     vim.g.mkdp_port = "60000"
