@@ -29,7 +29,7 @@ git clone https://github.com/immortal521/nvim.git ~/.config/nvim
 
 [Lazygit](https://github.com/jesseduffield/lazygit.git)
 
-## music-player 配置
+## music-player 配置(可选)
 
 `<leader>tm`打开 music-player
 
@@ -39,6 +39,6 @@ git clone https://github.com/immortal521/nvim.git ~/.config/nvim
 
 ## 字体配置
 
-下载并安装 [Jetbrains Mono Nerd Font](https://www.jetbrains.com/lp/mono/)
+使用 Neovide 时下载并安装 [Maple Mono Normal NF CN](https://github.com/subframe7536/maple-font/releases)
 
-下载并安装 [更纱黑体](https://github.com/be5invis/Sarasa-Gothic)
+请下载 MapleMonoNormal-NF-CN.zip 
