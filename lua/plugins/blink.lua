@@ -1,7 +1,7 @@
 return {
   "saghen/blink.cmp",
   build = "cargo build --release",
-  dependencies = "rafamadriz/friendly-snippets",
+  dependencies = { "L3MON4D3/LuaSnip", version = "v2.*" },
   ---@module 'blink.cmp'
   ---@type blink.cmp.Config
   opts = {
@@ -15,12 +15,10 @@ return {
       ['<S-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
       ['<C-h>'] = { 'hide', 'show' },
       ['<cr>'] = { 'accept', 'fallback' },
-      ['<S-Tab>'] = { 'select_prev', 'snippet_forward', 'fallback' },
-      ['<Tab>'] = { 'select_next', 'snippet_backward', 'fallback' },
+      ['<S-Tab>'] = { 'select_prev', 'snippet_backward', 'fallback' },
+      ['<Tab>'] = { 'select_next', 'snippet_forward', 'fallback' },
       ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
       ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
-      ['<C-e>'] = { 'snippet_forward', 'fallback' },
-      ['<C-u>'] = { 'snippet_backward', 'fallback' },
       -- stylua: ignore start
     },
     cmdline = {
@@ -75,6 +73,7 @@ return {
         },
       },
     },
+    snippets = { preset = "luasnip" },
     sources = {
       default = { "lsp", "path", "buffer", "snippets" },
     },

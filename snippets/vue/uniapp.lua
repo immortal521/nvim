@@ -1,0 +1,40 @@
+-- local function check_dependency_in_node_modules(dependency_name)
+--   local project_root = LazyVim.root.get()
+--   if not project_root then
+--     return false
+--   end
+--
+--   local node_modules_path = project_root .. "/node_modules"
+--   local dependency_path = node_modules_path .. "/" .. dependency_name
+--
+--   -- 检查node_modules目录是否存在
+--   local nm_success = vim.loop.fs_stat(node_modules_path)
+--   if not nm_success or nm_success.type ~= "directory" then
+--     return false
+--   end
+--
+--   -- 检查依赖是否存在于node_modules中
+--   local dep_success = vim.loop.fs_stat(dependency_path)
+--
+--   if dep_success and dep_success.type == "directory" then
+--     return true
+--   else
+--     return false
+--   end
+-- end
+--
+-- local luasnip = require("luasnip")
+-- local s = luasnip.snippet
+-- local t = luasnip.text_node
+--
+-- local condition_func = function()
+--   return check_dependency_in_node_modules("@dcloudio")
+-- end
+--
+-- luasnip.add_snippets("vue", {
+--   s({
+--     trig = "<uni",
+--   }, { t("<uni-app>") }, { description = "uni-app component", show_condition = condition_func }),
+--   -- 你可以在这里添加更多 uni-app 相关的代码片段
+--   -- s("uview", { t("<uview-ui>") }, { description = "uview-ui component" }),
+-- })
