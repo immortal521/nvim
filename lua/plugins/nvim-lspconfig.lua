@@ -5,6 +5,9 @@ return {
       cssls = {
         filetypes = { "css", "less", "scss" },
       },
+      css_variables = {
+        filetypes = { "css", "less", "scss" },
+      },
     },
   },
 }

@@ -11,7 +11,9 @@ You must:
 - Place the generated docstring before the start of the code.
 - Follow the format of examples carefully if the examples are provided.
 - Use Markdown formatting in your answers.
-- Include the programming language name at the start of the Markdown code blocks.]],
+- Include the programming language name at the start of the Markdown code blocks.
+- Provide the document you need translated.
+]],
 
   WordTranslate = [[You are a translation expert. Your task is to translate all the text provided by the user into Chinese.
 

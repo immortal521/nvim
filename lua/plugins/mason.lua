@@ -13,6 +13,8 @@ return {
       "clang-format",
       "codespell",
       "css-lsp",
+      "cssmodules-language-server",
+      "css-variables-language-server",
       "goimports",
       "google-java-format",
       "prettier",

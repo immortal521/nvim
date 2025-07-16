@@ -4,7 +4,7 @@
 --
 -- UI & 导航增强
 vim.opt.winbar = "%=%m %f" -- 窗口栏显示修改状态和文件名
-vim.opt.scrolloff = 10 -- 光标上下滚动时保持 10 行的偏移量
+vim.opt.scrolloff = 15 -- 光标上下滚动时保持 10 行的偏移量
 vim.opt.jumpoptions = "stack" -- 跳转列表行为像栈一样
 
 -- 编辑行为调整

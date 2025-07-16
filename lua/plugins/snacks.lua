@@ -3,6 +3,13 @@ return {
   lazy = false,
   ---@type snacks.Config
   opts = {
+    image = {
+      enabled = true,
+    },
+    explorer = {
+      enabled = true,
+      replace_netrw = true,
+    },
     indent = {
       enabled = true,
       animate = {

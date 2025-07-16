@@ -48,8 +48,9 @@ map("n", "<leader>ts", function()
   })
 end, { desc = "terminal find" })
 
+map("i", "jk", "<esc>")
+
 wk.add({
   { "<leader>a", mode = "nxv", group = "ai", icon = "" },
   { "<leader>t", mode = "n", group = "terminal", icon = "" },
 })
-

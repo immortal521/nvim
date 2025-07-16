@@ -28,11 +28,11 @@ return {
   OpenRouter = {
     name = "OpenRouter",
     url = "https://openrouter.ai/api/v1/chat/completions",
-    model = "google/gemini-2.0-flash-exp:free",
+    model = "moonshotai/kimi-dev-72b:free",
     max_tokens = 8000,
     api_type = "openai",
     fetch_key = function()
-      return vim.env.OPENROUTER_KEY
+      return vim.env.OpenRouter
     end,
     temperature = 0.3,
     top_p = 0.7,

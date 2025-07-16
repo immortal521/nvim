@@ -39,6 +39,7 @@ return {
 
       models = {
         models.Ollama,
+        models.OpenRouter,
       },
     }
 

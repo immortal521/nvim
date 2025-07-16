@@ -6,6 +6,13 @@ return {
   prompt = prompts.CommitMsg,
 
   opts = {
+    url = "https://openrouter.ai/api/v1/chat/completions",
+    model = "tngtech/deepseek-r1t2-chimera:free",
+    max_tokens = 8000,
+    api_type = "openai",
+    fetch_key = function()
+      return vim.env.OpenRouter
+    end,
     enter_flexible_window = true,
     apply_visual_selection = false,
     win_opts = {
@@ -18,13 +25,19 @@ return {
         mode = "n",
         keys = "<cr>",
       },
+
       action = function()
         local contents = vim.api.nvim_buf_get_lines(0, 0, -1, true)
-        vim.api.nvim_command(string.format('!git commit -m "%s"', table.concat(contents, '" -m "')))
 
-        -- just for lazygit
+        local cmd = string.format('!git commit -m "%s"', table.concat(contents, '" -m "'))
+        cmd = (cmd:gsub(".", {
+          ["#"] = "\\#",
+        }))
+        vim.api.nvim_command(cmd)
+
+        -- 打开 LazyGit（可选）
         vim.schedule(function()
-          vim.api.nvim_command("LazyGit")
+          Snacks.lazygit({ cwd = LazyVim.root.git() })
         end)
       end,
     },
