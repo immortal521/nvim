@@ -1,6 +1,6 @@
 if vim.g.neovide then
   -- Neovide 基础设置
-  vim.g.neovide_fullscreen = true
+  vim.g.neovide_fullscreen = false
   vim.g.neovide_hide_mouse_when_typing = true
   vim.o.guifont = "Maple Mono NF CN:h14"
 

@@ -10,6 +10,7 @@ return {
       },
     },
     ensure_installed = {
+      "biome",
       "clang-format",
       "codespell",
       "css-lsp",

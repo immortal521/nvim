@@ -1,3 +1,4 @@
+local prettier = require("lazyvim.plugins.extras.formatting.prettier")
 return {
   "stevearc/conform.nvim",
   opts = function()
