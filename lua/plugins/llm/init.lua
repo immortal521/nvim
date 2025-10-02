@@ -38,8 +38,8 @@ return {
       history_path = vim.fn.stdpath("cache") .. "/llm-history",
 
       models = {
-        models.Ollama,
         models.OpenRouter,
+        models.Ollama,
       },
     }
 

@@ -1,4 +1,4 @@
-if vim.loop.os_uname().sysname ~= "Windows_NT" then
+if not LazyVim.is_win() then
   return {}
 end
 

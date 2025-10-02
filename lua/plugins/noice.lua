@@ -13,5 +13,8 @@ return {
         },
       },
     },
+    presets = {
+      lsp_doc_border = false,
+    },
   },
 }

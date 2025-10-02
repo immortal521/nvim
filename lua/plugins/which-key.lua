@@ -2,7 +2,6 @@ return {
   "folke/which-key.nvim",
   event = "VeryLazy",
   opts = {
-    preset = "classic",
     spec = {
       { "<leader>o", mode = "n", group = "overseer", icon = "" },
       { "<leader>K", mode = "n", desc = "Keywordprg", icon = "" },

@@ -6,10 +6,6 @@ return {
     image = {
       enabled = true,
     },
-    explorer = {
-      enabled = true,
-      replace_netrw = true,
-    },
     indent = {
       enabled = true,
       animate = {
@@ -29,7 +25,7 @@ return {
     dashboard = {
       preset = {
         pick = function(cmd, opts)
-          return LaztVim.pick(cmd, opts)()
+          return LazyVim.pick(cmd, opts)()
         end,
         header = [[
 
@@ -58,6 +54,11 @@ return {
          { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
          { icon = " ", key = "q", desc = "Quit", action = ":qa" },
        },
+      },
+      sections = {
+        { section = "header" },
+        { section = "keys", gap = 0.5 },
+        { section = "startup" },
       },
     },
   },

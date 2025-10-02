@@ -6,8 +6,6 @@ return {
   prompt = prompts.CommitMsg,
 
   opts = {
-    url = "https://openrouter.ai/api/v1/chat/completions",
-    model = "tngtech/deepseek-r1t2-chimera:free",
     max_tokens = 8000,
     api_type = "openai",
     fetch_key = function()

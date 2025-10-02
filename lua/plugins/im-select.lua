@@ -1,4 +1,4 @@
-if vim.loop.os_uname().sysname ~= "Linux" then
+if LazyVim.is_win() then
   return {}
 end
 

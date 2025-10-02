@@ -8,10 +8,11 @@ return {
     fetch_key = function()
       return ""
     end,
+    temperature = 0.3,
+    enable_thinking = true,
+    top_p = 0.7,
     streaming_handler = utils.local_llm_streaming_handler,
     parse_handler = utils.local_llm_parse_handler,
-    enable_thinking = true,
-    thinking_budget = 512,
   },
   Cloudflare = {
     -- model = "@cf/qwen/qwen1.5-14b-chat-awq",
@@ -28,6 +29,7 @@ return {
   OpenRouter = {
     name = "OpenRouter",
     url = "https://openrouter.ai/api/v1/chat/completions",
+    -- model = "openai/gpt-oss-120b:free",
     model = "moonshotai/kimi-dev-72b:free",
     max_tokens = 8000,
     api_type = "openai",

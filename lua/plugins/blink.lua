@@ -1,6 +1,5 @@
 return {
   "saghen/blink.cmp",
-  build = "cargo build --release",
   dependencies = { "L3MON4D3/LuaSnip", version = "v2.*" },
   ---@module 'blink.cmp'
   ---@type blink.cmp.Config
