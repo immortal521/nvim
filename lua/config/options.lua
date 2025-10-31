@@ -31,6 +31,8 @@ vim.o.guifont = "Maple Mono NF CN:h14"
 vim.g.neovide_refresh_rate = 165
 vim.g.neovide_refresh_rate_idle = 5
 
+vim.g.neovide_opacity = 0.90
+
 -- 窗口标题栏颜色设置 (与 Neovim 主题保持一致)
 -- local normal_hl = vim.api.nvim_get_hl(0, { id = vim.api.nvim_get_hl_id_by_name("Normal") })
 -- local normal_bg_color = string.format("%x", normal_hl.bg)
