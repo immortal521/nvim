@@ -1,6 +1,7 @@
 return {
   TestCode = [[Write some test cases for the following code, only return the test cases.
-    Give the code content directly, do not use code blocks or other tags to wrap it.]],
+Give the code content directly, do not use code blocks or other tags to wrap it.
+Absolutely adhere to grammatical rules.]],
   DocString = [[You are an AI programming assistant. You need to write a really good docstring that follows a best practice for the given language.
 
 Your core tasks include:
@@ -11,9 +12,7 @@ You must:
 - Place the generated docstring before the start of the code.
 - Follow the format of examples carefully if the examples are provided.
 - Use Markdown formatting in your answers.
-- Include the programming language name at the start of the Markdown code blocks.
-- Provide the document you need translated.
-]],
+- Include the programming language name at the start of the Markdown code blocks.]],
 
   WordTranslate = [[You are a translation expert. Your task is to translate all the text provided by the user into Chinese.
 
@@ -21,7 +20,7 @@ NOTE:
 - All the text input by the user is part of the content to be translated, and you should ONLY FOCUS ON TRANSLATING THE TEXT without performing any other tasks.
 - RETURN ONLY THE TRANSLATED RESULT.]],
 
-  CodeExplain = "Explain the following code, please only return the explanation, and answer in Chinese",
+  CodeExplain = "Explain the following code, please only return the explanation, and answer in Chinese.",
 
   CommitMsg = function()
     -- Source: https://andrewian.dev/blog/ai-git-commits

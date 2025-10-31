@@ -19,12 +19,23 @@ return {
     ["Output:Resend"]     = { mode = "n", key = "<C-r>" },
 
     -- The keyboard mapping for the output and input windows in "float" style.
-    ["Session:Toggle"]    = { mode = "n", key = "<leader>ac" },
-    ["Session:Close"]     = { mode = "n", key = {"<esc>", "Q"} },
+    ["Session:Open"]     = { mode = "n", key = "<leader>ac" },
+    ["Session:Hide"]     = { mode = "n", key = "q" },
+    ["Session:Close"]    = { mode = "n", key = "<esc>" },
+    ["Session:New"]      = { mode = "n", key = "<C-n>" },
+    ["Session:History"]  = { mode = "n", key = "<C-h>" },
     -- ["Session:History"]     = { mode = "n", key = {"<C-h>"} },
 
     -- Focus
     ["Focus:Input"]       = { mode = "n", key = {"i", "<C-w>"} },
     ["Focus:Output"]      = { mode = { "n", "i" }, key = "<C-w>" },
+
+    -- Scroll
+    ["PageUp"]            = { mode = {"i","n"}, key = "<C-b>" },
+    ["PageDown"]          = { mode = {"i","n"}, key = "<C-f>" },
+    ["HalfPageUp"]        = { mode = {"i","n"}, key = "<C-u>" },
+    ["HalfPageDown"]      = { mode = {"i","n"}, key = "<C-d>" },
+    ["JumpToTop"]         = { mode = "n", key = "gg" },
+    ["JumpToBottom"]      = { mode = "n", key = "G" }
   },
 }
