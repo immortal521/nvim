@@ -8,6 +8,7 @@ return {
       typescript = { "eslint" },
       typescriptreact = { "eslint" },
       markdown = { "eslint" },
+      go = { "golangcilint" },
     },
     linters = {
       eslint = {
