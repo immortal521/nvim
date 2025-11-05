@@ -36,6 +36,12 @@ git clone https://github.com/immortal521/nvim.git ~/.config/nvim
 需要下载 music-player 并加入环境变量
 
 [music-player](https://github.com/immortal521/bucketApps/releases/tag/music-player)
+注：目前只编译了 Windows 版本、Linux
+版本不一定可以用（在原作者的基础上加了第一次使用的时候询问音乐文件夹路径）
+
+也可以使用 `rmpc`
+
+自定义可以自行修改 `keymaps.lua` 内的 `33-35` 行
 
 ## 字体配置
 
