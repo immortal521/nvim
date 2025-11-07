@@ -1,0 +1,105 @@
+{
+  "plugins": {
+    "auto-save.nvim": {
+      "rev": "151c008",
+      "src": "https://github.com/immortal521/auto-save.nvim"
+    },
+    "blink.cmp": {
+      "rev": "327fff9",
+      "src": "https://github.com/saghen/blink.cmp",
+      "version": ">=1.0.0"
+    },
+    "conform.nvim": {
+      "rev": "cde4da5",
+      "src": "https://github.com/stevearc/conform.nvim"
+    },
+    "heirline.nvim": {
+      "rev": "fae936a",
+      "src": "https://github.com/rebelot/heirline.nvim"
+    },
+    "ime_toggle": {
+      "rev": "5b72cdb",
+      "src": "https://github.com/immortal521/ime_toggle"
+    },
+    "llm.nvim": {
+      "rev": "ea625b7",
+      "src": "https://github.com/Kurama622/llm.nvim"
+    },
+    "mason.nvim": {
+      "rev": "ad7146a",
+      "src": "https://github.com/mason-org/mason.nvim"
+    },
+    "mini.ai": {
+      "rev": "0d3c9cf",
+      "src": "https://github.com/nvim-mini/mini.ai"
+    },
+    "mini.diff": {
+      "rev": "fbb93ea",
+      "src": "https://github.com/nvim-mini/mini.diff"
+    },
+    "mini.icons": {
+      "rev": "ff2e4f1",
+      "src": "https://github.com/nvim-mini/mini.icons"
+    },
+    "mini.move": {
+      "rev": "4d21420",
+      "src": "https://github.com/nvim-mini/mini.move"
+    },
+    "mini.pairs": {
+      "rev": "b316e68",
+      "src": "https://github.com/nvim-mini/mini.pairs"
+    },
+    "mini.surround": {
+      "rev": "88c5229",
+      "src": "https://github.com/nvim-mini/mini.surround"
+    },
+    "noice.nvim": {
+      "rev": "7bfd942",
+      "src": "https://github.com/folke/noice.nvim"
+    },
+    "nui.nvim": {
+      "rev": "de74099",
+      "src": "https://github.com/MunifTanjim/nui.nvim"
+    },
+    "nvim-highlight-colors": {
+      "rev": "e0c4a58",
+      "src": "https://github.com/brenoprata10/nvim-highlight-colors"
+    },
+    "nvim-lint": {
+      "rev": "8c694e1",
+      "src": "https://github.com/mfussenegger/nvim-lint"
+    },
+    "nvim-lspconfig": {
+      "rev": "2010fc6",
+      "src": "https://github.com/neovim/nvim-lspconfig"
+    },
+    "nvim-treesitter": {
+      "rev": "42fc28ba",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter"
+    },
+    "oil.nvim": {
+      "rev": "7e1cd77",
+      "src": "https://github.com/stevearc/oil.nvim"
+    },
+    "persistence.nvim": {
+      "rev": "b20b2a7",
+      "src": "https://github.com/folke/persistence.nvim"
+    },
+    "plenary.nvim": {
+      "rev": "b9fd522",
+      "src": "https://github.com/nvim-lua/plenary.nvim"
+    },
+    "snacks.nvim": {
+      "rev": "741f4b1",
+      "src": "https://github.com/folke/snacks.nvim"
+    },
+    "tokyonight.nvim": {
+      "rev": "5da1b76",
+      "src": "https://github.com/folke/tokyonight.nvim"
+    },
+    "which-key.nvim": {
+      "rev": "3aab214",
+      "src": "https://github.com/folke/which-key.nvim"
+    }
+  }
+}
