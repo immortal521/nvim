@@ -13,6 +13,10 @@
       "rev": "cde4da5",
       "src": "https://github.com/stevearc/conform.nvim"
     },
+    "flash.nvim": {
+      "rev": "fcea7ff",
+      "src": "https://github.com/folke/flash.nvim"
+    },
     "heirline.nvim": {
       "rev": "fae936a",
       "src": "https://github.com/rebelot/heirline.nvim"
@@ -77,9 +81,17 @@
       "rev": "42fc28ba",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
     },
+    "nvim-ts-autotag": {
+      "rev": "c4ca798",
+      "src": "https://github.com/windwp/nvim-ts-autotag"
+    },
     "oil.nvim": {
       "rev": "7e1cd77",
       "src": "https://github.com/stevearc/oil.nvim"
+    },
+    "overseer.nvim": {
+      "rev": "c77c78b",
+      "src": "https://github.com/stevearc/overseer.nvim"
     },
     "persistence.nvim": {
       "rev": "b20b2a7",
@@ -88,6 +100,10 @@
     "plenary.nvim": {
       "rev": "b9fd522",
       "src": "https://github.com/nvim-lua/plenary.nvim"
+    },
+    "refactoring.nvim": {
+      "rev": "6784b54",
+      "src": "https://github.com/ThePrimeagen/refactoring.nvim"
     },
     "snacks.nvim": {
       "rev": "741f4b1",
@@ -101,9 +117,21 @@
       "rev": "8ac5988",
       "src": "https://github.com/xiyaowong/transparent.nvim"
     },
+    "trouble.nvim": {
+      "rev": "bd67efe",
+      "src": "https://github.com/folke/trouble.nvim"
+    },
+    "ts-comments.nvim": {
+      "rev": "123a9fb",
+      "src": "https://github.com/folke/ts-comments.nvim"
+    },
     "which-key.nvim": {
       "rev": "3aab214",
       "src": "https://github.com/folke/which-key.nvim"
+    },
+    "yanky.nvim": {
+      "rev": "04775cc",
+      "src": "https://github.com/gbprod/yanky.nvim"
     }
   }
 }

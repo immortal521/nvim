@@ -1,12 +1,10 @@
 return {
-  require("plugins.lsp"),
-  require("plugins.tokyonight"),
-
   require("plugins.util"),
-
-  require("plugins.noice"),
-
   require("plugins.mini"),
+  require("plugins.which-key"),
+  require("plugins.tokyonight"),
+  require("plugins.noice"),
+  require("plugins.lsp"),
   require("plugins.oil"),
   require("plugins.highlight-color"),
   require("plugins.completion"),
@@ -15,11 +13,17 @@ return {
   require("plugins.lint"),
   require("plugins.persistence"),
   require("plugins.heirline"),
-
+  require("plugins.transparent"),
+  require("plugins.flash"),
+  require("plugins.trouble"),
   require("plugins.snacks"),
-  require("plugins.which-key"),
+  require("plugins.refactoring"),
+  require("plugins.overseer"),
+  require("plugins.yanky"),
   require("plugins.auto_save"),
   require("plugins.im-select"),
   require("plugins.ime_toggle"),
+  require("plugins.ts-comments"),
+  require("plugins.ts-autotag"),
   require("plugins.llm"),
 }

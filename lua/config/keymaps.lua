@@ -204,6 +204,8 @@ local win = {
   },
 }
 
+map("n", "<leader>t", "", { desc = "terminal" })
+
 map("n", "<leader>tf", function()
   Snacks.terminal(nil, { win = win })
 end, { desc = "Terminal Float" })

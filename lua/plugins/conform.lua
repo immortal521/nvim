@@ -1,4 +1,4 @@
-local map = require("utils").map
+local wk = require("which-key")
 
 vim.pack.add({
   { src = "https://github.com/stevearc/conform.nvim" },
@@ -69,9 +69,15 @@ require("conform").setup({
   },
 })
 
-map("n", "<leader>cf", function()
-  require("conform").format({
-    async = true,
-    lsp_fallback = true,
-  })
-end)
+wk.add({
+  {
+    "<leader>cf",
+    function()
+      require("conform").format({
+        async = true,
+        lsp_fallback = true,
+      })
+    end,
+    desc = "Format",
+  },
+})

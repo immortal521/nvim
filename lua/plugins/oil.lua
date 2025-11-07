@@ -1,4 +1,4 @@
-local map = require("utils").map
+local wk = require("which-key")
 
 vim.pack.add({
   { src = "https://github.com/stevearc/oil.nvim" },
@@ -48,4 +48,6 @@ require("oil").setup({
   },
 })
 
-map("n", "-", "<cmd>Oil<CR>")
+wk.add({
+  { "-", "<cmd>Oil<CR>" },
+})

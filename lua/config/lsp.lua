@@ -34,7 +34,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
 
     -- [keymaps]
-    vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format)
     vim.keymap.set("n", "gd", function()
       local params = vim.lsp.util.make_position_params(0, "utf-8")
       vim.lsp.buf_request(0, "textDocument/definition", params, function(_, result, _, _)
@@ -131,4 +130,32 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
     vim.keymap.set("n", "]f", jump_to_current_function_end, { desc = "Jump to end of current function" })
   end,
+})
+
+vim.diagnostic.config({
+  update_in_insert = false,
+  underline = true,
+  -- virtual_lines = { current_line = true },
+  virtual_text = {
+    spacing = 4,
+    source = "if_many",
+    prefix = "●",
+  },
+  float = { severity_sort = true },
+  severity_sort = true,
+  signs = {
+    text = {
+      -- [vim.diagnostic.severity.ERROR] = '',
+      [vim.diagnostic.severity.ERROR] = " ",
+      [vim.diagnostic.severity.WARN] = " ",
+      [vim.diagnostic.severity.INFO] = " ",
+      [vim.diagnostic.severity.HINT] = " ",
+    },
+    numhl = {
+      [vim.diagnostic.severity.ERROR] = "DiagnosticError",
+      [vim.diagnostic.severity.WARN] = "DiagnosticWarning",
+      [vim.diagnostic.severity.INFO] = "DiagnosticInfo",
+      [vim.diagnostic.severity.HINT] = "DiagnosticHint",
+    },
+  },
 })

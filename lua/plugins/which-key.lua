@@ -1,5 +1,3 @@
-local map = require("utils").map
-
 vim.pack.add({
   { src = "https://github.com/folke/which-key.nvim" },
 })
@@ -47,10 +45,21 @@ require("which-key").setup({
   },
 })
 
-map("n", "<leader>?", function()
-  require("which-key").show({ global = false })
-end, { desc = "Buffer Keymaps (which-key)" })
+keys = {
+  {
+    "<leader>?",
+    function()
+      require("which-key").show({ global = false })
+    end,
+    desc = "Buffer Keymaps (which-key)",
+  },
+  {
+    "<c-w><space>",
+    function()
+      require("which-key").show({ keys = "<c-w>", loop = true })
+    end,
+    desc = "Window Hydra Mode (which-key)",
+  },
+}
 
-map("n", "<c-w><space>", function()
-  require("which-key").show({ keys = "<c-w>", loop = true })
-end, { desc = "Window Hydra Mode (which-key)" })
+require("which-key").add(keys)

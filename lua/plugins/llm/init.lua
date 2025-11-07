@@ -1,3 +1,4 @@
+local wk = require("which-key")
 local map = require("utils").map
 local models = require("plugins.llm.models")
 local keymaps = require("plugins.llm.keymaps")
@@ -71,22 +72,26 @@ end
 
 require("llm").setup(opts)
 
--- 设置快捷键映射
-map("n", "<leader>ac", "<cmd>LLMSessionToggle<cr>", { desc = "Toggle LLM Chat" })
-map({ "v", "n" }, "<leader>aa", "<cmd>LLMAppHandler AttachToChat<cr>", { desc = "Ask LLM (multi-turn)" })
-map({ "v", "n" }, "<leader>ak", "<cmd>LLMAppHandler Ask<cr>", { desc = "Ask LLM" })
-map({ "n", "v" }, "<leader>ae", "<cmd>LLMAppHandler CodeExplain<cr>", { desc = "Explain the Code" })
-map({ "x", "n" }, "<leader>aw", "<cmd>LLMAppHandler WordTranslate<cr>", { desc = "Word Translate" })
-map("n", "<leader>at", "<cmd>LLMAppHandler Translate<cr>", { desc = "AI Translator" })
-map("x", "<leader>aT", "<cmd>LLMAppHandler TestCode<cr>", { desc = "Generate Test Cases" })
-map("x", "<leader>ao", "<cmd>LLMAppHandler OptimCompare<cr>", { desc = "Optimize the Code" })
-map("n", "<leader>ag", "<cmd>LLMAppHandler CommitMsg<cr>", { desc = "Generate AI Commit Message" })
-map("v", "<leader>ad", "<cmd>LLMAppHandler DocString<cr>", { desc = "Generate a Docstring" })
-map("n", "<leader>au", "<cmd>LLMAppHandler UserInfo<cr>", { desc = "Check Account Information" })
-map({ "v", "n" }, "<leader>ab", "<cmd>LLMAppHandler BashRunner<cr>", { desc = "bash runner" })
-map({ "v", "n" }, "<leader>ai", "<cmd>LLMAppHandler FormulaRecognition<cr>", { desc = "formula recognition" })
+-- stylua: ignore
+keys = {
+  { "<leader>a", group="ai" },
+  { "<leader>ac", "<cmd>LLMSessionToggle<cr>", mode = "n", desc = "Toggle LLM Chat" },
+  { "<leader>aa", "<cmd>LLMAppHandler AttachToChat<cr>", mode = { "v", "n" }, desc = "Ask LLM (multi-turn)" },
+  { "<leader>ak", "<cmd>LLMAppHandler Ask<cr>", mode = { "v", "n" }, desc = "Ask LLM" },
+  { "<leader>ae", "<cmd>LLMAppHandler CodeExplain<cr>", mode = { "n", "v" }, desc = "Explain the Code" },
+  { "<leader>aw", "<cmd>LLMAppHandler WordTranslate<cr>", mode = { "x", "n" }, desc = "Word Translate" },
+  { "<leader>at", "<cmd>LLMAppHandler Translate<cr>", mode = "n", desc = "AI Translator" },
+  { "<leader>aT", "<cmd>LLMAppHandler TestCode<cr>", mode = "x", desc = "Generate Test Cases" },
+  { "<leader>ao", "<cmd>LLMAppHandler OptimCompare<cr>", mode = "x", desc = "Optimize the Code" },
+  { "<leader>ag", "<cmd>LLMAppHandler CommitMsg<cr>", mode = "n", desc = "Generate AI Commit Message" },
+  { "<leader>ad", "<cmd>LLMAppHandler DocString<cr>", mode = "v", desc = "Generate a Docstring" },
+  { "<leader>au", "<cmd>LLMAppHandler UserInfo<cr>", mode = "n", desc = "Check Account Information" },
+  { "<leader>ab", "<cmd>LLMAppHandler BashRunner<cr>", mode = { "v", "n" }, desc = "bash runner" },
+  { "<leader>ai", "<cmd>LLMAppHandler FormulaRecognition<cr>", mode = { "v", "n" }, desc = "formula recognition" },
 
--- 未启用快捷键
--- map("v", "<leader>ae", "<cmd>LLMSelectedTextHandler 请解释下面这段代码<cr>", { desc = "Code Explain" })
--- map("x", "<leader>ao", "<cmd>LLMAppHandler OptimizeCode<cr>", { desc = "Optimize" })
--- map("x", "<leader>at", "<cmd>LLMSelectedTextHandler 英译汉<cr>", { desc = "Translate" })
+  -- 未启用快捷键
+  -- { "<leader>ae", "<cmd>LLMSelectedTextHandler 请解释下面这段代码<cr>", mode = "v", desc = "Code Explain" },
+  -- { "<leader>ao", "<cmd>LLMAppHandler OptimizeCode<cr>", mode = "x", desc = "Optimize" },
+  -- { "<leader>at", "<cmd>LLMSelectedTextHandler 英译汉<cr>", mode = "x", desc = "Translate" },
+}
+wk.add(keys)

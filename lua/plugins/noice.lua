@@ -1,4 +1,4 @@
-local map = require("utils").map
+local wk = require("which-key")
 
 vim.pack.add({
   { src = "https://github.com/folke/noice.nvim" },
@@ -32,41 +32,88 @@ require("noice").setup({
   },
 })
 
--- 分组描述（如果你用了 which-key 会自动识别）
-map("n", "<leader>sn", "", { desc = "+noice" })
+keys = {
+  { "<leader>sn", group = "noice" },
 
-map("c", "<S-Enter>", function()
-  require("noice").redirect(vim.fn.getcmdline())
-end, { desc = "Redirect Cmdline" })
+  {
+    "<S-Enter>",
+    function()
+      require("noice").redirect(vim.fn.getcmdline())
+    end,
+    mode = "c",
+    desc = "Redirect Cmdline",
+  },
 
-map("n", "<leader>snl", function()
-  require("noice").cmd("last")
-end, { desc = "Noice Last Message" })
+  {
+    "<leader>snl",
+    function()
+      require("noice").cmd("last")
+    end,
+    mode = "n",
+    desc = "Noice Last Message",
+  },
 
-map("n", "<leader>snh", function()
-  require("noice").cmd("history")
-end, { desc = "Noice History" })
+  {
+    "<leader>snh",
+    function()
+      require("noice").cmd("history")
+    end,
+    mode = "n",
+    desc = "Noice History",
+  },
 
-map("n", "<leader>sna", function()
-  require("noice").cmd("all")
-end, { desc = "Noice All" })
+  {
+    "<leader>sna",
+    function()
+      require("noice").cmd("all")
+    end,
+    mode = "n",
+    desc = "Noice All",
+  },
 
-map("n", "<leader>snd", function()
-  require("noice").cmd("dismiss")
-end, { desc = "Dismiss All" })
+  {
+    "<leader>snd",
+    function()
+      require("noice").cmd("dismiss")
+    end,
+    mode = "n",
+    desc = "Dismiss All",
+  },
 
-map("n", "<leader>snt", function()
-  require("noice").cmd("pick")
-end, { desc = "Noice Picker (Telescope/FzfLua)" })
+  {
+    "<leader>snt",
+    function()
+      require("noice").cmd("pick")
+    end,
+    mode = "n",
+    desc = "Noice Picker (Telescope/FzfLua)",
+  },
 
-map({ "i", "n", "s" }, "<C-f>", function()
-  if not require("noice.lsp").scroll(4) then
-    return "<C-f>"
-  end
-end, { silent = true, expr = true, desc = "Scroll Forward" })
+  {
+    "<C-f>",
+    function()
+      if not require("noice.lsp").scroll(4) then
+        return "<C-f>"
+      end
+    end,
+    mode = { "i", "n", "s" },
+    silent = true,
+    expr = true,
+    desc = "Scroll Forward",
+  },
 
-map({ "i", "n", "s" }, "<C-b>", function()
-  if not require("noice.lsp").scroll(-4) then
-    return "<C-b>"
-  end
-end, { silent = true, expr = true, desc = "Scroll Backward" })
+  {
+    "<C-b>",
+    function()
+      if not require("noice.lsp").scroll(-4) then
+        return "<C-b>"
+      end
+    end,
+    mode = { "i", "n", "s" },
+    silent = true,
+    expr = true,
+    desc = "Scroll Backward",
+  },
+}
+
+wk.add(keys)

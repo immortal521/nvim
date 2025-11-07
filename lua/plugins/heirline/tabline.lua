@@ -3,7 +3,6 @@ local utils = require("plugins.heirline.utils")
 local components = require("plugins.heirline.components")
 
 local colors = utils.get_colors()
-print(vim.inspect(colors))
 
 local buflist_cache = {}
 
@@ -204,7 +203,7 @@ local TabLineOffset = {
 
 local BufferLine = heirline_utils.make_buflist(
   TablineBufferBlock,
-  { provider = "", hl = { fg = colors.comment } }, -- left truncation, optional (defaults to "<")
+  { provider = "  ", hl = { fg = colors.comment } }, -- left truncation, optional (defaults to "<")
   { provider = "%= ", hl = { fg = colors.comment } }
 )
 
