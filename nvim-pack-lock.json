@@ -97,6 +97,10 @@
       "rev": "5da1b76",
       "src": "https://github.com/folke/tokyonight.nvim"
     },
+    "transparent.nvim": {
+      "rev": "8ac5988",
+      "src": "https://github.com/xiyaowong/transparent.nvim"
+    },
     "which-key.nvim": {
       "rev": "3aab214",
       "src": "https://github.com/folke/which-key.nvim"
