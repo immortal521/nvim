@@ -31,7 +31,7 @@ map("n", "<leader>tf", function()
 end, { desc = "Terminal Float" })
 
 map("n", "<leader>tm", function()
-  Snacks.terminal("music-player", { win = win })
+  Snacks.terminal("rmpc", { win = win })
 end, { desc = "Music Player", silent = true, noremap = true })
 
 map("n", "<leader>ts", function()

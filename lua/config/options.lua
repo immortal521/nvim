@@ -15,7 +15,7 @@ vim.opt.wrap = true -- 启用软换行，长行自动折叠显示
 -- 功能开关 (全局变量，通常由插件或自定义逻辑使用)
 vim.g.autoformat = false -- 禁用全局自动格式化功能
 
-LazyVim.terminal.setup("nu")
+LazyVim.terminal.setup("zsh")
 vim.o.shellcmdflag = "-c"
 vim.o.shellredir = ">%s 2>&1"
 vim.o.shellpipe = "2>&1 | tee %s"
