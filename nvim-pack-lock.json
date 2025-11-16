@@ -29,6 +29,10 @@
       "rev": "0fd2d5a27504dba7fdc507a53275f22c081fe640",
       "src": "https://github.com/b0o/incline.nvim"
     },
+    "lensline.nvim": {
+      "rev": "ee938078aeee9751aafc20b055fcbb8aa579bb76",
+      "src": "https://github.com/oribarilan/lensline.nvim"
+    },
     "llm.nvim": {
       "rev": "ea625b7",
       "src": "https://github.com/Kurama622/llm.nvim"
