@@ -6,7 +6,21 @@ vim.pack.add({
 
 require("persistence").setup({})
 
-keys = {
+-- 加载 session 前同样删除 Oil buffer，避免恢复
+vim.api.nvim_create_autocmd("User", {
+  pattern = "PersistenceLoadPost",
+  callback = function()
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+      local ft = vim.bo[buf].filetype
+      local name = vim.api.nvim_buf_get_name(buf)
+      if ft == "oil" or name:match("oil") then
+        vim.api.nvim_buf_delete(buf, { force = true })
+      end
+    end
+  end,
+})
+
+local keys = {
   {
     "<leader>qs",
     function()
