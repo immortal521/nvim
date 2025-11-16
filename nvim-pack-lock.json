@@ -25,6 +25,10 @@
       "rev": "5b72cdb",
       "src": "https://github.com/immortal521/ime_toggle"
     },
+    "incline.nvim": {
+      "rev": "0fd2d5a27504dba7fdc507a53275f22c081fe640",
+      "src": "https://github.com/b0o/incline.nvim"
+    },
     "llm.nvim": {
       "rev": "ea625b7",
       "src": "https://github.com/Kurama622/llm.nvim"
@@ -108,6 +112,10 @@
     "snacks.nvim": {
       "rev": "741f4b1",
       "src": "https://github.com/folke/snacks.nvim"
+    },
+    "todo-comments.nvim": {
+      "rev": "31e3c38ce9b29781e4422fc0322eb0a21f4e8668",
+      "src": "https://github.com/folke/todo-comments.nvim"
     },
     "tokyonight.nvim": {
       "rev": "5da1b76",

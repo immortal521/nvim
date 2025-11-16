@@ -1,5 +1,6 @@
 return {
   require("plugins.util"),
+
   require("plugins.mini"),
   require("plugins.which-key"),
   require("plugins.tokyonight"),
@@ -13,6 +14,7 @@ return {
   require("plugins.lint"),
   require("plugins.persistence"),
   require("plugins.heirline"),
+  require("plugins.incline"),
   require("plugins.transparent"),
   require("plugins.flash"),
   require("plugins.trouble"),
