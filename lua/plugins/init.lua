@@ -15,6 +15,7 @@ return {
   require("plugins.persistence"),
   require("plugins.heirline"),
   require("plugins.incline"),
+  require("plugins.lensline"),
   require("plugins.transparent"),
   require("plugins.flash"),
   require("plugins.trouble"),
