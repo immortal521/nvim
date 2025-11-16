@@ -5,7 +5,11 @@ local g = vim.g
 g.mapleader = " "
 g.maplocalleader = "\\"
 
-utils.terminal("nu")
+if utils.is_win() then
+  utils.terminal("nu")
+else
+  utils.terminal("zsh")
+end
 
 opt.autowrite = true
 opt.clipboard = vim.env.SSH_CONNECTION and "" or "unnamedplus"
