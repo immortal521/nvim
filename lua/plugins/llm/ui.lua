@@ -1,4 +1,3 @@
-local Text = require("nui.text")
 return {
   -- style = "right",
 

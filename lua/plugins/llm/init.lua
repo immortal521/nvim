@@ -1,5 +1,4 @@
 local wk = require("which-key")
-local map = require("utils").map
 local models = require("plugins.llm.models")
 local keymaps = require("plugins.llm.keymaps")
 local ui = require("plugins.llm.ui")
@@ -73,7 +72,7 @@ end
 require("llm").setup(opts)
 
 -- stylua: ignore
-keys = {
+local keys = {
   { "<leader>a", group="ai" },
   { "<leader>ac", "<cmd>LLMSessionToggle<cr>", mode = "n", desc = "Toggle LLM Chat" },
   { "<leader>aa", "<cmd>LLMAppHandler AttachToChat<cr>", mode = { "v", "n" }, desc = "Ask LLM (multi-turn)" },
@@ -94,4 +93,5 @@ keys = {
   -- { "<leader>ao", "<cmd>LLMAppHandler OptimizeCode<cr>", mode = "x", desc = "Optimize" },
   -- { "<leader>at", "<cmd>LLMSelectedTextHandler 英译汉<cr>", mode = "x", desc = "Translate" },
 }
+
 wk.add(keys)
