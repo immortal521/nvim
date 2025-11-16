@@ -1,8 +1,10 @@
+local utils = require("utils")
+
 vim.pack.add({
   { src = "https://github.com/b0o/incline.nvim" },
 })
 
--- local mini_icons = require("mini.icons")
+local mini_icons = require("mini.icons")
 require("incline").setup({
   window = {
     padding = 0,
@@ -22,20 +24,37 @@ require("incline").setup({
     },
   },
   render = function(props)
-    -- local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
-    -- local extension = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":e")
-    -- if filename == "" then
-    --   filename = "[No Name]"
-    -- end
-    -- local ft_icon, ft_color_group = mini_icons.get("file", "file." .. extension)
-    --
-    -- local hex_color = nil
-    -- if ft_color_group then
-    --   local hl = vim.api.nvim_get_hl(0, { name = ft_color_group, link = false })
-    --   if hl.fg then
-    --     hex_color = string.format("#%06x", hl.fg)
-    --   end
-    -- end
+    local function get_buffer_filename()
+      -- 获取所有已列出的 buffer
+      local bufs = utils.get_bufs()
+
+      if #bufs > 1 then
+        return nil
+      end
+
+      -- 获取文件名和扩展名
+      local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
+      local extension = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":e")
+      if filename == "" then
+        filename = "[No Name]"
+      end
+
+      -- 获取文件图标和颜色
+      local ft_icon, ft_color_group = mini_icons.get("file", "file." .. extension)
+
+      local hex_color = nil
+      if ft_color_group then
+        local hl = vim.api.nvim_get_hl(0, { name = ft_color_group, link = false })
+        if hl.fg then
+          hex_color = string.format("#%06x", hl.fg)
+        end
+      end
+
+      return {
+        { (ft_icon or "") .. " ", guifg = hex_color, guibg = "none" },
+        { filename .. " ", gui = "italic" },
+      }
+    end
 
     local function get_mini_diff()
       local icons = {
@@ -54,9 +73,9 @@ require("incline").setup({
           table.insert(labels, { " ", icon .. signs[name], group = "MiniDiffSign" .. name })
         end
       end
-      -- if #labels > 0 then
-      --   table.insert(labels, { " 󰊢 " .. signs.n_ranges .. " ┊" })
-      -- end
+      if #labels > 0 then
+        table.insert(labels, { " " })
+      end
       return labels
     end
 
@@ -76,13 +95,14 @@ require("incline").setup({
         end
       end
       if #labels > 0 then
-        table.insert(labels, { " ┊" })
+        table.insert(labels, { " " })
       end
       return labels
     end
     return {
       { get_diagnostics() },
       { get_mini_diff() },
+      { get_buffer_filename() },
     }
   end,
 })
