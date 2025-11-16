@@ -131,11 +131,8 @@ map("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
 -- lazygit
 if vim.fn.executable("lazygit") == 1 then
   map("n", "<leader>gg", function()
-    Snacks.lazygit()
+    Snacks.lazygit({ cwd = utils.get_git_root() })
   end, { desc = "Lazygit (Root Dir)" })
-  map("n", "<leader>gG", function()
-    Snacks.lazygit()
-  end, { desc = "Lazygit (cwd)" })
 end
 
 map("n", "<leader>gL", function()
@@ -207,7 +204,7 @@ local win = {
 map("n", "<leader>t", "", { desc = "terminal" })
 
 map("n", "<leader>tf", function()
-  Snacks.terminal(nil, { win = win })
+  Snacks.terminal(nil, { win = win, cwd = utils.get_project_root() })
 end, { desc = "Terminal Float" })
 
 map("n", "<leader>tm", function()

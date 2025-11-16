@@ -1,4 +1,5 @@
 local wk = require("which-key")
+local utils = require("utils")
 
 vim.pack.add({
   { src = "https://github.com/folke/snacks.nvim" },
@@ -76,9 +77,9 @@ require("snacks").setup({
 -- stylua: ignore
 keys = {
   { "<leader>,", function() Snacks.picker.buffers() end, desc = "Buffers" },
-  { "<leader>/", function() Snacks.picker.pick("grep") end, desc = "Grep (Root Dir)" },
+  { "<leader>/", function() Snacks.picker.grep({cwd = utils.get_project_root()}) end, desc = "Grep" },
   { "<leader>:", function() Snacks.picker.command_history() end, desc = "Command History" },
-  { "<leader><space>", function() Snacks.picker.pick("files") end, desc = "Find Files (Root Dir)" },
+  { "<leader><space>", function() Snacks.picker.files({cwd = utils.get_project_root()}) end, desc = "Find Files" },
   { "<leader>n", function() Snacks.picker.notifications() end, desc = "Notification History" },
   -- find
   { "<leader>fb", function() Snacks.picker.buffers() end, desc = "Buffers" },
@@ -88,37 +89,35 @@ keys = {
     function() Snacks.picker.pick("files", { cwd = vim.fn.stdpath("config") }) end,
     desc = "Find Config File"
   },
-  { "<leader>ff", function() Snacks.picker.pick("files") end, desc = "Find Files (Root Dir)" },
-  { "<leader>fF", function() Snacks.picker.pick("files", { root = false }) end, desc = "Find Files (cwd)" },
+  { "<leader>ff", function() Snacks.picker.files() end, desc = "Find Files (Root Dir)" },
   { "<leader>fg", function() Snacks.picker.git_files() end, desc = "Find Files (git-files)" },
   { "<leader>fr", function() Snacks.picker.pick("oldfiles") end, desc = "Recent" },
   { "<leader>fR", function() Snacks.picker.recent({ filter = { cwd = true }}) end, desc = "Recent (cwd)" },
   { "<leader>fp", function() Snacks.picker.projects() end, desc = "Projects" },
   -- git
-  { "<leader>gd", function() Snacks.picker.git_diff() end, desc = "Git Diff (hunks)" },
-  { "<leader>gD", function() Snacks.picker.git_diff({ base = "origin", group = true }) end, desc = "Git Diff (origin)" },
-  { "<leader>gs", function() Snacks.picker.git_status() end, desc = "Git Status" },
-  { "<leader>gS", function() Snacks.picker.git_stash() end, desc = "Git Stash" },
-  { "<leader>gi", function() Snacks.picker.gh_issue() end, desc = "GitHub Issues (open)" },
-  { "<leader>gI", function() Snacks.picker.gh_issue({ state = "all" }) end, desc = "GitHub Issues (all)" },
-  { "<leader>gp", function() Snacks.picker.gh_pr() end, desc = "GitHub Pull Requests (open)" },
-  { "<leader>gP", function() Snacks.picker.gh_pr({ state = "all" }) end, desc = "GitHub Pull Requests (all)" },
+  { "<leader>gd", function() Snacks.picker.git_diff({cwd = utils.get_git_root()}) end, desc = "Git Diff (hunks)" },
+  { "<leader>gD", function() Snacks.picker.git_diff({ base = "origin", group = true,cwd = utils.get_git_root() }) end, desc = "Git Diff (origin)" },
+  { "<leader>gs", function() Snacks.picker.git_status({cwd = utils.get_git_root()}) end, desc = "Git Status" },
+  { "<leader>gS", function() Snacks.picker.git_stash({cwd = utils.get_git_root()}) end, desc = "Git Stash" },
+  { "<leader>gi", function() Snacks.picker.gh_issue({cwd = utils.get_git_root()}) end, desc = "GitHub Issues (open)" },
+  { "<leader>gI", function() Snacks.picker.gh_issue({ state = "all", cwd = utils.get_git_root() }) end, desc = "GitHub Issues (all)" },
+  { "<leader>gp", function() Snacks.picker.gh_pr({cwd = utils.get_git_root()}) end, desc = "GitHub Pull Requests (open)" },
+  { "<leader>gP", function() Snacks.picker.gh_pr({ state = "all", cwd = utils.get_git_root() }) end, desc = "GitHub Pull Requests (all)" },
   -- Grep
   { "<leader>sb", function() Snacks.picker.lines() end, desc = "Buffer Lines" },
   { "<leader>sB", function() Snacks.picker.grep_buffers() end, desc = "Grep Open Buffers" },
-  { "<leader>sg", function() Snacks.picker.pick("live_grep") end, desc = "Grep (Root Dir)" },
-  { "<leader>sG", function() Snacks.picker.pick("live_grep", { root = false }) end, desc = "Grep (cwd)" },
-  { "<leader>sp", function() Snacks.picker.lazy() end, desc = "Search for Plugin Spec" },
+  { "<leader>sg", function() Snacks.picker.pick("live_grep", {cwd = utils.get_project_root()}) end, desc = "Grep" },
+  { "<leader>sG", function() Snacks.picker.pick("live_grep", { root = false }) end, desc = "Grep (Root Dir)" },
   { 
     "<leader>sw",
-    function() Snacks.picker.pick("grep_word") end,
-    desc = "Visual selection or word (Root Dir)",
+    function() Snacks.picker.pick("grep_word", {cwd = utils.get_project_root()}) end,
+    desc = "Visual selection or word",
     mode = { "n", "x" }
   },
   { 
     "<leader>sW",
     function() Snacks.picker.pick("grep_word", { root = false }) end,
-    desc = "Visual selection or word (cwd)",
+    desc = "Visual selection or word (Root Dir)",
     mode = { "n", "x" }
   },
   -- search
