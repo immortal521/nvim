@@ -75,7 +75,7 @@ require("snacks").setup({
 })
 
 -- stylua: ignore
-keys = {
+local keys = {
   { "<leader>,", function() Snacks.picker.buffers() end, desc = "Buffers" },
   { "<leader>/", function() Snacks.picker.grep({cwd = utils.get_project_root()}) end, desc = "Grep" },
   { "<leader>:", function() Snacks.picker.command_history() end, desc = "Command History" },
@@ -84,8 +84,8 @@ keys = {
   -- find
   { "<leader>fb", function() Snacks.picker.buffers() end, desc = "Buffers" },
   { "<leader>fB", function() Snacks.picker.buffers({ hidden = true, nofile = true }) end, desc = "Buffers (all)" },
-  { 
-    "<leader>fc", 
+  {
+    "<leader>fc",
     function() Snacks.picker.pick("files", { cwd = vim.fn.stdpath("config") }) end,
     desc = "Find Config File"
   },
@@ -108,13 +108,13 @@ keys = {
   { "<leader>sB", function() Snacks.picker.grep_buffers() end, desc = "Grep Open Buffers" },
   { "<leader>sg", function() Snacks.picker.pick("live_grep", {cwd = utils.get_project_root()}) end, desc = "Grep" },
   { "<leader>sG", function() Snacks.picker.pick("live_grep", { root = false }) end, desc = "Grep (Root Dir)" },
-  { 
+  {
     "<leader>sw",
     function() Snacks.picker.pick("grep_word", {cwd = utils.get_project_root()}) end,
     desc = "Visual selection or word",
     mode = { "n", "x" }
   },
-  { 
+  {
     "<leader>sW",
     function() Snacks.picker.pick("grep_word", { root = false }) end,
     desc = "Visual selection or word (Root Dir)",

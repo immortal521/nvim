@@ -6,7 +6,7 @@ vim.pack.add({
 
 require("flash").setup({})
 
-keys = {
+local keys = {
   {
     "s",
     function()

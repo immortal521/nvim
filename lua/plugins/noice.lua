@@ -32,7 +32,7 @@ require("noice").setup({
   },
 })
 
-keys = {
+local keys = {
   { "<leader>sn", group = "noice" },
 
   {

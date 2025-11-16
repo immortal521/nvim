@@ -45,7 +45,7 @@ require("which-key").setup({
   },
 })
 
-keys = {
+local keys = {
   {
     "<leader>?",
     function()

@@ -13,7 +13,7 @@ require("trouble").setup({
 })
 
 -- stylua: ignore
-keys = {
+local keys = {
   { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", mode = "n", desc = "Diagnostics (Trouble)" },
   { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", mode = "n", desc = "Buffer Diagnostics (Trouble)" },
   { "<leader>cs", "<cmd>Trouble symbols toggle<cr>", mode = "n", desc = "Symbols (Trouble)" },
@@ -53,3 +53,5 @@ keys = {
     desc = "Next Trouble/Quickfix Item",
   }
 }
+
+wk.add(keys)

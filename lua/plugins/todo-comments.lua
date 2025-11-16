@@ -6,7 +6,7 @@ vim.pack.add({
 
 require("todo-comments").setup({})
 
-keys = {
+local keys = {
   {
     "]t",
     function()
