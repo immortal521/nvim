@@ -141,7 +141,7 @@ local Time = {
       return " " .. os.date("%H:%M") .. " "
     end,
     hl = function(self)
-      return { fg = colors.fg_gutter, bg = self.mode_color, bold = true }
+      return { fg = colors.fg_gutter, bg = self.mode_color, bold = true, italic = true }
     end,
   },
 }
