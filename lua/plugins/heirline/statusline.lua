@@ -1,9 +1,9 @@
 local components = require("plugins.heirline.components")
 local utils = require("plugins.heirline.utils")
 local conditions = require("heirline.conditions")
+local MiniIcons = require("mini.icons")
 
 local colors = utils.get_colors()
-local MiniIcons = require("mini.icons")
 
 local has_branch = function()
   return vim.b.minigit_summary ~= nil
@@ -22,7 +22,7 @@ local GitBranch = {
   {
     provider = "",
     hl = function(self)
-      return { fg = self.mode_color, bg = vim.b.minigit_summary ~= nil and colors.fg_gutter or nil }
+      return { fg = self.mode_color, bg = has_branch() and colors.fg_gutter or nil }
     end,
   },
   {
@@ -48,8 +48,7 @@ local Filename = {
       local filename = vim.fn.expand("%:t")
       local extension = vim.fn.fnamemodify(filename, ":e")
       local icon, hl, _ = MiniIcons.get("file", "file." .. extension)
-      local bt = vim.api.nvim_get_option_value("buftype", { buf = self.bufnr }) or nil
-      if bt and bt == "terminal" then
+      if vim.bo.buftype == "terminal" then
         icon = ""
       end
       self.icon = icon
@@ -107,6 +106,14 @@ local Profile = {
     hl = { fg = colors.magenta },
   },
   { provider = " " },
+}
+
+local FileEncoding = {
+  {
+    provider = function()
+      return " " .. (vim.bo.fileencoding or "none") .. " "
+    end,
+  },
   {
     provider = "",
     hl = { fg = colors.fg_gutter },
@@ -148,6 +155,7 @@ local Statusline = {
   MacroRecording,
   components.Fill,
   Profile,
+  FileEncoding,
   Ruler,
   Time,
 }
