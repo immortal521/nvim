@@ -55,20 +55,6 @@ M.get_mode_with_color = function(self)
   self.mode_name, self.mode_color = mode.name, mode.color
 end
 
-M.LeftSeparator = function(fg, bg)
-  return {
-    provider = "",
-    hl = { fg = fg or colors.fg_gutter, bg = bg },
-  }
-end
-
-M.RightSeparator = function(fg, bg)
-  return {
-    provider = "",
-    hl = { fg = fg or colors.fg_gutter, bg = bg },
-  }
-end
-
 M.FileIcon = {
   init = function(self)
     local filename = self.filename

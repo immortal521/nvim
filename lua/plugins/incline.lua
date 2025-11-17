@@ -1,6 +1,7 @@
 local utils = require("utils")
 
-local mini_icons = require("mini.icons")
+local MiniIcons = require("mini.icons")
+
 require("incline").setup({
   window = {
     padding = 0,
@@ -36,7 +37,7 @@ require("incline").setup({
       end
 
       -- 获取文件图标和颜色
-      local ft_icon, ft_color_group = mini_icons.get("file", "file." .. extension)
+      local ft_icon, ft_color_group = MiniIcons.get("file", "file." .. extension)
 
       local hex_color = nil
       if ft_color_group then
@@ -95,10 +96,15 @@ require("incline").setup({
       end
       return labels
     end
-    return {
+
+    local result = {}
+
+    table.insert(result, {
       { get_diagnostics() },
       { get_mini_diff() },
       { get_buffer_filename() },
-    }
+    })
+
+    return result
   end,
 })

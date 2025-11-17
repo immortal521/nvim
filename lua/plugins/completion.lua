@@ -1,18 +1,22 @@
--- require("luasnip").setup({
---   history = true,
---   delete_check_events = "TextChanged",
---   update_events = { "TextChanged", "TextChangedI" },
---   enable_autosnippets = true,
---   ext_opts = {
---     [require("luasnip.util.types").choiceNode] = {
---       active = {
---         virt_text = { { " <- Choice ", "NonTest" } },
---       },
---     },
---   },
--- })
--- require("luasnip.loaders.from_vscode").lazy_load()
--- require("luasnip.loaders.from_lua").lazy_load({ paths = { vim.fn.stdpath("config") .. "./snippets" } })
+require("luasnip").setup({
+  history = true,
+  delete_check_events = "TextChanged",
+  update_events = { "TextChanged", "TextChangedI" },
+  enable_autosnippets = true,
+  ext_opts = {
+    [require("luasnip.util.types").choiceNode] = {
+      active = {
+        virt_text = { { " <- Choice ", "NonTest" } },
+      },
+    },
+  },
+})
+require("luasnip.loaders.from_vscode").lazy_load()
+require("luasnip.loaders.from_lua").lazy_load({ paths = { vim.fn.stdpath("config") .. "./snippets" } })
+
+require("codeium").setup({
+  enable_cmp_source = false,
+})
 
 require("blink.cmp").setup({
   appearance = {
@@ -121,8 +125,18 @@ require("blink.cmp").setup({
       },
     },
   },
-  --   snippets = { preset = "luasnip" },
+  snippets = { preset = "luasnip" },
   sources = {
-    default = { "lsp", "path", "buffer", "snippets" },
+    default = { "lsp", "path", "codeium", "buffer", "snippets" },
+    providers = {
+      codeium = { name = "Codeium", module = "codeium.blink", async = true },
+      -- css_vars = {
+      --   name = "css-vars",
+      --   module = "css-vars.blink",
+      --   opts = {
+      --     search_extensions = { ".js", ".ts", ".jsx", ".tsx", ".vue" },
+      --   },
+      -- },
+    },
   },
 })

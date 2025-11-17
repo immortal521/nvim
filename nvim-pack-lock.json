@@ -1,5 +1,10 @@
 {
   "plugins": {
+    "LuaSnip": {
+      "rev": "5a1e39223db9a0498024a77b8441169d260c8c25",
+      "src": "https://github.com/L3MON4D3/LuaSnip",
+      "version": ">=2.0.0"
+    },
     "aerial.nvim": {
       "rev": "5e687b5a14004fa2dd9eccbee042b96869fe1557",
       "src": "https://github.com/stevearc/aerial.nvim"
@@ -157,9 +162,17 @@
       "rev": "123a9fb",
       "src": "https://github.com/folke/ts-comments.nvim"
     },
+    "vim-wakatime": {
+      "rev": "d7973b157a632d1edeff01818f18d67e584eeaff",
+      "src": "https://github.com/wakatime/vim-wakatime"
+    },
     "which-key.nvim": {
       "rev": "3aab214",
       "src": "https://github.com/folke/which-key.nvim"
+    },
+    "windsurf.nvim": {
+      "rev": "821b570b526dbb05b57aa4ded578b709a704a38a",
+      "src": "https://github.com/Exafunction/windsurf.nvim"
     },
     "yanky.nvim": {
       "rev": "04775cc",

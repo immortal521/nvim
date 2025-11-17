@@ -46,12 +46,25 @@ lint.linters_by_ft = linters_by_ft
 
 -- 防抖函数，减少频繁执行
 local function debounce(ms, fn)
+  if type(fn) ~= "function" then
+    vim.notify("[debounce] expected a function, got " .. type(fn), vim.log.levels.WARN)
+    return function() end -- 返回一个空函数，避免报错
+  end
+
   local timer = vim.uv.new_timer()
+  if not timer then
+    vim.notify("[debounce] failed to create timer", vim.log.levels.ERROR)
+    return function() end
+  end
+
   return function(...)
     local argv = { ... }
     timer:start(ms, 0, function()
       timer:stop()
-      vim.schedule_wrap(fn)(unpack(argv))
+      -- 安全调用
+      if fn then
+        vim.schedule_wrap(fn)(unpack(argv))
+      end
     end)
   end
 end
@@ -76,11 +89,12 @@ local function linter()
   local ctx = { filename = vim.api.nvim_buf_get_name(0) }
   ctx.dirname = vim.fn.fnamemodify(ctx.filename, ":h")
   names = vim.tbl_filter(function(name)
-    local linter = lint.linters[name]
-    if not linter then
+    local linter_by_name = lint.linters[name]
+    if not linter_by_name then
       utils.log("Linter not found: " .. name)
     end
-    return linter and not (type(linter) == "table" and linter.condition and not linter.condition(ctx))
+    return linter_by_name
+      and not (type(linter_by_name) == "table" and linter_by_name.condition and not linter_by_name.condition(ctx))
   end, names)
 
   -- 运行符合条件的 linter

@@ -26,14 +26,6 @@ require("mason").setup({
   },
 })
 
-require("lspsaga").setup({
-  symbol_in_winbar = {
-    enable = false,
-    show_file = true,
-    folder_level = 0,
-  },
-})
-
 local keys = {
   {
     "<leader>cl",
