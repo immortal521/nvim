@@ -3,6 +3,11 @@ local utils = require("plugins.heirline.utils")
 local conditions = require("heirline.conditions")
 
 local colors = utils.get_colors()
+local MiniIcons = require("mini.icons")
+
+local has_branch = function()
+  return vim.b.minigit_summary ~= nil
+end
 
 local Mode = {
   provider = function(self)
@@ -21,10 +26,7 @@ local GitBranch = {
     end,
   },
   {
-
-    condition = function()
-      return vim.b.minigit_summary ~= nil
-    end,
+    condition = has_branch,
     provider = function()
       local summary = vim.b.minigit_summary or {}
       return " 󰘬 " .. (summary.head_name or "") .. " "
@@ -35,11 +37,43 @@ local GitBranch = {
   },
 }
 
-local Breadcrumbs = {
-  provider = function()
-    return require("lspsaga.symbol.winbar").get_bar()
-  end,
-  update = "CursorMoved",
+local Filename = {
+  {
+    provider = "",
+    condition = has_branch,
+    hl = { fg = colors.fg_gutter },
+  },
+  {
+    init = function(self)
+      local filename = vim.fn.expand("%:t")
+      local extension = vim.fn.fnamemodify(filename, ":e")
+      local icon, hl, _ = MiniIcons.get("file", "file." .. extension)
+      local bt = vim.api.nvim_get_option_value("buftype", { buf = self.bufnr }) or nil
+      if bt and bt == "terminal" then
+        icon = ""
+      end
+      self.icon = icon
+      self.icon_color = string.format("#%06x", vim.api.nvim_get_hl(0, { name = hl })["fg"])
+      self.filename = filename
+    end,
+    { provider = " " },
+    {
+      provider = function(self)
+        return self.icon and (self.icon .. " ")
+      end,
+      hl = function(self)
+        return {
+          fg = self.icon_color,
+        }
+      end,
+    },
+    {
+      provider = function(self)
+        return self.filename
+      end,
+      hl = { italic = true },
+    },
+  },
 }
 
 local MacroRecording = {
@@ -109,7 +143,7 @@ local Statusline = {
   init = components.get_mode_with_color,
   Mode,
   GitBranch,
-  Breadcrumbs,
+  Filename,
   components.Fill,
   MacroRecording,
   components.Fill,
