@@ -26,6 +26,10 @@
       "rev": "fcea7ff",
       "src": "https://github.com/folke/flash.nvim"
     },
+    "friendly-snippets": {
+      "rev": "572f5660cf05f8cd8834e096d7b4c921ba18e175",
+      "src": "https://github.com/rafamadriz/friendly-snippets"
+    },
     "heirline.nvim": {
       "rev": "fae936a",
       "src": "https://github.com/rebelot/heirline.nvim"
