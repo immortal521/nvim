@@ -4,10 +4,6 @@ local keymaps = require("plugins.llm.keymaps")
 local ui = require("plugins.llm.ui")
 local api, tbl_deep_extend, env = vim.api, vim.tbl_deep_extend, vim.env
 
-vim.pack.add({
-  { src = "https://github.com/Kurama622/llm.nvim" },
-})
-
 api.nvim_set_hl(0, "LlmCmds", { link = "String" })
 local extensions = require("plugins.llm.extensions")
 local opts = {

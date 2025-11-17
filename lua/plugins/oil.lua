@@ -1,9 +1,5 @@
 local wk = require("which-key")
 
-vim.pack.add({
-  { src = "https://github.com/stevearc/oil.nvim" },
-})
-
 function _G.get_oil_winbar()
   local dir = require("oil").get_current_dir()
   if dir then

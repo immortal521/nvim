@@ -1,10 +1,6 @@
 local wk = require("which-key")
 local utils = require("utils")
 
-vim.pack.add({
-  { src = "https://github.com/folke/snacks.nvim" },
-})
-
 require("snacks").setup({
   picker = {
     enabled = true,

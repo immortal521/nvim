@@ -1,9 +1,5 @@
 local wk = require("which-key")
 
-vim.pack.add({
-  { src = "https://github.com/gbprod/yanky.nvim" },
-})
-
 require("yanky").setup({
   system_clipboard = {
     sync_with_ring = not vim.env.SSH_CIBBECTION,

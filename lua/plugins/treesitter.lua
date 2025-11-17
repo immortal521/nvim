@@ -1,7 +1,3 @@
-vim.pack.add({
-  { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
-})
-
 vim.api.nvim_create_autocmd("BufReadPre", {
   group = vim.api.nvim_create_augroup("SetupTreesitter", { clear = true }),
   once = true,

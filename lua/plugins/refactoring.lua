@@ -1,9 +1,5 @@
 local wk = require("which-key")
 
-vim.pack.add({
-  { src = "https://github.com/ThePrimeagen/refactoring.nvim" },
-})
-
 local opts = {
   prompt_func_return_type = {
     go = false,

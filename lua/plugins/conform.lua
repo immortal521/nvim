@@ -1,9 +1,5 @@
 local wk = require("which-key")
 
-vim.pack.add({
-  { src = "https://github.com/stevearc/conform.nvim" },
-})
-
 local function has_prettier_config(ctx)
   vim.fn.system({ "prettier", "--find-config-path", ctx.filename })
   return vim.v.shell_error == 0

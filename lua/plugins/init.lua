@@ -1,5 +1,5 @@
 return {
-  require("plugins.util"),
+  require("plugins.packages"),
 
   require("plugins.mini"),
   require("plugins.which-key"),

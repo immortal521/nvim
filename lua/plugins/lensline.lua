@@ -1,7 +1,3 @@
-vim.pack.add({
-  { src = "https://github.com/oribarilan/lensline.nvim" },
-})
-
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("SetupLensline", { clear = true }),
   once = true,

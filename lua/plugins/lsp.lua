@@ -1,10 +1,5 @@
 local wk = require("which-key")
 
-vim.pack.add({
-  { src = "https://github.com/mason-org/mason.nvim" },
-  { src = "https://github.com/neovim/nvim-lspconfig" },
-})
-
 require("mason").setup({
   ui = {
     border = "rounded",
@@ -28,6 +23,14 @@ require("mason").setup({
     "stylua",
     "vtsls",
     "vue-language-server",
+  },
+})
+
+require("lspsaga").setup({
+  symbol_in_winbar = {
+    enable = false,
+    show_file = true,
+    folder_level = 0,
   },
 })
 

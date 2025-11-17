@@ -1,9 +1,5 @@
 local utils = require("utils")
 
-vim.pack.add({
-  { src = "https://github.com/b0o/incline.nvim" },
-})
-
 local mini_icons = require("mini.icons")
 require("incline").setup({
   window = {

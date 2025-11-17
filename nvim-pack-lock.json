@@ -1,5 +1,9 @@
 {
   "plugins": {
+    "aerial.nvim": {
+      "rev": "5e687b5a14004fa2dd9eccbee042b96869fe1557",
+      "src": "https://github.com/stevearc/aerial.nvim"
+    },
     "auto-save.nvim": {
       "rev": "151c008",
       "src": "https://github.com/immortal521/auto-save.nvim"
@@ -21,6 +25,10 @@
       "rev": "fae936a",
       "src": "https://github.com/rebelot/heirline.nvim"
     },
+    "im-select.nvim": {
+      "rev": "113a6905a1c95d2990269f96abcbad9718209557",
+      "src": "https://github.com/keaising/im-select.nvim"
+    },
     "ime_toggle": {
       "rev": "5b72cdb",
       "src": "https://github.com/immortal521/ime_toggle"
@@ -37,9 +45,17 @@
       "rev": "ea625b7",
       "src": "https://github.com/Kurama622/llm.nvim"
     },
+    "lspsaga.nvim": {
+      "rev": "8efe00d6aed9db6449969f889170f1a7e43101a1",
+      "src": "https://github.com/nvimdev/lspsaga.nvim"
+    },
     "mason.nvim": {
       "rev": "ad7146a",
       "src": "https://github.com/mason-org/mason.nvim"
+    },
+    "mini-git": {
+      "rev": "832467238636e3dfa1db76de929996b6668c35ef",
+      "src": "https://github.com/nvim-mini/mini-git"
     },
     "mini.ai": {
       "rev": "0d3c9cf",
@@ -84,6 +100,10 @@
     "nvim-lspconfig": {
       "rev": "2010fc6",
       "src": "https://github.com/neovim/nvim-lspconfig"
+    },
+    "nvim-navic": {
+      "rev": "099b4c8cdc3e9ea026ea6b2a0d315e2d28362242",
+      "src": "https://github.com/SmiteshP/nvim-navic"
     },
     "nvim-treesitter": {
       "rev": "42fc28ba",

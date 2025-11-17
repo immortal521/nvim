@@ -1,7 +1,4 @@
 local utils = require("utils")
-vim.pack.add({
-  { src = "https://github.com/mfussenegger/nvim-lint" },
-})
 
 -- 通过文件类型来配置 linter
 local linters_by_ft = {
@@ -13,9 +10,7 @@ local linters_by_ft = {
 
 -- 默认的 linters 配置表
 local linters = {
-  golangcilint = {
-    
-  }
+  golangcilint = {},
 }
 
 -- 获取 nvim-lint 插件

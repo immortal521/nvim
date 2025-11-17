@@ -1,12 +1,3 @@
-vim.pack.add({
-  { src = "https://github.com/nvim-mini/mini.icons" },
-  { src = "https://github.com/nvim-mini/mini.ai" },
-  { src = "https://github.com/nvim-mini/mini.diff" },
-  { src = "https://github.com/nvim-mini/mini.surround" },
-  { src = "https://github.com/nvim-mini/mini.move" },
-  { src = "https://github.com/nvim-mini/mini.pairs" },
-})
-
 require("mini.icons").setup({
   style = "glyph",
   file = {
@@ -67,3 +58,5 @@ require("mini.surround").setup({
 require("mini.move").setup({})
 
 require("mini.pairs").setup({})
+
+require("mini.git").setup({})

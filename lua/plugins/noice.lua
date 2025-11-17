@@ -1,9 +1,5 @@
 local wk = require("which-key")
 
-vim.pack.add({
-  { src = "https://github.com/folke/noice.nvim" },
-})
-
 require("noice").setup({
   lsp = {
     override = {

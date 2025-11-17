@@ -1,9 +1,3 @@
-vim.pack.add({
-  --   { src = "https://github.com/rafamadriz/friendly-snippets" },
-  --   { src = "https://github.com/L3MON4D3/LuaSnip", version = "v2.*" },
-  { src = "https://github.com/saghen/blink.cmp", version = vim.version.range(">=1.0.0 <2.0.0") },
-})
-
 -- require("luasnip").setup({
 --   history = true,
 --   delete_check_events = "TextChanged",

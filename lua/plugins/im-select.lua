@@ -4,10 +4,6 @@ if utils.is_win then
   return
 end
 
-vim.pack.add({
-  { srec = "https://github.com/keaising/im-select.nvim" },
-})
-
 local function find_im_command()
   local commands = {
     "fcitx5-remote", -- 优先检测 fcitx5
