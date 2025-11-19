@@ -81,6 +81,8 @@ vim.pack.add({
   { src = "https://github.com/gbprod/yanky.nvim" },
   { src = "https://github.com/wakatime/vim-wakatime" },
 
+  { src = "https://github.com/mistweaverco/kulala.nvim" },
+
   -- ======================================
   -- 输入法相关
   -- ======================================

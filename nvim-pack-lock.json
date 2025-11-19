@@ -46,6 +46,10 @@
       "rev": "0fd2d5a27504dba7fdc507a53275f22c081fe640",
       "src": "https://github.com/b0o/incline.nvim"
     },
+    "kulala.nvim": {
+      "rev": "8676a4ffc654d9f9404b343982390bea568da737",
+      "src": "https://github.com/mistweaverco/kulala.nvim"
+    },
     "lensline.nvim": {
       "rev": "ee938078aeee9751aafc20b055fcbb8aa579bb76",
       "src": "https://github.com/oribarilan/lensline.nvim"

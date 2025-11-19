@@ -10,12 +10,22 @@ local has_branch = function()
 end
 
 local Mode = {
-  provider = function(self)
-    return " %1(" .. self.mode_name .. "%)"
-  end,
-  hl = function(self)
-    return { fg = colors.fg_gutter, bg = self.mode_color, bold = true }
-  end,
+
+  {
+    provider = "",
+    hl = function(self)
+      return { fg = self.mode_color }
+    end,
+  },
+  {
+
+    provider = function(self)
+      return "%1(" .. self.mode_name .. "%)"
+    end,
+    hl = function(self)
+      return { fg = colors.fg_gutter, bg = self.mode_color, bold = true }
+    end,
+  },
 }
 
 local GitBranch = {
@@ -142,6 +152,12 @@ local Time = {
     end,
     hl = function(self)
       return { fg = colors.fg_gutter, bg = self.mode_color, bold = true, italic = true }
+    end,
+  },
+  {
+    provider = "",
+    hl = function(self)
+      return { fg = self.mode_color }
     end,
   },
 }
