@@ -19,7 +19,7 @@ return {
   require("plugins.rust"),
   require("plugins.grug-far"),
   require("plugins.dial"),
-  require("plugins.octo"),
+  -- require("plugins.octo"),
   -- require("plugins.lensline"),
   require("plugins.transparent"),
   require("plugins.flash"),

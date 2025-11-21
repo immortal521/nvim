@@ -108,5 +108,5 @@ vim.pack.add({
   -- ======================================
   -- github
   -- ======================================
-  { src = "https://github.com/pwntester/octo.nvim" },
+  -- { src = "https://github.com/pwntester/octo.nvim" },
 })

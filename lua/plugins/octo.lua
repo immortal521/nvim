@@ -2,6 +2,15 @@ local wk = require("which-key")
 
 vim.treesitter.language.register("markdown", "octo")
 
+local function is_git_repo()
+  local git_dir = vim.fn.finddir(".git", ".;")
+  return git_dir ~= ""
+end
+
+if not is_git_repo() then
+  return
+end
+
 require("octo").setup({
   enable_builtin = true,
   default_to_projects_v2 = true,
@@ -25,7 +34,7 @@ vim.api.nvim_create_autocmd("FileType", {
     wk.register({
       ["@"] = { "@<C-x><C-o>" },
       ["#"] = { "#<C-x><C-o>" },
-    }, { mode = "i", silent = true })
+    }, { mode = "i", silent = true, buffer = 0 })
     wk.register({
       a = { "", "assignee (Octo)" },
       c = { "", "comment/code (Octo)" },

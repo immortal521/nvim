@@ -91,6 +91,11 @@ local keys = {
   { "<leader>fR", function() Snacks.picker.recent({ filter = { cwd = true }}) end, desc = "Recent (cwd)" },
   { "<leader>fp", function() Snacks.picker.projects() end, desc = "Projects" },
   -- git
+  { "<leader>gi", function() Snacks.picker.gh_issue() end, desc = "GitHub Issues (open)" },
+  { "<leader>gI", function() Snacks.picker.gh_issue({ state = "all" }) end, desc = "GitHub Issues (all)" },
+  { "<leader>gp", function() Snacks.picker.gh_pr() end, desc = "GitHub Pull Requests (open)" },
+  { "<leader>gP", function() Snacks.picker.gh_pr({ state = "all" }) end, desc = "GitHub Pull Requests (all)" },
+
   { "<leader>gd", function() Snacks.picker.git_diff({cwd = utils.get_git_root()}) end, desc = "Git Diff (hunks)" },
   { "<leader>gD", function() Snacks.picker.git_diff({ base = "origin", group = true,cwd = utils.get_git_root() }) end, desc = "Git Diff (origin)" },
   { "<leader>gs", function() Snacks.picker.git_status({cwd = utils.get_git_root()}) end, desc = "Git Status" },
