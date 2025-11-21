@@ -95,10 +95,6 @@ local keys = {
   { "<leader>gD", function() Snacks.picker.git_diff({ base = "origin", group = true,cwd = utils.get_git_root() }) end, desc = "Git Diff (origin)" },
   { "<leader>gs", function() Snacks.picker.git_status({cwd = utils.get_git_root()}) end, desc = "Git Status" },
   { "<leader>gS", function() Snacks.picker.git_stash({cwd = utils.get_git_root()}) end, desc = "Git Stash" },
-  { "<leader>gi", function() Snacks.picker.gh_issue({cwd = utils.get_git_root()}) end, desc = "GitHub Issues (open)" },
-  { "<leader>gI", function() Snacks.picker.gh_issue({ state = "all", cwd = utils.get_git_root() }) end, desc = "GitHub Issues (all)" },
-  { "<leader>gp", function() Snacks.picker.gh_pr({cwd = utils.get_git_root()}) end, desc = "GitHub Pull Requests (open)" },
-  { "<leader>gP", function() Snacks.picker.gh_pr({ state = "all", cwd = utils.get_git_root() }) end, desc = "GitHub Pull Requests (all)" },
   -- Grep
   { "<leader>sb", function() Snacks.picker.lines() end, desc = "Buffer Lines" },
   { "<leader>sB", function() Snacks.picker.grep_buffers() end, desc = "Grep Open Buffers" },

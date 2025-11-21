@@ -32,6 +32,7 @@ require("conform").setup({
     go = { "goimports", "gofumpt" },
     css = { "prettier" },
     graphql = { "prettier" },
+    rust = { "rustfmt" },
     handlebars = { "prettier" },
     html = { "prettier" },
     javascript = { "prettier" },

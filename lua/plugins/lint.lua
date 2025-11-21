@@ -9,9 +9,7 @@ local linters_by_ft = {
 }
 
 -- 默认的 linters 配置表
-local linters = {
-  golangcilint = {},
-}
+local linters = {}
 
 -- 获取 nvim-lint 插件
 local lint = require("lint")

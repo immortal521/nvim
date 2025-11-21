@@ -20,6 +20,8 @@ require("mason").setup({
     "lua-language-server",
     "prettier",
     "rustfmt",
+    "rust-analyzer",
+    "bacon-ls",
     "stylua",
     "vtsls",
     "vue-language-server",

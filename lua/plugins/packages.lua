@@ -80,8 +80,13 @@ vim.pack.add({
   { src = "https://github.com/folke/trouble.nvim" },
   { src = "https://github.com/gbprod/yanky.nvim" },
   { src = "https://github.com/wakatime/vim-wakatime" },
-
   { src = "https://github.com/mistweaverco/kulala.nvim" },
+  { src = "https://github.com/monaqa/dial.nvim" },
+
+  -- ======================================
+  -- 全局搜索替换
+  -- ======================================
+  { src = "https://github.com/MagicDuck/grug-far.nvim" },
 
   -- ======================================
   -- 输入法相关
@@ -93,4 +98,15 @@ vim.pack.add({
   -- 颜色显示增强
   -- ======================================
   { src = "https://github.com/brenoprata10/nvim-highlight-colors" },
+
+  -- ======================================
+  -- rust
+  -- ======================================
+  { src = "https://github.com/saecki/crates.nvim", version = "stable" },
+  -- { src = "https://github.com/mrcjkb/rustaceanvim" },
+
+  -- ======================================
+  -- github
+  -- ======================================
+  { src = "https://github.com/pwntester/octo.nvim" },
 })

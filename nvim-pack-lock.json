@@ -22,6 +22,15 @@
       "rev": "cde4da5",
       "src": "https://github.com/stevearc/conform.nvim"
     },
+    "crates.nvim": {
+      "rev": "afcd1cc3eeceb5783676fc8464389b9216a29d05",
+      "src": "https://github.com/saecki/crates.nvim",
+      "version": "'stable'"
+    },
+    "dial.nvim": {
+      "rev": "f0404ec1f83a03f2c3457e60087c6331d1cbb83f",
+      "src": "https://github.com/monaqa/dial.nvim"
+    },
     "flash.nvim": {
       "rev": "fcea7ff",
       "src": "https://github.com/folke/flash.nvim"
@@ -29,6 +38,10 @@
     "friendly-snippets": {
       "rev": "572f5660cf05f8cd8834e096d7b4c921ba18e175",
       "src": "https://github.com/rafamadriz/friendly-snippets"
+    },
+    "grug-far.nvim": {
+      "rev": "b58b2d65863f4ebad88b10a1ddd519e5380466e0",
+      "src": "https://github.com/MagicDuck/grug-far.nvim"
     },
     "heirline.nvim": {
       "rev": "fae936a",
@@ -126,6 +139,10 @@
       "rev": "c4ca798",
       "src": "https://github.com/windwp/nvim-ts-autotag"
     },
+    "octo.nvim": {
+      "rev": "be559fe0fdb570f243f51830318868fbac5e9c8b",
+      "src": "https://github.com/pwntester/octo.nvim"
+    },
     "oil.nvim": {
       "rev": "7e1cd77",
       "src": "https://github.com/stevearc/oil.nvim"
@@ -145,6 +162,10 @@
     "refactoring.nvim": {
       "rev": "6784b54",
       "src": "https://github.com/ThePrimeagen/refactoring.nvim"
+    },
+    "rustaceanvim": {
+      "rev": "6b7e0e18ad8fa0598bc038aef7bb6bba288adbad",
+      "src": "https://github.com/mrcjkb/rustaceanvim"
     },
     "snacks.nvim": {
       "rev": "741f4b1",
