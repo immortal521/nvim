@@ -33,6 +33,7 @@ return {
   require("plugins.ime_toggle"),
   require("plugins.ts-comments"),
   require("plugins.ts-autotag"),
+  require("plugins.debug"),
   require("plugins.wakatime"),
   require("plugins.llm"),
 }

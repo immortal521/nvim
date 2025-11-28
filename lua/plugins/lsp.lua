@@ -16,6 +16,7 @@ require("mason").setup({
     "gofumpt",
     "golangci-lint",
     "gopls",
+    "json-lsp",
     "js-debug-adapter",
     "lua-language-server",
     "prettier",
@@ -25,6 +26,10 @@ require("mason").setup({
     "stylua",
     "vtsls",
     "vue-language-server",
+    "gomodifytags",
+    "impl",
+    "goimports",
+    "delve",
   },
 })
 

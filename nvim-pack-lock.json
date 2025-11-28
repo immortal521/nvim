@@ -75,6 +75,10 @@
       "rev": "8efe00d6aed9db6449969f889170f1a7e43101a1",
       "src": "https://github.com/nvimdev/lspsaga.nvim"
     },
+    "mason-nvim-dap.nvim": {
+      "rev": "9a10e096703966335bd5c46c8c875d5b0690dade",
+      "src": "https://github.com/jay-babu/mason-nvim-dap.nvim"
+    },
     "mason.nvim": {
       "rev": "ad7146a",
       "src": "https://github.com/mason-org/mason.nvim"
@@ -115,6 +119,22 @@
       "rev": "de74099",
       "src": "https://github.com/MunifTanjim/nui.nvim"
     },
+    "nvim-dap": {
+      "rev": "5860c7c501eb428d3137ee22c522828d20cca0b3",
+      "src": "https://codeberg.org/mfussenegger/nvim-dap"
+    },
+    "nvim-dap-go": {
+      "rev": "b4421153ead5d726603b02743ea40cf26a51ed5f",
+      "src": "https://github.com/leoluz/nvim-dap-go"
+    },
+    "nvim-dap-ui": {
+      "rev": "cf91d5e2d07c72903d052f5207511bf7ecdb7122",
+      "src": "https://github.com/rcarriga/nvim-dap-ui"
+    },
+    "nvim-dap-virtual-text": {
+      "rev": "fbdb48c2ed45f4a8293d0d483f7730d24467ccb6",
+      "src": "https://github.com/theHamsta/nvim-dap-virtual-text"
+    },
     "nvim-highlight-colors": {
       "rev": "e0c4a58",
       "src": "https://github.com/brenoprata10/nvim-highlight-colors"
@@ -130,6 +150,10 @@
     "nvim-navic": {
       "rev": "099b4c8cdc3e9ea026ea6b2a0d315e2d28362242",
       "src": "https://github.com/SmiteshP/nvim-navic"
+    },
+    "nvim-nio": {
+      "rev": "21f5324bfac14e22ba26553caf69ec76ae8a7662",
+      "src": "https://github.com/nvim-neotest/nvim-nio"
     },
     "nvim-treesitter": {
       "rev": "42fc28ba",

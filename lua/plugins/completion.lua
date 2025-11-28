@@ -128,7 +128,13 @@ require("blink.cmp").setup({
   },
   snippets = { preset = "luasnip" },
   sources = {
-    default = { "lsp", "path", "codeium", "buffer", "snippets" },
+    default = function()
+      if vim.bo.filetype == "oil" then
+        return {}
+      else
+        return { "lsp", "path", "codeium", "buffer", "snippets" }
+      end
+    end,
     providers = {
       codeium = { name = "Codeium", module = "codeium.blink", async = true },
       -- css_vars = {

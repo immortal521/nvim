@@ -32,7 +32,7 @@ local default_im_cmd = find_im_command()
 if default_im_cmd then
   require("im_select").setup({
     default_command = default_im_cmd, -- 使用自动检测到的命令
-    default_im_select = "2057",
+    default_im_select = "keyboard-us",
     set_default_events = { "VimEnter", "FocusGained", "InsertLeave", "CmdlineLeave" },
     set_previous_events = { "InsertEnter" },
     keep_quiet_on_no_binary = false,
