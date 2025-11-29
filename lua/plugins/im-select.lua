@@ -1,6 +1,6 @@
 local utils = require("utils")
 
-if utils.is_win then
+if utils.is_win() then
   return
 end
 
@@ -22,7 +22,7 @@ local function find_im_command()
     "未找到支持的输入法切换命令 (fcitx5-remote, fcitx-remote, ibus)。请检查输入法配置。",
     vim.log.levels.WARN
   )
-  return "ibus" -- 或者返回一个你认为安全的默认值，比如 "ibus"
+  return "fcitx5-remote" -- 或者返回一个你认为安全的默认值，比如 "ibus"
 end
 
 -- 调用函数获取默认命令
