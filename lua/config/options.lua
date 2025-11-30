@@ -1,14 +1,13 @@
-local utils = require("utils")
 local opt = vim.opt
 local g = vim.g
 
 g.mapleader = " "
 g.maplocalleader = "\\"
 
-if utils.is_win() then
-  utils.terminal("nu")
+if Utils.is_win() then
+  Utils.terminal("nu")
 else
-  utils.terminal("zsh")
+  Utils.terminal("zsh")
 end
 
 opt.autowrite = true

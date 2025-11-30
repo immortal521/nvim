@@ -29,7 +29,8 @@ return {
 
         -- just for lazygit
         vim.schedule(function()
-          Snacks.lazygit()
+          local lazygit = _G.get_lazygit()
+          lazygit:toggle()
         end)
       end,
     },

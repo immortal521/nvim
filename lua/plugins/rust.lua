@@ -1,3 +1,8 @@
+vim.pack.add({
+  { src = "https://github.com/saecki/crates.nvim", version = "stable" },
+  -- { src = "https://github.com/mrcjkb/rustaceanvim" },
+})
+
 require("crates").setup({
   completion = {
     crates = {

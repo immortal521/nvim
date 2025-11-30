@@ -1,4 +1,6 @@
-local wk = require("which-key")
+vim.pack.add({
+  { src = "https://github.com/ThePrimeagen/refactoring.nvim" },
+})
 
 local opts = {
   prompt_func_return_type = {
@@ -125,4 +127,4 @@ local keys = {
 }
 
 refactoring.setup(opts)
-wk.add(keys)
+Utils.keymap.add(keys)

@@ -1,5 +1,3 @@
-local map = require("utils").map
-
 -- 获取 lsp 文件夹中所有 lua 文件
 local lsp_files = vim.fn.globpath(vim.fn.stdpath("config") .. "/lsp", "*.lua", false, true)
 
@@ -11,9 +9,9 @@ for _, file in ipairs(lsp_files) do
   end
 end
 
-map("n", "<leader>cl", function()
-  Snacks.picker.lsp_config()
-end, { desc = "Lsp Info" })
+-- map("n", "<leader>cl", function()
+--   Snacks.picker.lsp_config()
+-- end, { desc = "Lsp Info" })
 
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("SetupLSP", {}),
@@ -40,7 +38,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         if not result or vim.tbl_isempty(result) then
           vim.notify("No definition found", vim.log.levels.INFO)
         else
-          require("snacks").picker.lsp_definitions()
+          require("fzf-lua").lsp_definitions()
         end
       end)
     end, { buffer = event.buf, desc = "LSP: Goto Definition" })

@@ -1,4 +1,6 @@
-local wk = require("which-key")
+vim.pack.add({
+  { src = "https://github.com/folke/flash.nvim" },
+})
 
 require("flash").setup({})
 
@@ -58,4 +60,4 @@ local keys = {
   },
 }
 
-wk.add(keys)
+Utils.keymap.add(keys)

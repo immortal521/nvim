@@ -50,7 +50,7 @@ local opts = {
 }
 
 -- stylua: ignore
-keys = {
+local keys = {
   { "<leader>ow", "<cmd>OverseerToggle<cr>",      desc = "Task list" },
   { "<leader>oo", "<cmd>OverseerRun<cr>",         desc = "Run task" },
   { "<leader>oq", "<cmd>OverseerQuickAction<cr>", desc = "Action recent task" },
@@ -61,3 +61,4 @@ keys = {
 }
 
 overseer.setup(opts)
+Utils.keymap.add(keys)

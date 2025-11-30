@@ -1,8 +1,11 @@
 local utils = require("utils")
-
 if utils.is_win() then
   return
 end
+
+vim.pack.add({
+  { src = "https://github.com/keaising/im-select.nvim" },
+})
 
 local function find_im_command()
   local commands = {

@@ -1,4 +1,7 @@
-local wk = require("which-key")
+vim.pack.add({
+  { src = "https://github.com/Kurama622/llm.nvim" },
+})
+
 local models = require("plugins.llm.models")
 local keymaps = require("plugins.llm.keymaps")
 local ui = require("plugins.llm.ui")
@@ -69,7 +72,6 @@ require("llm").setup(opts)
 
 -- stylua: ignore
 local keys = {
-  { "<leader>a", group="ai" },
   { "<leader>ac", "<cmd>LLMSessionToggle<cr>", mode = "n", desc = "Toggle LLM Chat" },
   { "<leader>aa", "<cmd>LLMAppHandler AttachToChat<cr>", mode = { "v", "n" }, desc = "Ask LLM (multi-turn)" },
   { "<leader>ak", "<cmd>LLMAppHandler Ask<cr>", mode = { "v", "n" }, desc = "Ask LLM" },
@@ -90,4 +92,4 @@ local keys = {
   -- { "<leader>at", "<cmd>LLMSelectedTextHandler 英译汉<cr>", mode = "x", desc = "Translate" },
 }
 
-wk.add(keys)
+Utils.keymap.add(keys)

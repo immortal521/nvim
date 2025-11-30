@@ -1,4 +1,7 @@
-local wk = require("which-key")
+vim.pack.add({
+  { src = "https://github.com/monaqa/dial.nvim" },
+})
+
 local augend = require("dial.augend")
 
 local logical_alias = augend.constant.new({
@@ -193,4 +196,4 @@ local keys = {
   },
 }
 
-wk.add(keys)
+Utils.keymap.add(keys)

@@ -1,4 +1,6 @@
-local wk = require("which-key")
+vim.pack.add({
+  { src = "https://github.com/mistweaverco/kulala.nvim" },
+})
 
 require("kulala").setup({})
 
@@ -23,4 +25,4 @@ local keys = {
   { "<leader>Rt", "<cmd>lua require('kulala').toggle_view()<cr>", desc = "Toggle headers/body" },
 }
 
-wk.add(keys)
+Utils.keymap.add(keys)

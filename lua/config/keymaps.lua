@@ -1,5 +1,21 @@
-local utils = require("utils")
-local map = utils.map
+_G.Config.leader_group_clues = {
+  { mode = "n", keys = "<leader>a", desc = "+ai" },
+  { mode = "n", keys = "<leader>b", desc = "+buffer" },
+  { mode = "n", keys = "<leader>c", desc = "+code" },
+  { mode = "n", keys = "<leader>d", desc = "+debug" },
+  { mode = "n", keys = "<leader>f", desc = "+find" },
+  { mode = "n", keys = "<leader>g", desc = "+git" },
+  { mode = "n", keys = "<leader>l", desc = "+lsp" },
+  { mode = "n", keys = "<leader>o", desc = "+overseer" },
+  { mode = "n", keys = "<leader>q", desc = "+session" },
+  { mode = "n", keys = "<leader>s", desc = "+search" },
+  { mode = "n", keys = "<leader>t", desc = "+terminal" },
+  { mode = "n", keys = "<leader>u", desc = "+ui" },
+  { mode = "n", keys = "<leader>w", desc = "+window" },
+  { mode = "n", keys = "<leader>x", desc = "+other" },
+}
+
+local map = Utils.map
 
 -- better up/down
 map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
@@ -32,11 +48,6 @@ map({ "i", "n", "s" }, "<esc>", function()
   return "<esc>"
 end, { expr = true, desc = "Escape and Clear hlsearch" })
 
--- lua dev
-map({ "n", "x" }, "<localleader>r", function()
-  Snacks.debug.run()
-end, { desc = "Run Lua" })
-
 -- buffers
 map("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
 map("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next Buffer" })
@@ -44,12 +55,7 @@ map("n", "[b", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
 map("n", "]b", "<cmd>bnext<cr>", { desc = "Next Buffer" })
 map("n", "<leader>bb", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
 map("n", "<leader>`", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
-map("n", "<leader>bd", function()
-  Snacks.bufdelete()
-end, { desc = "Delete Buffer" })
-map("n", "<leader>bo", function()
-  Snacks.bufdelete.other()
-end, { desc = "Delete Other Buffers" })
+
 map("n", "<leader>bD", "<cmd>:bd<cr>", { desc = "Delete Buffer and Window" })
 
 -- Clear search, diff update and redraw
@@ -128,37 +134,6 @@ map("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
 map("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Next Warning" })
 map("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
 
--- lazygit
-if vim.fn.executable("lazygit") == 1 then
-  map("n", "<leader>gg", function()
-    Snacks.lazygit({ cwd = utils.get_git_root() })
-  end, { desc = "Lazygit (Root Dir)" })
-end
-
-map("n", "<leader>gL", function()
-  Snacks.picker.git_log()
-end, { desc = "Git Log (cwd)" })
-map("n", "<leader>gb", function()
-  Snacks.picker.git_log_line()
-end, { desc = "Git Blame Line" })
-map("n", "<leader>gf", function()
-  Snacks.picker.git_log_file()
-end, { desc = "Git Current File History" })
-map("n", "<leader>gl", function()
-  Snacks.picker.git_log({ cwd = utils.get_git_root() })
-end, { desc = "Git Log" })
-map({ "n", "x" }, "<leader>gB", function()
-  Snacks.gitbrowse()
-end, { desc = "Git Browse (open)" })
-map({ "n", "x" }, "<leader>gY", function()
-  Snacks.gitbrowse({
-    open = function(url)
-      vim.fn.setreg("+", url)
-    end,
-    notify = false,
-  })
-end, { desc = "Git Browse (copy)" })
-
 -- quit
 map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit All" })
 
@@ -183,46 +158,77 @@ map("n", "<leader><tab>]", "<cmd>tabnext<cr>", { desc = "Next Tab" })
 map("n", "<leader><tab>d", "<cmd>tabclose<cr>", { desc = "Close Tab" })
 map("n", "<leader><tab>[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
 
-local term_normal = {
-  "jk",
-  function()
-    vim.cmd("stopinsert")
-  end,
-  mode = "t",
-  expr = false,
-  desc = "Single escape to normal mode",
-}
+map("n", "<leader>bd", function()
+  require("mini.bufremove").delete()
+end, { desc = "Delete Buffer" })
+map("n", "<leader>bo", function()
+  local current = vim.api.nvim_get_current_buf()
+  -- 取得所有存在的 buffer
+  local bufs = vim.api.nvim_list_bufs()
+  for _, bufnr in ipairs(bufs) do
+    -- 只处理 "listed" buffer（避免删掉 [No Name]、非列表 buffer 等）
+    local listed = vim.api.nvim_get_option_value("buflisted", { buf = bufnr })
+    if listed and bufnr ~= current then
+      require("mini.bufremove").delete(bufnr, true)
+    end
+  end
+end, { desc = "Delete Other Buffers" })
 
-local win = {
-  position = "float",
-  border = "rounded",
-  keys = {
-    term_normal = term_normal,
-  },
-}
-
-map("n", "<leader>t", "", { desc = "terminal" })
-
-map("n", "<leader>tf", function()
-  Snacks.terminal(nil, { win = win, cwd = utils.get_project_root() })
-end, { desc = "Terminal Float" })
-
-map("n", "<leader>tm", function()
-  Snacks.terminal("music-player", { win = win })
-end, { desc = "Music Player", silent = true, noremap = true })
-
-map("n", "<leader>ts", function()
-  Snacks.picker.buffers({
-    hidden = true,
-    filter = {
-      filter = function(item, filter)
-        if filter(item) and item.file:sub(1, 4) == "term" then
-          return true
-        end
-        return false
+local lazygit = nil
+_G.get_lazygit = function()
+  lazygit = lazygit
+    or require("toggleterm.terminal").Terminal:new({
+      cmd = "lazygit",
+      hidden = true,
+      count = 999,
+      direction = "float",
+      on_open = function(term)
+        vim.cmd("startinsert!")
+        vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
       end,
-    },
-  })
-end, { desc = "terminal find" })
+      -- function to run on closing the terminal
+      on_close = function()
+        vim.cmd("startinsert!")
+      end,
+    })
+  return lazygit
+end
+
+-- lazygit
+if vim.fn.executable("lazygit") == 1 then
+  map("n", "<leader>gg", function()
+    lazygit = _G.get_lazygit()
+    lazygit:toggle()
+  end, { desc = "Lazygit" })
+end
+
+local media = Utils.is_win() and "media-player" or "rmpc"
+
+if vim.fn.executable(media) == 1 then
+  local music_player = nil
+  map("n", "<leader>tm", function()
+    music_player = music_player
+      or require("toggleterm.terminal").Terminal:new({
+        cmd = media,
+        hidden = true,
+        count = 1000,
+        direction = "float",
+
+        on_open = function(term)
+          vim.cmd("startinsert!")
+          vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
+        end,
+        -- function to run on closing the terminal
+        on_close = function(term)
+          vim.cmd("startinsert!")
+        end,
+      })
+    music_player:toggle()
+  end, { desc = "Music Player" })
+end
+
+-- map("n", "<leader>tm", function()
+--   Snacks.terminal("music-player", { win = win })
+-- end, { desc = "Music Player", silent = true, noremap = true })
 
 map("i", "jk", "<esc>")

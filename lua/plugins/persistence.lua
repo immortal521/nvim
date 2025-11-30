@@ -1,4 +1,6 @@
-local wk = require("which-key")
+vim.pack.add({
+  { src = "https://github.com/folke/persistence.nvim" },
+})
 
 require("persistence").setup({})
 
@@ -54,4 +56,4 @@ local keys = {
   },
 }
 
-wk.add(keys)
+Utils.keymap.add(keys)

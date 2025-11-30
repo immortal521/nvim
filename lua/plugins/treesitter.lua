@@ -1,3 +1,9 @@
+vim.pack.add({
+  { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
+  { src = "https://github.com/windwp/nvim-ts-autotag" },
+  { src = "https://github.com/folke/ts-comments.nvim" },
+})
+
 vim.api.nvim_create_autocmd("BufReadPre", {
   group = vim.api.nvim_create_augroup("SetupTreesitter", { clear = true }),
   once = true,

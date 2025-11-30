@@ -1,4 +1,6 @@
-local wk = require("which-key")
+vim.pack.add({
+  { src = "https://github.com/stevearc/conform.nvim" },
+})
 
 local function has_prettier_config(ctx)
   vim.fn.system({ "prettier", "--find-config-path", ctx.filename })
@@ -66,7 +68,7 @@ require("conform").setup({
   },
 })
 
-wk.add({
+Utils.keymap.add({
   {
     "<leader>cf",
     function()

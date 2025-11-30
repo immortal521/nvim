@@ -1,3 +1,7 @@
+vim.pack.add({
+  { src = "https://github.com/immortal521/auto-save.nvim" },
+})
+
 require("auto-save").setup({
   debounced_dekay = 1000,
   print_enabled = false,

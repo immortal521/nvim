@@ -1,4 +1,10 @@
-local wk = require("which-key")
+if true then
+  return
+end
+
+vim.pack.add({
+  { src = "https://github.com/pwntester/octo.nvim" },
+})
 
 vim.treesitter.language.register("markdown", "octo")
 

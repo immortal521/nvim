@@ -1,4 +1,6 @@
-local wk = require("which-key")
+vim.pack.add({
+  { src = "https://github.com/MagicDuck/grug-far.nvim" },
+})
 
 require("grug-far").setup({})
 
@@ -20,4 +22,4 @@ local keys = {
   },
 }
 
-wk.add(keys)
+Utils.keymap.add(keys)

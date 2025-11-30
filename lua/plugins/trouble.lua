@@ -1,4 +1,6 @@
-local wk = require("which-key")
+vim.pack.add({
+  { src = "https://github.com/folke/trouble.nvim" },
+})
 
 require("trouble").setup({
   modes = {
@@ -50,4 +52,4 @@ local keys = {
   }
 }
 
-wk.add(keys)
+Utils.keymap.add(keys)

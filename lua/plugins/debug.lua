@@ -1,4 +1,12 @@
-local wk = require("which-key")
+vim.pack.add({
+  { src = "https://codeberg.org/mfussenegger/nvim-dap" },
+  { src = "https://github.com/rcarriga/nvim-dap-ui" },
+  { src = "https://github.com/nvim-neotest/nvim-nio" },
+  { src = "https://github.com/theHamsta/nvim-dap-virtual-text" },
+  { src = "https://github.com/jay-babu/mason-nvim-dap.nvim" },
+  { src = "https://github.com/leoluz/nvim-dap-go" },
+})
+
 -- stylua: ignore
 local keys = {
   -- nvim-dap
@@ -71,4 +79,4 @@ require("mason-nvim-dap").setup({
 
 require("dap-go").setup()
 
-wk.add(keys)
+Utils.keymap.add(keys)

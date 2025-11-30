@@ -1,4 +1,6 @@
-local wk = require("which-key")
+vim.pack.add({
+  { src = "https://github.com/folke/todo-comments.nvim" },
+})
 
 require("todo-comments").setup({})
 
@@ -32,4 +34,4 @@ local keys = {
   { "<leader>sT", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>", mode = "n", desc = "Todo/Fix/Fixme" },
 }
 
-wk.add(keys)
+Utils.keymap.add(keys)

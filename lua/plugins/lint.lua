@@ -1,4 +1,6 @@
-local utils = require("utils")
+vim.pack.add({
+  { src = "https://github.com/mfussenegger/nvim-lint" },
+})
 
 -- 通过文件类型来配置 linter
 local linters_by_ft = {
@@ -89,7 +91,7 @@ local function linter()
   names = vim.tbl_filter(function(name)
     local linter_by_name = lint.linters[name]
     if not linter_by_name then
-      utils.log("Linter not found: " .. name)
+      Utils.log("Linter not found: " .. name)
     end
     return linter_by_name
       and not (type(linter_by_name) == "table" and linter_by_name.condition and not linter_by_name.condition(ctx))

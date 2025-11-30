@@ -1,6 +1,8 @@
-local utils = require("utils")
-
 local MiniIcons = require("mini.icons")
+
+vim.pack.add({
+  { src = "https://github.com/b0o/incline.nvim" },
+})
 
 require("incline").setup({
   window = {
@@ -23,7 +25,7 @@ require("incline").setup({
   render = function(props)
     local function get_buffer_filename()
       -- 获取所有已列出的 buffer
-      local bufs = utils.get_bufs()
+      local bufs = Utils.get_bufs()
 
       if #bufs > 1 then
         return nil

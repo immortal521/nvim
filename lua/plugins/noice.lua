@@ -1,11 +1,12 @@
-local wk = require("which-key")
+vim.pack.add({
+  { src = "https://github.com/folke/noice.nvim" },
+})
 
 require("noice").setup({
   lsp = {
     override = {
       ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
       ["vim.lsp.util.stylize_markdown"] = true,
-      ["cmp.entry.get_documentation"] = true,
     },
   },
   routes = {
@@ -29,7 +30,7 @@ require("noice").setup({
 })
 
 local keys = {
-  { "<leader>sn", group = "noice" },
+  { "<leader>sn", "" },
 
   {
     "<S-Enter>",
@@ -112,4 +113,4 @@ local keys = {
   },
 }
 
-wk.add(keys)
+Utils.keymap.add(keys)

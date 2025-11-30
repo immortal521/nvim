@@ -1,4 +1,6 @@
-local wk = require("which-key")
+vim.pack.add({
+  { src = "https://github.com/gbprod/yanky.nvim" },
+})
 
 require("yanky").setup({
   system_clipboard = {
@@ -7,12 +9,10 @@ require("yanky").setup({
   highlight = { timer = 150 },
 })
 
-wk.add({
+local keys = {
   {
     "<leader>p",
-    function()
-      Snacks.picker.yanky()
-    end,
+    "<cmd>YankyRingHistory<cr>",
     mode = { "n", "x" },
     desc = "Open Yank History",
   },
@@ -33,4 +33,6 @@ wk.add({
   { "<P", "<Plug>(YankyPutIndentBeforeShiftLeft)", desc = "Put Before and Indent Left" },
   { "=p", "<Plug>(YankyPutAfterFilter)", desc = "Put After Applying a Filter" },
   { "=P", "<Plug>(YankyPutBeforeFilter)", desc = "Put Before Applying a Filter" },
-})
+}
+
+Utils.keymap.add(keys)
