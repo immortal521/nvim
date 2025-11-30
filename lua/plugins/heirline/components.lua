@@ -1,6 +1,4 @@
-local utils = require("plugins.heirline.utils")
-
-local colors = utils.get_colors()
+local colors = Utils.colors()
 
 local modes = {
   n = { name = "NORMAL", color = colors.blue },

@@ -2,7 +2,7 @@ local heirline_utils = require("heirline.utils")
 local utils = require("plugins.heirline.utils")
 local components = require("plugins.heirline.components")
 
-local colors = utils.get_colors()
+local colors = Utils.colors()
 
 local buflist_cache = {}
 

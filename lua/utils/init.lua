@@ -1,7 +1,9 @@
 -- utils/util.lua
 
+---@class utils
+---@field keymap utils.keymap
+---@field colors utils.colors
 local M = {}
-
 setmetatable(M, {
   __index = function(t, k)
     t[k] = require("utils." .. k)
@@ -16,6 +18,12 @@ setmetatable(M, {
 M.log = function(msg)
   local time = os.date("%Y-%m-%d %H:%M:%S")
   print(("[UTIL] %s - %s"):format(time, msg))
+end
+
+M.map = function(mode, lhs, rhs, opts)
+  opts = opts or {}
+  opts.desc = opts.desc or ""
+  vim.keymap.set(mode, lhs, rhs, opts)
 end
 
 M.get_current_file_path = function()
@@ -39,21 +47,6 @@ end
 
 M.is_win = function()
   return vim.uv.os_uname().sysname:find("Windows") ~= nil
-end
-
-M.map = function(mode, lhs, rhs, opts)
-  opts = opts or {}
-  opts.desc = opts.desc or ""
-  vim.keymap.set(mode, lhs, rhs, opts)
-end
-
-M.terminal = function(shell)
-  vim.o.shell = shell or vim.o.shell
-  vim.o.shellcmdflag = "-c"
-  vim.o.shellredir = ">%s 2>&1"
-  vim.o.shellpipe = "2>&1 | tee %s"
-  vim.o.shellquote = ""
-  vim.o.shellxquote = ""
 end
 
 M.async_function = function(callback)

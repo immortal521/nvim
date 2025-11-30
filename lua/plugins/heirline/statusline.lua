@@ -1,9 +1,8 @@
 local components = require("plugins.heirline.components")
-local utils = require("plugins.heirline.utils")
 local conditions = require("heirline.conditions")
 local MiniIcons = require("mini.icons")
 
-local colors = utils.get_colors()
+local colors = Utils.colors()
 
 local has_branch = function()
   return vim.b.minigit_summary ~= nil
