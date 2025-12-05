@@ -35,6 +35,7 @@ MiniClue.setup({
 
   clues = {
     Config.leader_group_clues,
+
     -- Enhance this by adding descriptions for <Leader> mapping groups
     MiniClue.gen_clues.builtin_completion(),
     MiniClue.gen_clues.g(),
@@ -45,8 +46,6 @@ MiniClue.setup({
   },
 
   window = {
-    config = {
-    },
     delay = 300,
   },
 })

@@ -36,7 +36,7 @@ function M.map(config)
 
   local mode = config.mode or "n"
 
-local opts = filter_config(config)
+  local opts = filter_config(config)
 
   -- 设置键位映射
   vim.keymap.set(mode, lhs, rhs, opts)

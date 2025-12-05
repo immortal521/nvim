@@ -9,9 +9,13 @@ for _, file in ipairs(lsp_files) do
   end
 end
 
--- map("n", "<leader>cl", function()
---   Snacks.picker.lsp_config()
--- end, { desc = "Lsp Info" })
+Utils.keymap({
+  "<leader>cl",
+  function()
+    require("snacks").picker.lsp_config()
+  end,
+  desc = "Lsp Info",
+})
 
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("SetupLSP", {}),
@@ -38,7 +42,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         if not result or vim.tbl_isempty(result) then
           vim.notify("No definition found", vim.log.levels.INFO)
         else
-          require("fzf-lua").lsp_definitions()
+          require("snacks").picker.lsp_definitions()
         end
       end)
     end, { buffer = event.buf, desc = "LSP: Goto Definition" })

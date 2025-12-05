@@ -38,27 +38,20 @@ require("mason").setup({
 })
 
 local keys = {
-  -- {
-  --   "<leader>cl",
-  --   function()
-  --     Snacks.picker.lsp_config()
-  --   end,
-  --   desc = "Lsp Info",
-  -- },
   { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" },
   {
     "gd",
-    "<cmd>FzfLua.lsp_definitions()<cr>",
+    "<cmd>lua Snacks.picker.lsp_definitions()<cr>",
     desc = "Goto Definition",
   },
   {
-    "gr",
-    "<cmd>FzfLua.lsp_references()<cr>",
+    "gR",
+    "<cmd>lua Snacks.picker.lsp_references()<cr>",
     desc = "References",
   },
-  { "gI", vim.lsp.buf.implementation, desc = "Goto Implementation" },
-  { "gy", vim.lsp.buf.type_definition, desc = "Goto T[y]pe Definition" },
-  { "gD", vim.lsp.buf.declaration, desc = "Goto Declaration" },
+  { "gI", "<cmd>lua Snacks.picker.lsp_implementations()<cr>", desc = "Goto Implementation" },
+  { "gy", "<cmd>lua Snacks.picker.lsp_type_definitions()<cr>", desc = "Goto T[y]pe Definition" },
+  { "gD", "<cmd>lua Snacks.picker.lsp_declarations()<cr>", desc = "Goto Declaration" },
   {
     "K",
     function()
@@ -81,15 +74,33 @@ local keys = {
     mode = "i",
     desc = "Signature Help",
   },
-  { "<leader>ca", "<cmd>lua FzfLua.lsp_code_actions()<cr>", desc = "Code Action", mode = { "n", "x" } },
+  { "<leader>ca", vim.lsp.buf.code_action, desc = "Code Action", mode = { "n", "x" } },
   { "<leader>cc", vim.lsp.codelens.run, desc = "Run Codelens", mode = { "n", "x" } },
   { "<leader>cC", vim.lsp.codelens.refresh, desc = "Refresh & Display Codelens", mode = { "n" } },
   { "<leader>cr", vim.lsp.buf.rename, desc = "Rename" },
+  { "<leader>cR", "<cmd>lua Snacks.rename.rename_file()", desc = "Rename File" },
   {
     "<leader>ld",
-    "<cmd>lua FzfLUa.lsp_document_diagnostics()<cr>",
+    "<cmd>lua Snacks.picker.diagnostics()<cr>",
     desc = "LSP Open Diagnostic",
   },
+  {
+    "<leader>co",
+    function()
+      vim.lsp.buf.code_action({
+        apply = true,
+        context = {
+          only = { "source.organizeImports" },
+          diagnostics = {},
+        },
+      })
+    end,
+    desc = "Organize Imports",
+  },
+  { "gai", "<cmd>lua Snacks.picker.lsp_incoming_calls()<cr>", desc = "C[a]lls Incoming" },
+  { "gao", "<cmd>lua Snacks.picker.lsp_outgoing_calls()<cr>", desc = "C[a]lls Outgoing" },
+  { "<leader>ss", "<cmd>lua Snacks.picker.lsp_symbols()<cr>", desc = "LSP Symbols" },
+  { "<leader>sS", "<cmd>lua Snacks.picker.lsp_workspace_symbols()<cr>", desc = "LSP Workspace Symbols" },
 }
 
 Utils.keymap.add(keys)

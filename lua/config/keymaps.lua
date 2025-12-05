@@ -1,122 +1,3 @@
-_G.Config.leader_group_clues = {
-  { mode = "n", keys = "<leader>a", desc = "+ai" },
-  { mode = "n", keys = "<leader>b", desc = "+buffer" },
-  { mode = "n", keys = "<leader>c", desc = "+code" },
-  { mode = "n", keys = "<leader>d", desc = "+debug" },
-  { mode = "n", keys = "<leader>f", desc = "+find" },
-  { mode = "n", keys = "<leader>g", desc = "+git" },
-  { mode = "n", keys = "<leader>l", desc = "+lsp" },
-  { mode = "n", keys = "<leader>o", desc = "+overseer" },
-  { mode = "n", keys = "<leader>q", desc = "+session" },
-  { mode = "n", keys = "<leader>s", desc = "+search" },
-  { mode = "n", keys = "<leader>t", desc = "+terminal" },
-  { mode = "n", keys = "<leader>u", desc = "+ui" },
-  { mode = "n", keys = "<leader>w", desc = "+window" },
-  { mode = "n", keys = "<leader>x", desc = "+other" },
-}
-
-local map = Utils.map
-
--- better up/down
-map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
-map({ "n", "x" }, "<Down>", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
-map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
-map({ "n", "x" }, "<Up>", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
-
--- Move to window using the <ctrl> hjkl keys
-map("n", "<C-h>", "<C-w>h", { desc = "Go to Left Window", remap = true })
-map("n", "<C-j>", "<C-w>j", { desc = "Go to Lower Window", remap = true })
-map("n", "<C-k>", "<C-w>k", { desc = "Go to Upper Window", remap = true })
-map("n", "<C-l>", "<C-w>l", { desc = "Go to Right Window", remap = true })
-
--- Resize window using <ctrl> arrow keys
-map("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase Window Height" })
-map("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease Window Height" })
-map("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease Window Width" })
-map("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase Window Width" })
-
--- Move Lines
-map("n", "<A-j>", "<cmd>execute 'move .+' . v:count1<cr>==", { desc = "Move Down" })
-map("n", "<A-k>", "<cmd>execute 'move .-' . (v:count1 + 1)<cr>==", { desc = "Move Up" })
-map("i", "<A-j>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move Down" })
-map("i", "<A-k>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move Up" })
-map("v", "<A-j>", ":<C-u>execute \"'<,'>move '>+\" . v:count1<cr>gv=gv", { desc = "Move Down" })
-map("v", "<A-k>", ":<C-u>execute \"'<,'>move '<-\" . (v:count1 + 1)<cr>gv=gv", { desc = "Move Up" })
-
-map({ "i", "n", "s" }, "<esc>", function()
-  vim.cmd("noh")
-  return "<esc>"
-end, { expr = true, desc = "Escape and Clear hlsearch" })
-
--- buffers
-map("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
-map("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next Buffer" })
-map("n", "[b", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
-map("n", "]b", "<cmd>bnext<cr>", { desc = "Next Buffer" })
-map("n", "<leader>bb", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
-map("n", "<leader>`", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
-
-map("n", "<leader>bD", "<cmd>:bd<cr>", { desc = "Delete Buffer and Window" })
-
--- Clear search, diff update and redraw
--- taken from runtime/lua/_editor.lua
-map(
-  "n",
-  "<leader>ur",
-  "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
-  { desc = "Redraw / Clear hlsearch / Diff Update" }
-)
-
--- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
-map("n", "n", "'Nn'[v:searchforward].'zv'", { expr = true, desc = "Next Search Result" })
-map("x", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next Search Result" })
-map("o", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next Search Result" })
-map("n", "N", "'nN'[v:searchforward].'zv'", { expr = true, desc = "Prev Search Result" })
-map("x", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev Search Result" })
-map("o", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev Search Result" })
-
--- Add undo break-points
-map("i", ",", ",<c-g>u")
-map("i", ".", ".<c-g>u")
-map("i", ";", ";<c-g>u")
-
--- save file
-map({ "i", "x", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save File" })
-
---keywordprg
-map("n", "<leader>K", "<cmd>norm! K<cr>", { desc = "Keywordprg" })
-
--- better indenting
-map("x", "<", "<gv")
-map("x", ">", ">gv")
-
--- commenting
-map("n", "gco", "o<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", { desc = "Add Comment Below" })
-map("n", "gcO", "O<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", { desc = "Add Comment Above" })
-
--- new file
-map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
-
--- location list
-map("n", "<leader>xl", function()
-  local success, err = pcall(vim.fn.getloclist(0, { winid = 0 }).winid ~= 0 and vim.cmd.lclose or vim.cmd.lopen)
-  if not success and err then
-    vim.notify(err, vim.log.levels.ERROR)
-  end
-end, { desc = "Location List" })
-
--- quickfix list
-map("n", "<leader>xq", function()
-  local success, err = pcall(vim.fn.getqflist({ winid = 0 }).winid ~= 0 and vim.cmd.cclose or vim.cmd.copen)
-  if not success and err then
-    vim.notify(err, vim.log.levels.ERROR)
-  end
-end, { desc = "Quickfix List" })
-
-map("n", "[q", vim.cmd.cprev, { desc = "Previous Quickfix" })
-map("n", "]q", vim.cmd.cnext, { desc = "Next Quickfix" })
-
--- diagnostic
 local diagnostic_goto = function(next, severity)
   return function()
     vim.diagnostic.jump({
@@ -126,109 +7,246 @@ local diagnostic_goto = function(next, severity)
     })
   end
 end
-map("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
-map("n", "]d", diagnostic_goto(true), { desc = "Next Diagnostic" })
-map("n", "[d", diagnostic_goto(false), { desc = "Prev Diagnostic" })
-map("n", "]e", diagnostic_goto(true, "ERROR"), { desc = "Next Error" })
-map("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
-map("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Next Warning" })
-map("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
 
--- quit
-map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit All" })
+local keys = {
+  -- better up/down
+  { "j", "v:count == 0 ? 'gj' : 'j'", mode = { "n", "x" }, desc = "Down", expr = true, silent = true },
+  { "<Down>", "v:count == 0 ? 'gj' : 'j'", mode = { "n", "x" }, desc = "Down", expr = true, silent = true },
+  { "k", "v:count == 0 ? 'gk' : 'k'", mode = { "n", "x" }, desc = "Up", expr = true, silent = true },
+  { "<Up>", "v:count == 0 ? 'gk' : 'k'", mode = { "n", "x" }, desc = "Up", expr = true, silent = true },
 
--- highlights under cursor
-map("n", "<leader>ui", vim.show_pos, { desc = "Inspect Pos" })
-map("n", "<leader>uI", function()
-  vim.treesitter.inspect_tree()
-  vim.api.nvim_input("I")
-end, { desc = "Inspect Tree" })
+  -- window move
+  { "<C-h>", "<C-w>h", desc = "Go to Left Window", remap = true },
+  { "<C-j>", "<C-w>j", desc = "Go to Lower Window", remap = true },
+  { "<C-k>", "<C-w>k", desc = "Go to Upper Window", remap = true },
+  { "<C-l>", "<C-w>l", desc = "Go to Right Window", remap = true },
 
--- windows
-map("n", "<leader>-", "<C-W>s", { desc = "Split Window Below", remap = true })
-map("n", "<leader>|", "<C-W>v", { desc = "Split Window Right", remap = true })
-map("n", "<leader>wd", "<C-W>c", { desc = "Delete Window", remap = true })
+  -- resize window
+  { "<C-Up>", "<cmd>resize +2<cr>", desc = "Increase Window Height" },
+  { "<C-Down>", "<cmd>resize -2<cr>", desc = "Decrease Window Height" },
+  { "<C-Left>", "<cmd>vertical resize -2<cr>", desc = "Decrease Window Width" },
+  { "<C-Right>", "<cmd>vertical resize +2<cr>", desc = "Increase Window Width" },
 
--- tabs
-map("n", "<leader><tab>l", "<cmd>tablast<cr>", { desc = "Last Tab" })
-map("n", "<leader><tab>o", "<cmd>tabonly<cr>", { desc = "Close Other Tabs" })
-map("n", "<leader><tab>f", "<cmd>tabfirst<cr>", { desc = "First Tab" })
-map("n", "<leader><tab><tab>", "<cmd>tabnew<cr>", { desc = "New Tab" })
-map("n", "<leader><tab>]", "<cmd>tabnext<cr>", { desc = "Next Tab" })
-map("n", "<leader><tab>d", "<cmd>tabclose<cr>", { desc = "Close Tab" })
-map("n", "<leader><tab>[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
+  -- move lines
+  { "<A-j>", "<cmd>execute 'move .+' . v:count1<cr>==", desc = "Move Down" },
+  { "<A-k>", "<cmd>execute 'move .-' . (v:count1 + 1)<cr>==", desc = "Move Up" },
+  { "<A-j>", "<esc><cmd>m .+1<cr>==gi", mode = "i", desc = "Move Down" },
+  { "<A-k>", "<esc><cmd>m .-2<cr>==gi", mode = "i", desc = "Move Up" },
+  { "<A-j>", ":<C-u>execute \"'<,'>move '>+\" . v:count1<cr>gv=gv", mode = "v", desc = "Move Down" },
+  { "<A-k>", ":<C-u>execute \"'<,'>move '<-\" . (v:count1 + 1)<cr>gv=gv", mode = "v", desc = "Move Up" },
 
-map("n", "<leader>bd", function()
-  require("mini.bufremove").delete()
-end, { desc = "Delete Buffer" })
-map("n", "<leader>bo", function()
-  local current = vim.api.nvim_get_current_buf()
-  -- 取得所有存在的 buffer
-  local bufs = vim.api.nvim_list_bufs()
-  for _, bufnr in ipairs(bufs) do
-    -- 只处理 "listed" buffer（避免删掉 [No Name]、非列表 buffer 等）
-    local listed = vim.api.nvim_get_option_value("buflisted", { buf = bufnr })
-    if listed and bufnr ~= current then
-      require("mini.bufremove").delete(bufnr, true)
-    end
-  end
-end, { desc = "Delete Other Buffers" })
+  -- esc clear highlight
+  {
+    "<esc>",
+    function()
+      vim.cmd("noh")
+      return "<esc>"
+    end,
+    mode = { "i", "n", "s" },
+    expr = true,
+    desc = "Escape and Clear hlsearch",
+  },
 
-local lazygit = nil
-_G.get_lazygit = function()
-  lazygit = lazygit
-    or require("toggleterm.terminal").Terminal:new({
-      cmd = "lazygit",
-      hidden = true,
-      count = 999,
-      direction = "float",
-      on_open = function(term)
-        vim.cmd("startinsert!")
-        vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
-      end,
-      -- function to run on closing the terminal
-      on_close = function()
-        vim.cmd("startinsert!")
-      end,
-    })
-  return lazygit
-end
+  -- buffers
+  { "<S-h>", "<cmd>bprevious<cr>", desc = "Prev Buffer" },
+  { "<S-l>", "<cmd>bnext<cr>", desc = "Next Buffer" },
+  { "[b", "<cmd>bprevious<cr>", desc = "Prev Buffer" },
+  { "]b", "<cmd>bnext<cr>", desc = "Next Buffer" },
+  { "<leader>bb", "<cmd>e #<cr>", desc = "Switch to Other Buffer" },
+  { "<leader>`", "<cmd>e #<cr>", desc = "Switch to Other Buffer" },
+  { "<leader>bD", "<cmd>:bd<cr>", desc = "Delete Buffer and Window" },
 
--- lazygit
-if vim.fn.executable("lazygit") == 1 then
-  map("n", "<leader>gg", function()
-    lazygit = _G.get_lazygit()
-    lazygit:toggle()
-  end, { desc = "Lazygit" })
-end
+  -- clear search / diff / redraw
+  {
+    "<leader>ur",
+    "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
 
-local media = Utils.is_win() and "media-player" or "rmpc"
+    desc = "Redraw / Clear hlsearch / Diff Update",
+  },
 
-if vim.fn.executable(media) == 1 then
-  local music_player = nil
-  map("n", "<leader>tm", function()
-    music_player = music_player
-      or require("toggleterm.terminal").Terminal:new({
-        cmd = media,
-        hidden = true,
-        count = 1000,
-        direction = "float",
+  -- saner n/N
+  { "n", "'Nn'[v:searchforward].'zv'", expr = true, desc = "Next Search Result" },
+  { "n", "'Nn'[v:searchforward]", mode = "x", expr = true, desc = "Next Search Result" },
+  { "n", "'Nn'[v:searchforward]", mode = "o", expr = true, desc = "Next Search Result" },
+  { "N", "'nN'[v:searchforward].'zv'", expr = true, desc = "Prev Search Result" },
+  { "N", "'nN'[v:searchforward]", mode = "x", expr = true, desc = "Prev Search Result" },
+  { "N", "'nN'[v:searchforward]", mode = "o", expr = true, desc = "Prev Search Result" },
 
-        on_open = function(term)
-          vim.cmd("startinsert!")
-          vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
-        end,
-        -- function to run on closing the terminal
-        on_close = function(term)
-          vim.cmd("startinsert!")
-        end,
-      })
-    music_player:toggle()
-  end, { desc = "Music Player" })
-end
+  -- undo breakpoints
+  { ",", ",<c-g>u", mode = "i" },
+  { ".", ".<c-g>u", mode = "i" },
+  { ";", ";<c-g>u", mode = "i" },
 
--- map("n", "<leader>tm", function()
---   Snacks.terminal("music-player", { win = win })
--- end, { desc = "Music Player", silent = true, noremap = true })
+  -- save file
+  { "<C-s>", "<cmd>w<cr><esc>", mode = { "i", "x", "n", "s" }, desc = "Save File" },
 
-map("i", "jk", "<esc>")
+  -- keywordprg
+  { "<leader>K", "<cmd>norm! K<cr>", desc = "Keywordprg" },
+
+  -- indenting
+  { "<", "<gv", mode = "x" },
+  { ">", ">gv", mode = "x" },
+
+  -- commenting
+  { "gco", "o<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", desc = "Add Comment Below" },
+  { "gcO", "O<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", desc = "Add Comment Above" },
+
+  -- new file
+  { "<leader>fn", "<cmd>enew<cr>", desc = "New File" },
+
+  -- location list
+  {
+    "<leader>xl",
+    function()
+      local success, err = pcall(vim.fn.getloclist(0, { winid = 0 }).winid ~= 0 and vim.cmd.lclose or vim.cmd.lopen)
+      if not success and err then
+        vim.notify(err, vim.log.levels.ERROR)
+      end
+    end,
+
+    desc = "Location List",
+  },
+
+  -- quickfix list
+  {
+    "<leader>xq",
+    function()
+      local success, err = pcall(vim.fn.getqflist({ winid = 0 }).winid ~= 0 and vim.cmd.cclose or vim.cmd.copen)
+      if not success and err then
+        vim.notify(err, vim.log.levels.ERROR)
+      end
+    end,
+
+    desc = "Quickfix List",
+  },
+
+  { "[q", vim.cmd.cprev, desc = "Previous Quickfix" },
+  { "]q", vim.cmd.cnext, desc = "Next Quickfix" },
+
+  -- diagnostic
+  { "<leader>cd", vim.diagnostic.open_float, desc = "Line Diagnostics" },
+  { "]d", diagnostic_goto(true), desc = "Next Diagnostic" },
+  { "[d", diagnostic_goto(false), desc = "Prev Diagnostic" },
+  { "]e", diagnostic_goto(true, "ERROR"), desc = "Next Error" },
+  { "[e", diagnostic_goto(false, "ERROR"), desc = "Prev Error" },
+  { "]w", diagnostic_goto(true, "WARN"), desc = "Next Warning" },
+  { "[w", diagnostic_goto(false, "WARN"), desc = "Prev Warning" },
+
+  -- quit
+  { "<leader>qq", "<cmd>qa<cr>", desc = "Quit All" },
+
+  -- inspect
+  { "<leader>ui", vim.show_pos, desc = "Inspect Pos" },
+  {
+    "<leader>uI",
+    function()
+      vim.treesitter.inspect_tree()
+      vim.api.nvim_input("I")
+    end,
+
+    desc = "Inspect Tree",
+  },
+
+  -- windows
+  { "<leader>-", "<C-W>s", desc = "Split Window Below", remap = true },
+  { "<leader>|", "<C-W>v", desc = "Split Window Right", remap = true },
+  { "<leader>wd", "<C-W>c", desc = "Delete Window", remap = true },
+
+  -- tabs
+  { "<leader><tab>l", "<cmd>tablast<cr>", desc = "Last Tab" },
+  { "<leader><tab>o", "<cmd>tabonly<cr>", desc = "Close Other Tabs" },
+  { "<leader><tab>f", "<cmd>tabfirst<cr>", desc = "First Tab" },
+  { "<leader><tab><tab>", "<cmd>tabnew<cr>", desc = "New Tab" },
+  { "<leader><tab>]", "<cmd>tabnext<cr>", desc = "Next Tab" },
+  { "<leader><tab>d", "<cmd>tabclose<cr>", desc = "Close Tab" },
+  { "<leader><tab>[", "<cmd>tabprevious<cr>", desc = "Previous Tab" },
+}
+
+Utils.keymap.add(keys)
+
+_G.Config.leader_group_clues = {
+  { keys = "<leader>a", mode = "n", desc = "+ai" },
+  { keys = "<leader>b", mode = "n", desc = "+buffer" },
+  { keys = "<leader>c", mode = "n", desc = "+code" },
+  { keys = "<leader>d", mode = "n", desc = "+debug" },
+  { keys = "<leader>f", mode = "n", desc = "+find" },
+  { keys = "<leader>g", mode = "n", desc = "+git" },
+  { keys = "<leader>l", mode = "n", desc = "+lsp" },
+  { keys = "<leader>o", mode = "n", desc = "+overseer" },
+  { keys = "<leader>q", mode = "n", desc = "+session" },
+  { keys = "<leader>s", mode = "n", desc = "+search" },
+  { keys = "<leader>t", mode = "n", desc = "+terminal" },
+  { keys = "<leader>u", mode = "n", desc = "+ui" },
+  { keys = "<leader>w", mode = "n", desc = "+window" },
+  { keys = "<leader>x", mode = "n", desc = "+other" },
+}
+
+local term_normal = {
+  "jk",
+  function()
+    vim.cmd("stopinsert")
+  end,
+  mode = "t",
+  expr = false,
+  desc = "Single escape to normal mode",
+}
+
+local win = {
+  position = "float",
+  border = "rounded",
+  keys = {
+    term_normal = term_normal,
+  },
+}
+
+local self_keys = {
+  {
+    "<leader>bd",
+    function()
+      require("snacks").bufdelete()
+    end,
+    desc = "Delete Buffer",
+  },
+  {
+    "<leader>bo",
+    function()
+      require("snacks").bufdelete.other()
+    end,
+    desc = "Delete Other Buffers",
+  },
+  {
+    "<leader>gg",
+    function()
+      require("snacks").lazygit()
+    end,
+    desc = "Lazygit",
+  },
+  {
+    "<leader>tf",
+    function()
+      require("snacks").terminal(nil, { win = win })
+    end,
+
+    desc = "Terminal Float",
+  },
+  {
+    "<leader>tm",
+    function()
+      require("snacks").terminal("rmpc", { win = win })
+    end,
+    desc = "Music Player",
+    silent = true,
+    noremap = true,
+  },
+  {
+    "<leader>mpu",
+    function()
+      vim.pack.update()
+    end,
+    desc = "Update Plugins",
+  },
+
+  { "jk", "<esc>", mode = "i" },
+}
+
+Utils.keymap.add(self_keys)

@@ -217,7 +217,8 @@
     },
     "overseer.nvim": {
       "rev": "c77c78b",
-      "src": "https://github.com/stevearc/overseer.nvim"
+      "src": "https://github.com/stevearc/overseer.nvim",
+      "version": ">=2.0.0"
     },
     "persistence.nvim": {
       "rev": "b20b2a7",
@@ -238,6 +239,10 @@
     "snacks.nvim": {
       "rev": "741f4b1",
       "src": "https://github.com/folke/snacks.nvim"
+    },
+    "term.nvim": {
+      "rev": "ec709244bfadfb4365f5c80b34efd5c478713c46",
+      "src": "https://github.com/immortal521/term.nvim"
     },
     "todo-comments.nvim": {
       "rev": "31e3c38ce9b29781e4422fc0322eb0a21f4e8668",
