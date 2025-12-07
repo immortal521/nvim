@@ -46,6 +46,9 @@ MiniClue.setup({
   },
 
   window = {
+    config = {
+      border= "rounded",
+    },
     delay = 300,
   },
 })
