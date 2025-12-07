@@ -1,5 +1,3 @@
-
-
 ---@type vim.lsp.Config
 return {
   cmd = { "vtsls", "--stdio" },
@@ -13,6 +11,11 @@ return {
     "typescript",
     "typescriptreact",
     "typescript.tsx",
+  },
+  settings = {
+    vtsls = {
+      autoUseWorkspaceTsdk = true,
+    },
   },
   root_dir = function(bufnr, on_dir)
     -- The project root is where the LSP can be started from
