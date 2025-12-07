@@ -4,7 +4,55 @@ vim.pack.add({
   { src = "https://github.com/neovim/nvim-lspconfig" },
 })
 
-require("mason").setup({
+local ms = require("mason")
+local mr = require("mason-registry")
+
+local ensure_installed = {
+  "bacon-ls",
+  "bash-language-server",
+  "biome",
+  "clang-format",
+  "clangd",
+  "codelldb",
+  "codespell",
+  "css-lsp",
+  "css-variables-language-server",
+  "cssmodules-language-server",
+  "delve",
+  "gofumpt",
+  "goimports",
+  "golangci-lint",
+  "gomodifytags",
+  "google-java-format",
+  "gopls",
+  "html-lsp",
+  "impl",
+  "java-debug-adapter",
+  "java-test",
+  "jdtls",
+  "js-debug-adapter",
+  "json-lsp",
+  "kotlin-language-server",
+  "ktlint",
+  "lua-language-server",
+  "prettier",
+  "pyright",
+  "ruff",
+  "rust-analyzer",
+  "rustfmt",
+  "shellcheck",
+  "sqlfluff",
+  "stylua",
+  "stylelint-lsp",
+  "tailwindcss-language-server",
+  "tree-sitter-cli",
+  "vtsls",
+  "vue-language-server",
+  "xmlformatter",
+  "yaml-language-server",
+}
+
+ms.setup({
   ui = {
     border = "rounded",
     icons = {
@@ -13,29 +61,16 @@ require("mason").setup({
       package_uninstalled = "✗",
     },
   },
-  ensure_installed = {
-    "css-lsp",
-    "css-variables-language-server",
-    "cssmodules-language-server",
-    "gofumpt",
-    "golangci-lint",
-    "gopls",
-    "json-lsp",
-    "js-debug-adapter",
-    "lua-language-server",
-    "prettier",
-    "rustfmt",
-    "rust-analyzer",
-    "bacon-ls",
-    "stylua",
-    "vtsls",
-    "vue-language-server",
-    "gomodifytags",
-    "impl",
-    "goimports",
-    "delve",
-  },
 })
+
+mr.refresh(function()
+  for _, tool in ipairs(ensure_installed) do
+    local p = mr.get_package(tool)
+    if not p:is_installed() then
+      p:install()
+    end
+  end
+end)
 
 local keys = {
   { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" },
@@ -45,7 +80,7 @@ local keys = {
     desc = "Goto Definition",
   },
   {
-    "gR",
+    "gr",
     "<cmd>lua Snacks.picker.lsp_references()<cr>",
     desc = "References",
   },

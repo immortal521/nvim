@@ -35,33 +35,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
       vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
     end
 
-    -- [keymaps]
-    vim.keymap.set("n", "gd", function()
-      local params = vim.lsp.util.make_position_params(0, "utf-8")
-      vim.lsp.buf_request(0, "textDocument/definition", params, function(_, result, _, _)
-        if not result or vim.tbl_isempty(result) then
-          vim.notify("No definition found", vim.log.levels.INFO)
-        else
-          require("snacks").picker.lsp_definitions()
-        end
-      end)
-    end, { buffer = event.buf, desc = "LSP: Goto Definition" })
-    vim.keymap.set("n", "gD", function()
-      local win = vim.api.nvim_get_current_win()
-      local width = vim.api.nvim_win_get_width(win)
-      local height = vim.api.nvim_win_get_height(win)
-
-      -- Mimic tmux formula: 8 * width - 20 * height
-      local value = 8 * width - 20 * height
-      if value < 0 then
-        vim.cmd("split") -- vertical space is more: horizontal split
-      else
-        vim.cmd("vsplit") -- horizontal space is more: vertical split
-      end
-
-      vim.lsp.buf.definition()
-    end, { buffer = event.buf, desc = "LSP: Goto Definition (split)" })
-
     local function jump_to_current_function_start()
       local params = { textDocument = vim.lsp.util.make_text_document_params() }
       local responses = vim.lsp.buf_request_sync(0, "textDocument/documentSymbol", params, 1000)

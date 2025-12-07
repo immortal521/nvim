@@ -8,6 +8,21 @@ local diagnostic_goto = function(next, severity)
   end
 end
 
+-- Normal / Visual
+vim.keymap.del({ "n", "v" }, "gra")
+vim.keymap.del("n", "gri")
+vim.keymap.del("n", "grn")
+vim.keymap.del("n", "grr")
+vim.keymap.del("n", "grt")
+vim.keymap.del("n", "gO")
+
+-- Insert
+vim.keymap.del("i", "<C-s>")
+
+-- Visual / Operator-pending（文本对象）
+vim.keymap.del({ "x", "o" }, "an")
+vim.keymap.del({ "x", "o" }, "in")
+
 local keys = {
   -- better up/down
   { "j", "v:count == 0 ? 'gj' : 'j'", mode = { "n", "x" }, desc = "Down", expr = true, silent = true },
