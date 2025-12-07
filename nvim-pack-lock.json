@@ -83,6 +83,10 @@
       "rev": "8efe00d6aed9db6449969f889170f1a7e43101a1",
       "src": "https://github.com/nvimdev/lspsaga.nvim"
     },
+    "mason-lspconfig.nvim": {
+      "rev": "0b9bb925c000ae649ff7e7149c8cd00031f4b539",
+      "src": "https://github.com/mason-org/mason-lspconfig.nvim"
+    },
     "mason-nvim-dap.nvim": {
       "rev": "9a10e096703966335bd5c46c8c875d5b0690dade",
       "src": "https://github.com/jay-babu/mason-nvim-dap.nvim"
@@ -114,6 +118,10 @@
     "mini.diff": {
       "rev": "fbb93ea",
       "src": "https://github.com/nvim-mini/mini.diff"
+    },
+    "mini.files": {
+      "rev": "26baa6215c2e5c40ba7fe82685d827fe8e5c68c8",
+      "src": "https://github.com/nvim-mini/mini.files"
     },
     "mini.icons": {
       "rev": "ff2e4f1",
