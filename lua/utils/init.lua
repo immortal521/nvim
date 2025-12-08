@@ -3,6 +3,7 @@
 ---@class utils
 ---@field keymap utils.keymap
 ---@field colors utils.colors
+---@field lsp utils.lsp
 local M = {}
 setmetatable(M, {
   __index = function(t, k)
