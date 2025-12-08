@@ -1,12 +1,7 @@
 -- 获取 lsp 文件夹中所有 lua 文件
-local lsp_files = vim.fn.globpath(vim.fn.stdpath("config") .. "/lsp", "*.lua", false, true)
 
-for _, file in ipairs(lsp_files) do
-  -- 从路径中提取不带后缀的名字
-  local name = vim.fn.fnamemodify(file, ":t:r")
-  if name then
-    vim.lsp.enable(name)
-  end
+for _, name in pairs(Utils.lsp.get_lsp_names()) do
+  vim.lsp.enable(name)
 end
 
 Utils.keymap({

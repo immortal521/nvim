@@ -13,6 +13,7 @@ end
 opt.autowrite = true
 opt.clipboard = vim.env.SSH_CONNECTION and "" or "unnamedplus"
 opt.completeopt = "menu,menuone,noselect"
+opt.complete = "" -- 禁用所有内置补全源
 opt.conceallevel = 2
 opt.confirm = false
 opt.cursorline = true
@@ -72,7 +73,11 @@ opt.numberwidth = 4
 
 g.have_nerd_font = true
 
-vim.o.winborder = "single"
+vim.o.winborder = "rounded"
+
+if vim.env.TERM_PROGRAM == "WezTerm" then
+  vim.g.wezterm_render = true
+end
 
 -- Neovide 基础设置
 g.neovide_fullscreen = false
