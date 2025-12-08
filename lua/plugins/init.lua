@@ -1,6 +1,4 @@
 return {
-  require("plugins.packages"),
-
   require("plugins.utils"),
   require("plugins.tokyonight"),
   require("plugins.notify"),
@@ -22,6 +20,7 @@ return {
   require("plugins.dial"),
   -- require("plugins.octo"),
   -- require("plugins.lensline"),
+  -- require("plugins.diagnostic"),
   require("plugins.transparent"),
   require("plugins.flash"),
   require("plugins.trouble"),
