@@ -35,5 +35,6 @@ return {
   require("plugins.ts-autotag"),
   require("plugins.debug"),
   require("plugins.wakatime"),
+  require("plugins.screenkey"),
   require("plugins.llm"),
 }
