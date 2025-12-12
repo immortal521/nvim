@@ -7,17 +7,33 @@ local linters_by_ft = {
   go = { "golangcilint" },
   vue = { "eslint" },
   javascript = { "eslint" },
-  typescript = { "eslint" },
+  typescript = { "eslint", "oxlint" },
 }
 
--- 默认的 linters 配置表
-local linters = {}
+local oxlint_config_files = { ".oxlintrc.json" }
+local eslint_config_files = { ".eslintrc.js", ".eslintrc.cjs", ".eslintrc.json", ".eslintrc.yaml", ".eslintrc.yml" }
+
+local linters = {
+  eslint = {
+    condition = function(ctx)
+      -- 查找当前文件所在路径向上搜索 eslint 配置文件
+      local found = vim.fs.find(eslint_config_files, { path = ctx.filename, upward = true })
+      return #found > 0
+    end,
+  },
+  oxlint = {
+    condition = function(ctx)
+      local found = vim.fs.find(oxlint_config_files, { path = ctx.filename, upward = true })
+      return #found > 0
+    end,
+  },
+}
 
 -- 获取 nvim-lint 插件
 local lint = require("lint")
 
 -- 触发 lint 检查的事件列表
-local events = { "BufWritePost", "BufReadPost", "InsertLeave" }
+local events = { "bufwritepost", "bufreadpost", "insertleave" }
 
 -- 将 linters_by_ft 内容加载到 linters 配置中
 for ft, linters_for_ft in pairs(linters_by_ft) do
@@ -47,13 +63,13 @@ lint.linters_by_ft = linters_by_ft
 -- 防抖函数，减少频繁执行
 local function debounce(ms, fn)
   if type(fn) ~= "function" then
-    vim.notify("[debounce] expected a function, got " .. type(fn), vim.log.levels.WARN)
+    vim.notify("[debounce] expected a function, got " .. type(fn), vim.log.levels.warn)
     return function() end -- 返回一个空函数，避免报错
   end
 
   local timer = vim.uv.new_timer()
   if not timer then
-    vim.notify("[debounce] failed to create timer", vim.log.levels.ERROR)
+    vim.notify("[debounce] failed to create timer", vim.log.levels.error)
     return function() end
   end
 
