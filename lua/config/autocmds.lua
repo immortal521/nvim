@@ -28,6 +28,7 @@ vim.api.nvim_create_autocmd("FileType", {
     "neotest-output",
     "neotest-output-panel",
     "neotest-summary",
+    "nvim-pack",
     "notify",
     "spectre_panel",
     "startuptime",
@@ -92,7 +93,7 @@ vim.api.nvim_create_autocmd("FileType", {
 --   group = vim.api.nvim_create_augroup("auto_console_insert_mode", { clear = true }),
 --   callback = function()
 --     vim.cmd("startinsert")
---     vim.wo.number = false 
+--     vim.wo.number = false
 --     vim.wo.relativenumber = false
 --     vim.wo.signcolumn = "no"
 --   end,
