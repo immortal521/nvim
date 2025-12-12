@@ -1,5 +1,5 @@
 vim.pack.add({
-  { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
+  { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
   { src = "https://github.com/windwp/nvim-ts-autotag" },
   { src = "https://github.com/folke/ts-comments.nvim" },
 })

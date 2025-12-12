@@ -17,10 +17,18 @@
       "rev": "151c008",
       "src": "https://github.com/immortal521/auto-save.nvim"
     },
+    "blink-cmp-rg.nvim": {
+      "rev": "722d8ab5d29369d604133064816657203cf24540",
+      "src": "https://github.com/niuiic/blink-cmp-rg.nvim"
+    },
     "blink.cmp": {
       "rev": "327fff9",
       "src": "https://github.com/saghen/blink.cmp",
       "version": ">=1.0.0"
+    },
+    "colorful-menu.nvim": {
+      "rev": "b51a659459df8d078201aefc995db8175ed55e84",
+      "src": "https://github.com/xzbdmw/colorful-menu.nvim"
     },
     "conform.nvim": {
       "rev": "cde4da5",
