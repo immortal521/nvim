@@ -18,8 +18,8 @@ require("incline").setup({
   },
   highlight = {
     groups = {
-      InclineNormal = { default = true, group = "StatusLine" },
-      InclineNormalNC = { default = true, group = "StatusLineNC" },
+      InclineNormal = { default = true, group = "Normal" },
+      InclineNormalNC = { default = true, group = "NormalNC" },
     },
   },
   render = function(props)
