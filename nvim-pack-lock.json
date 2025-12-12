@@ -217,7 +217,8 @@
     },
     "nvim-treesitter": {
       "rev": "42fc28ba",
-      "src": "https://github.com/nvim-treesitter/nvim-treesitter"
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter",
+      "version": "'main'"
     },
     "nvim-ts-autotag": {
       "rev": "c4ca798",
@@ -251,6 +252,11 @@
     "rustaceanvim": {
       "rev": "6b7e0e18ad8fa0598bc038aef7bb6bba288adbad",
       "src": "https://github.com/mrcjkb/rustaceanvim"
+    },
+    "screenkey.nvim": {
+      "rev": "459a9955dde2e99fbd5a8926990f3503c430571f",
+      "src": "https://github.com/NStefan002/screenkey.nvim",
+      "version": "'main'"
     },
     "snacks.nvim": {
       "rev": "741f4b1",
