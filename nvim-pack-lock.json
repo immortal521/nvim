@@ -171,6 +171,10 @@
       "rev": "88c5229",
       "src": "https://github.com/nvim-mini/mini.surround"
     },
+    "neogen": {
+      "rev": "d7f9461727751fb07f82011051338a9aba07581d",
+      "src": "https://github.com/danymat/neogen"
+    },
     "noice.nvim": {
       "rev": "7bfd942",
       "src": "https://github.com/folke/noice.nvim"

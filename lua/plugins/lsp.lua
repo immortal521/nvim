@@ -102,7 +102,7 @@ local keys = {
     desc = "Signature Help",
   },
   {
-    "<c-k>",
+    "<M-k>",
     function()
       return vim.lsp.buf.signature_help()
     end,

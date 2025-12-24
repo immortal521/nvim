@@ -1,8 +1,6 @@
-vim.pack.add({
-  { src = "https://github.com/folke/todo-comments.nvim" },
-})
+local TodoComments = require("todo-comments")
 
-require("todo-comments").setup({})
+TodoComments.setup({})
 
 local keys = {
   {
