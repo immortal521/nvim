@@ -63,13 +63,13 @@ lint.linters_by_ft = linters_by_ft
 -- 防抖函数，减少频繁执行
 local function debounce(ms, fn)
   if type(fn) ~= "function" then
-    vim.notify("[debounce] expected a function, got " .. type(fn), vim.log.levels.warn)
+    Utils.log.warn("[debounce] expected a function, got " .. type(fn))
     return function() end -- 返回一个空函数，避免报错
   end
 
   local timer = vim.uv.new_timer()
   if not timer then
-    vim.notify("[debounce] failed to create timer", vim.log.levels.error)
+    Utils.log.error("[debounce] failed to create timer")
     return function() end
   end
 

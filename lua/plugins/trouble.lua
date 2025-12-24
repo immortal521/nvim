@@ -27,7 +27,7 @@ local keys = {
       else
         local ok, err = pcall(vim.cmd.cprev)
         if not ok then
-          vim.notify(err, vim.log.levels.ERROR)
+          Utils.log.error(err)
         end
       end
     end,
@@ -43,7 +43,7 @@ local keys = {
       else
         local ok, err = pcall(vim.cmd.cnext)
         if not ok then
-          vim.notify(err, vim.log.levels.ERROR)
+          Utils.log.error(err)
         end
       end
     end,

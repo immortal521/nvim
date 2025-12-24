@@ -20,7 +20,7 @@ M.terminal = function(shell)
     elseif vim.fn.executable("powershell") == 1 then
       vim.o.shell = "powershell"
     else
-      return vim.notify("No powershell executable found", vim.log.levels.ERROR)
+      return Utils.log.error("No powershell executable found")
     end
 
     -- Setting shell command flags

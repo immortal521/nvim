@@ -22,10 +22,7 @@ return {
             typescriptHandler(_, result, context)
           end, 100)
         else
-          vim.notify(
-            "Could not find `ts_ls`, `vtsls`, or `typescript-tools` lsp client required by `vue_ls`.",
-            vim.log.levels.ERROR
-          )
+          Utils.log.error("Could not find `ts_ls`, `vtsls`, or `typescript-tools` lsp client required by `vue_ls`.")
         end
         return
       end

@@ -39,11 +39,7 @@ return {
       CodeRunner = function(code)
         local filepath = "/tmp/script.sh"
 
-        vim.notify(
-          string.format("CodeRunner running...\n```bash\n%s\n```", code),
-          vim.log.levels.INFO,
-          { title = "llm: CodeRunner" }
-        )
+        Utils.log.info(string.format("CodeRunner running...\n```bash\n%s\n```", code))
         local file = io.open(filepath, "w")
         if file then
           file:write(code)

@@ -39,7 +39,14 @@ M.log = function(msg, level)
     or level == M.levels.ERROR and "ERROR"
     or "INFO"
 
-  print(("[%s] %s - %s"):format(level_name, time, msg))
+  local formatted_msg = ("[%s] %s - %s"):format(level_name, time, msg)
+
+  -- 使用 vim.notify 以获得更好的通知体验
+  local vim_level = level == M.levels.ERROR and vim.log.levels.ERROR
+    or level == M.levels.WARN and vim.log.levels.WARN
+    or vim.log.levels.INFO
+
+  vim.notify(formatted_msg, vim_level)
 end
 
 --- 调试日志
@@ -67,4 +74,3 @@ M.error = function(msg)
 end
 
 return M
-

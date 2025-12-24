@@ -11,13 +11,13 @@ vim.lsp.config("rust_analyzer", {
 local function reload_workspace(bufnr)
   local clients = vim.lsp.get_clients({ bufnr = bufnr, name = "rust_analyzer" })
   for _, client in ipairs(clients) do
-    vim.notify("Reloading Cargo Workspace")
+    Utils.log.info("Reloading Cargo Workspace")
     ---@diagnostic disable-next-line:param-type-mismatch
     client:request("rust-analyzer/reloadWorkspace", nil, function(err)
       if err then
         error(tostring(err))
       end
-      vim.notify("Cargo workspace reloaded")
+      Utils.log.info("Cargo workspace reloaded")
     end, 0)
   end
 end
@@ -84,7 +84,7 @@ return {
         on_dir(cargo_workspace_root or cargo_crate_dir)
       else
         vim.schedule(function()
-          vim.notify(("[rust_analyzer] cmd failed with code %d: %s\n%s"):format(output.code, cmd, output.stderr))
+          Utils.log.error(("[rust_analyzer] cmd failed with code %d: %s\n%s"):format(output.code, cmd, output.stderr))
         end)
       end
     end)
@@ -119,9 +119,9 @@ return {
       local result = proc:wait()
 
       if result.code == 0 then
-        vim.notify(result.stdout, vim.log.levels.INFO)
+        Utils.log.info(result.stdout)
       else
-        vim.notify(result.stderr, vim.log.levels.ERROR)
+        Utils.log.error(result.stderr)
       end
     end
   end,

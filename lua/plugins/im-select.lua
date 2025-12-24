@@ -21,9 +21,8 @@ local function find_im_command()
   end
 
   -- 如果都没有找到，可以返回一个默认值或者给出警告
-  vim.notify(
-    "未找到支持的输入法切换命令 (fcitx5-remote, fcitx-remote, ibus)。请检查输入法配置。",
-    vim.log.levels.WARN
+  Utils.log.warn(
+    "未找到支持的输入法切换命令 (fcitx5-remote, fcitx-remote, ibus)。请检查输入法配置。"
   )
   return "fcitx5-remote" -- 或者返回一个你认为安全的默认值，比如 "ibus"
 end
@@ -42,10 +41,7 @@ if default_im_cmd then
     async_switch_im = true,
   })
 else
-  vim.notify(
-    "im-select.nvim 未能自动配置输入法切换命令。请手动检查并设置。",
-    vim.log.levels.ERROR
-  )
+  Utils.log.error("im-select.nvim 未能自动配置输入法切换命令。请手动检查并设置。")
   -- 即使未找到命令，im-select.nvim 也可以被 setup，但可能不会按预期工作
   -- 你可以选择在此处不调用 setup 或使用一个硬编码的 fallback
   -- require("im_select").setup({}) -- 如果你希望即使没有命令也初始化插件

@@ -20,7 +20,7 @@ local function identify_go_dir(custom_args, on_complete)
       on_complete(res)
     else
       vim.schedule(function()
-        vim.notify(
+        Utils.log.error(
           ("[gopls] identify " .. custom_args.envvar_id .. " dir cmd failed with code %d: %s\n%s"):format(
             output.code,
             vim.inspect(cmd),
