@@ -11,7 +11,7 @@ require("yanky").setup({
 
 local keys = {
   {
-    "<leader>p",
+    "<leader>v",
     "<cmd>YankyRingHistory<cr>",
     mode = { "n", "x" },
     desc = "Open Yank History",

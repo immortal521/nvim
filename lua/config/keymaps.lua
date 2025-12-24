@@ -211,21 +211,25 @@ Utils.keymap.add(keys)
 
 _G.Config.leader_group_clues = {
   { keys = "<leader>a", mode = "n", desc = "+ai" },
+  { keys = "<leader>a", mode = "x", desc = "+ai" },
   { keys = "<leader>b", mode = "n", desc = "+buffer" },
   { keys = "<leader>c", mode = "n", desc = "+code" },
+  { keys = "<leader>c", mode = "x", desc = "+code" },
   { keys = "<leader>d", mode = "n", desc = "+debug" },
+  { keys = "<leader>d", mode = "x", desc = "+debug" },
   { keys = "<leader>f", mode = "n", desc = "+find" },
   { keys = "<leader>g", mode = "n", desc = "+git" },
   { keys = "<leader>l", mode = "n", desc = "+lsp" },
   { keys = "<leader>o", mode = "n", desc = "+overseer" },
   { keys = "<leader>q", mode = "n", desc = "+session" },
   { keys = "<leader>s", mode = "n", desc = "+search" },
+  { keys = "<leader>s", mode = "x", desc = "+search" },
   { keys = "<leader>t", mode = "n", desc = "+terminal" },
   { keys = "<leader>u", mode = "n", desc = "+ui" },
   { keys = "<leader>w", mode = "n", desc = "+window" },
   { keys = "<leader>x", mode = "n", desc = "+other" },
   { keys = "<leader>e", mode = "n", desc = "files" },
-  { keys = "<leader>m", mode = "n", desc = "+managers" },
+  { keys = "<leader>p", mode = "n", desc = "+pack" },
   { keys = "<leader><tab>", mode = "n", desc = "+tabs" },
 }
 
@@ -248,6 +252,13 @@ local win = {
 }
 
 local self_keys = {
+  {
+    "<leader>pu",
+    function()
+      vim.pack.update()
+    end,
+    desc = "Update Plugins",
+  },
   {
     "<leader>bd",
     function()
@@ -285,13 +296,6 @@ local self_keys = {
     desc = "Music Player",
     silent = true,
     noremap = true,
-  },
-  {
-    "<leader>mpu",
-    function()
-      vim.pack.update()
-    end,
-    desc = "Update Plugins",
   },
 
   { "jk", "<esc>", mode = "i" },
