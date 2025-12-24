@@ -12,7 +12,6 @@ return {
   require("plugins.lint"),
   require("plugins.persistence"),
   require("plugins.heirline"),
-  require("plugins.incline"),
   require("plugins.rest"),
   require("plugins.rust"),
   require("plugins.grug-far"),
@@ -37,4 +36,5 @@ return {
   require("plugins.wakatime"),
   require("plugins.screenkey"),
   require("plugins.llm"),
+  require("plugins.incline"),
 }

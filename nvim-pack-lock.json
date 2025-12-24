@@ -159,6 +159,10 @@
       "rev": "6b69f4cf206ed8560669446a0310937d88e1c871",
       "src": "https://github.com/nvim-mini/mini.sessions"
     },
+    "mini.splitjoin": {
+      "rev": "9fcd8856efb95a505090c3225726466494076127",
+      "src": "https://github.com/nvim-mini/mini.splitjoin"
+    },
     "mini.starter": {
       "rev": "8ee6ce6a4c9be47682516908557cc062c4d595a2",
       "src": "https://github.com/nvim-mini/mini.starter"
@@ -194,6 +198,10 @@
     "nvim-highlight-colors": {
       "rev": "e0c4a58",
       "src": "https://github.com/brenoprata10/nvim-highlight-colors"
+    },
+    "nvim-jdtls": {
+      "rev": "f73731b543f5971e0da9665eb1d7ceffe1fde71f",
+      "src": "https://github.com/mfussenegger/nvim-jdtls"
     },
     "nvim-lint": {
       "rev": "8c694e1",
@@ -265,6 +273,10 @@
     "term.nvim": {
       "rev": "ec709244bfadfb4365f5c80b34efd5c478713c46",
       "src": "https://github.com/immortal521/term.nvim"
+    },
+    "tiny-inline-diagnostic.nvim": {
+      "rev": "d9d12d4bfb9a4c5b8b8bdf7f612551df6972946c",
+      "src": "https://github.com/rachartier/tiny-inline-diagnostic.nvim"
     },
     "todo-comments.nvim": {
       "rev": "31e3c38ce9b29781e4422fc0322eb0a21f4e8668",
