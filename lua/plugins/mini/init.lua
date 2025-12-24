@@ -12,6 +12,7 @@ vim.pack.add({
   { src = "https://github.com/nvim-mini/mini.pairs" },
   { src = "https://github.com/nvim-mini/mini.surround" },
   { src = "https://github.com/nvim-mini/mini.splitjoin" },
+  { src = "https://github.com/nvim-mini/mini.jump" },
 })
 
 -- 设置各个 mini 插件
@@ -25,3 +26,4 @@ require("plugins.mini.git")
 require("plugins.mini.move")
 require("plugins.mini.pairs")
 require("plugins.mini.splitjoin")
+require("plugins.mini.jump")

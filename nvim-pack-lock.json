@@ -139,6 +139,14 @@
       "rev": "0308f949f31769e509696af5d5f91cebb2159c69",
       "src": "https://github.com/nvim-mini/mini.indentscope"
     },
+    "mini.jump": {
+      "rev": "99799e8ca33fe936b81a70b5ab9a081f8794c8a1",
+      "src": "https://github.com/nvim-mini/mini.jump"
+    },
+    "mini.jump2d": {
+      "rev": "7a089cb719adb7c2faa2a859038d69d58fcbee84",
+      "src": "https://github.com/nvim-mini/mini.jump2d"
+    },
     "mini.move": {
       "rev": "4d21420",
       "src": "https://github.com/nvim-mini/mini.move"
