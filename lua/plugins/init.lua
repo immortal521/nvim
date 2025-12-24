@@ -19,7 +19,7 @@ return {
   require("plugins.dial"),
   require("plugins.nvim-jdtls"),
   -- require("plugins.lensline"),
-  -- require("plugins.diagnostic"),
+  require("plugins.diagnostic"),
   require("plugins.transparent"),
   require("plugins.flash"),
   require("plugins.trouble"),
