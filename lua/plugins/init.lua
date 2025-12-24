@@ -1,7 +1,6 @@
 return {
   require("plugins.utils"),
   require("plugins.tokyonight"),
-  require("plugins.notify"),
   require("plugins.mini"),
   require("plugins.noice"),
   require("plugins.lsp"),
@@ -18,7 +17,6 @@ return {
   require("plugins.rust"),
   require("plugins.grug-far"),
   require("plugins.dial"),
-  -- require("plugins.octo"),
   require("plugins.nvim-jdtls"),
   -- require("plugins.lensline"),
   -- require("plugins.diagnostic"),
