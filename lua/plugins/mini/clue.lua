@@ -6,6 +6,12 @@ MiniClue.setup({
     { mode = "n", keys = "<Leader>" },
     { mode = "x", keys = "<Leader>" },
 
+    { mode = "n", keys = "[" },
+    { mode = "x", keys = "[" },
+
+    { mode = "n", keys = "]" },
+    { mode = "x", keys = "]" },
+
     -- Built-in completion
     { mode = "i", keys = "<C-x>" },
 
@@ -47,7 +53,7 @@ MiniClue.setup({
 
   window = {
     config = {
-      border= "rounded",
+      border = "rounded",
     },
     delay = 300,
   },
