@@ -30,11 +30,27 @@ local keys = {
   { "k", "v:count == 0 ? 'gk' : 'k'", mode = { "n", "x" }, desc = "Up", expr = true, silent = true },
   { "<Up>", "v:count == 0 ? 'gk' : 'k'", mode = { "n", "x" }, desc = "Up", expr = true, silent = true },
 
+  -- Command-line mode
+  { "<A-h>", "<Left>", mode = "c", desc = "Left" },
+  { "<A-l>", "<Right>", mode = "c", desc = "Right" },
+
+  -- Insert mode
+  { "<A-h>", "<Left>", mode = "i", noremap = false, desc = "Left" },
+  { "<A-j>", "<Down>", mode = "i", noremap = false, desc = "Down" },
+  { "<A-k>", "<Up>", mode = "i", noremap = false, desc = "Up" },
+  { "<A-l>", "<Right>", mode = "i", noremap = false, desc = "Right" },
+
+  -- Terminal mode
+  { "<A-h>", "<Left>", mode = "t", desc = "Left" },
+  { "<A-j>", "<Down>", mode = "t", desc = "Down" },
+  { "<A-k>", "<Up>", mode = "t", desc = "Up" },
+  { "<A-l>", "<Right>", mode = "t", desc = "Right" },
+
   -- window move
-  { "<C-h>", "<C-w>h", desc = "Go to Left Window", remap = true },
-  { "<C-j>", "<C-w>j", desc = "Go to Lower Window", remap = true },
-  { "<C-k>", "<C-w>k", desc = "Go to Upper Window", remap = true },
-  { "<C-l>", "<C-w>l", desc = "Go to Right Window", remap = true },
+  { "<leader>wh", "<C-w>h", desc = "Go to Left Window", remap = true },
+  { "<leader>wj", "<C-w>j", desc = "Go to Lower Window", remap = true },
+  { "<leader>wk", "<C-w>k", desc = "Go to Upper Window", remap = true },
+  { "<leader>wl", "<C-w>l", desc = "Go to Right Window", remap = true },
 
   -- resize window
   { "<C-Up>", "<cmd>resize +2<cr>", desc = "Increase Window Height" },
@@ -43,12 +59,29 @@ local keys = {
   { "<C-Right>", "<cmd>vertical resize +2<cr>", desc = "Increase Window Width" },
 
   -- move lines
-  { "<A-j>", "<cmd>execute 'move .+' . v:count1<cr>==", desc = "Move Down" },
-  { "<A-k>", "<cmd>execute 'move .-' . (v:count1 + 1)<cr>==", desc = "Move Up" },
-  { "<A-j>", "<esc><cmd>m .+1<cr>==gi", mode = "i", desc = "Move Down" },
-  { "<A-k>", "<esc><cmd>m .-2<cr>==gi", mode = "i", desc = "Move Up" },
-  { "<A-j>", ":<C-u>execute \"'<,'>move '>+\" . v:count1<cr>gv=gv", mode = "v", desc = "Move Down" },
-  { "<A-k>", ":<C-u>execute \"'<,'>move '<-\" . (v:count1 + 1)<cr>gv=gv", mode = "v", desc = "Move Up" },
+  { "<C-j>", "<cmd>execute 'move .+' . v:count1<cr>==", desc = "Move Down" },
+  { "<C-k>", "<cmd>execute 'move .-' . (v:count1 + 1)<cr>==", desc = "Move Up" },
+  { "<C-j>", "<esc><cmd>m .+1<cr>==gi", mode = "i", desc = "Move Down" },
+  { "<C-k>", "<esc><cmd>m .-2<cr>==gi", mode = "i", desc = "Move Up" },
+  { "<C-j>", ":<C-u>execute \"'<,'>move '>+\" . v:count1<cr>gv=gv", mode = "v", desc = "Move Down" },
+  { "<C-k>", ":<C-u>execute \"'<,'>move '<-\" . (v:count1 + 1)<cr>gv=gv", mode = "v", desc = "Move Up" },
+
+  -- Reselect latest changed, put, or yanked text
+  {
+    "gV",
+    '"`[" . strpart(getregtype(), 0, 1) . "`]"',
+    expr = true,
+    replace_keycodes = false,
+    desc = "Visually select changed text",
+  },
+
+  {
+    "g/",
+    "<esc>/\\%V",
+    mode = "x",
+    silent = false,
+    desc = "Search inside visual selection",
+  },
 
   -- esc clear highlight
   {
