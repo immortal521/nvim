@@ -37,6 +37,7 @@ require("conform").setup({
     rust = { "rustfmt" },
     handlebars = { "prettier" },
     html = { "prettier" },
+    java = { "google-java-format" },
     javascript = { "prettier" },
     javascriptreact = { "prettier" },
     json = { "prettier" },

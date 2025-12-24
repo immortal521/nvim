@@ -20,6 +20,7 @@ vim.api.nvim_create_autocmd("BufReadPre", {
         "graphql",
         "html",
         "http",
+        "java",
         "javascript",
         "jsdoc",
         "json",

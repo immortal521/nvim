@@ -19,6 +19,7 @@ return {
   require("plugins.grug-far"),
   require("plugins.dial"),
   -- require("plugins.octo"),
+  require("plugins.nvim-jdtls"),
   -- require("plugins.lensline"),
   -- require("plugins.diagnostic"),
   require("plugins.transparent"),
