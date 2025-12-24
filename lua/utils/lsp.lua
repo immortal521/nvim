@@ -1,3 +1,4 @@
+---@class utils.lsp
 local M = {}
 
 local lsp_files = vim.fn.globpath(vim.fn.stdpath("config") .. "/lsp", "*.lua", false, true)

@@ -1,3 +1,4 @@
+---@class utils.terminal
 local M = setmetatable({}, {
   __call = function(m, ...)
     return m.terminal(...)

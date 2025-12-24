@@ -25,7 +25,7 @@ require("incline").setup({
   render = function(props)
     local function get_buffer_filename()
       -- 获取所有已列出的 buffer
-      local bufs = Utils.get_bufs()
+      local bufs = Utils.buffer.get_bufs()
 
       if #bufs > 1 then
         return nil
