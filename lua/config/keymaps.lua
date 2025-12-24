@@ -75,7 +75,6 @@ local keys = {
   {
     "<leader>ur",
     "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
-
     desc = "Redraw / Clear hlsearch / Diff Update",
   },
 
@@ -118,7 +117,6 @@ local keys = {
         vim.notify(err, vim.log.levels.ERROR)
       end
     end,
-
     desc = "Location List",
   },
 
@@ -158,7 +156,6 @@ local keys = {
       vim.treesitter.inspect_tree()
       vim.api.nvim_input("I")
     end,
-
     desc = "Inspect Tree",
   },
 
@@ -194,6 +191,9 @@ _G.Config.leader_group_clues = {
   { keys = "<leader>u", mode = "n", desc = "+ui" },
   { keys = "<leader>w", mode = "n", desc = "+window" },
   { keys = "<leader>x", mode = "n", desc = "+other" },
+  { keys = "<leader>e", mode = "n", desc = "files" },
+  { keys = "<leader>m", mode = "n", desc = "+managers" },
+  { keys = "<leader><tab>", mode = "n", desc = "+tabs" },
 }
 
 local term_normal = {
