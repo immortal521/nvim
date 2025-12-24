@@ -45,6 +45,7 @@ MiniClue.setup({
     -- Enhance this by adding descriptions for <Leader> mapping groups
     MiniClue.gen_clues.builtin_completion(),
     MiniClue.gen_clues.g(),
+    MiniClue.gen_clues.square_brackets(),
     MiniClue.gen_clues.marks(),
     MiniClue.gen_clues.registers(),
     MiniClue.gen_clues.windows(),
