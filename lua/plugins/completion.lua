@@ -108,6 +108,7 @@ vim.api.nvim_create_autocmd({ "InsertEnter", "CmdlineEnter" }, {
               { "kind_icon", gap = 1 }, -- 类型图标列
               { "label", gap = 1, "label_description" }, -- 标签和描述列
               { "kind", gap = 1 }, -- 来源名称列
+              { "source_name", gap = 1 },
             },
             components = {
               kind_icon = {
@@ -139,7 +140,7 @@ vim.api.nvim_create_autocmd({ "InsertEnter", "CmdlineEnter" }, {
               kind = {
                 highlight = function(ctx)
                   if vim.tbl_contains({ "Path" }, ctx.source_name) then
-                    local mini_icon, mini_hl = require("mini.icons").get_icon(ctx.item.data.type, ctx.label)
+                    local mini_icon, mini_hl = require("mini.ons").get("default", ctx.item.data.type)
                     if mini_icon then
                       return mini_hl
                     end
@@ -187,7 +188,7 @@ vim.api.nvim_create_autocmd({ "InsertEnter", "CmdlineEnter" }, {
         },
         -- INFO: 临时禁用, 以解决选择补全时在 neovide 中光标移动到左上角再返回的 BUG
         accept = {
-          dot_repeat = false,
+          dot_repeat = true,
           auto_brackets = {
             enabled = true,
           },
@@ -199,17 +200,18 @@ vim.api.nvim_create_autocmd({ "InsertEnter", "CmdlineEnter" }, {
           if vim.bo.filetype == "oil" then
             return {}
           else
-            return { "lsp", "path", "codeium", "ripgrep", "buffer", "snippets" }
+            return { "lsp", "path", "codeium", "ripgrep", "snippets", "buffer" }
           end
         end,
         providers = {
-          codeium = { name = "Codeium", module = "codeium.blink", async = true },
+          buffer = { max_items = 3 },
+          codeium = { name = "Codeium", module = "codeium.blink", async = true, max_items = 3 },
           ripgrep = {
             name = "Ripgrep",
             module = "blink-cmp-rg",
             opts = {
               prefix_min_len = 3,
-              get_command = function(context, prefix)
+              get_command = function(_, prefix)
                 return {
                   "rg",
                   "--no-config",
@@ -225,6 +227,8 @@ vim.api.nvim_create_autocmd({ "InsertEnter", "CmdlineEnter" }, {
                 return context.line:sub(1, context.cursor[2]):match("[%w_-]+$") or ""
               end,
             },
+            max_items = 3,
+            score_offset = -20,
           },
         },
       },
