@@ -64,7 +64,7 @@
       "src": "https://github.com/b0o/incline.nvim"
     },
     "kulala.nvim": {
-      "rev": "9fc4831a116fb32b0fd420ed483f5102a873446a",
+      "rev": "cd3eaa83b8d60533837202dede73238334d71832",
       "src": "https://github.com/mistweaverco/kulala.nvim"
     },
     "lensline.nvim": {
