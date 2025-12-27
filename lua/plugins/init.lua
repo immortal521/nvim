@@ -15,7 +15,6 @@ return {
   require("plugins.rust"),
   require("plugins.grug-far"),
   require("plugins.dial"),
-  require("plugins.nvim-jdtls"),
   require("plugins.comment"),
   -- require("plugins.lensline"),
   require("plugins.diagnostic"),
