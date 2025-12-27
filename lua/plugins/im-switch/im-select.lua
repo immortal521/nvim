@@ -22,7 +22,7 @@ local function find_im_command()
   return "fcitx5-remote" -- 或者返回一个你认为安全的默认值，比如 "ibus"
 end
 
-vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+vim.api.nvim_create_autocmd(Utils.autocmd.BufEdit, {
   once = true,
   callback = function()
     local default_im_cmd = find_im_command()

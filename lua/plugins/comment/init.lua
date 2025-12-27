@@ -4,7 +4,7 @@ vim.pack.add({
   { src = "https://github.com/danymat/neogen" },
 })
 
-vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+vim.api.nvim_create_autocmd(Utils.autocmd.BufEdit, {
   once = true,
   callback = function()
     require("plugins.comment.ts-comments")

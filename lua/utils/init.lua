@@ -8,6 +8,7 @@
 ---@field system utils.system
 ---@field buffer utils.buffer
 ---@field log utils.log
+---@field autocmd utils.autocmd
 local M = {}
 
 -- 模块懒加载

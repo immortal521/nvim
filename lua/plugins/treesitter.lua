@@ -46,7 +46,7 @@ local langs = {
   "yaml",
 }
 
-vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+vim.api.nvim_create_autocmd(Utils.autocmd.BufEdit, {
   once = true,
   callback = function()
     TS.install(langs)

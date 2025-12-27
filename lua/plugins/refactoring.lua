@@ -126,7 +126,7 @@ local keys = {
   },
 }
 
-vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+vim.api.nvim_create_autocmd(Utils.autocmd.BufEdit, {
   once = true,
   callback = function()
     require("refactoring").setup(opts)

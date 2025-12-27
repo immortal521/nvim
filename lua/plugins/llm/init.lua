@@ -64,11 +64,10 @@ local opts = {
     models.Cloudflare,
   },
 }
+
 for _, conf in pairs({ ui, extensions, keymaps }) do
   opts = tbl_deep_extend("force", opts, conf)
 end
-
-require("llm").setup(opts)
 
 -- stylua: ignore
 local keys = {
@@ -92,4 +91,10 @@ local keys = {
   -- { "<leader>at", "<cmd>LLMSelectedTextHandler 英译汉<cr>", mode = "x", desc = "Translate" },
 }
 
-Utils.keymap.add(keys)
+vim.api.nvim_create_autocmd(Utils.autocmd.BufEdit, {
+  once = true,
+  callback = function()
+    require("llm").setup(opts)
+    Utils.keymap.add(keys)
+  end,
+})

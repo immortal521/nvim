@@ -4,7 +4,7 @@ vim.pack.add({
   { src = "https://github.com/b0o/incline.nvim" },
 })
 
-vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+vim.api.nvim_create_autocmd(Utils.autocmd.BufEdit, {
   once = true,
   callback = function()
     require("incline").setup({
