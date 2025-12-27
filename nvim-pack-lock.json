@@ -72,11 +72,11 @@
       "src": "https://github.com/oribarilan/lensline.nvim"
     },
     "llm.nvim": {
-      "rev": "fbef8d980df67528de1bce1a0dcf9df9cb2f8434",
+      "rev": "66c97d137479baa3ddfa313c00565906ad5fc5e5",
       "src": "https://github.com/Kurama622/llm.nvim"
     },
     "mason-lspconfig.nvim": {
-      "rev": "9f9c67795d0795a6e8612f5a899ca64a074a1076",
+      "rev": "4cfe411526a7a99c18281135e8b4765ae6330d15",
       "src": "https://github.com/mason-org/mason-lspconfig.nvim"
     },
     "mason-nvim-dap.nvim": {
@@ -180,7 +180,7 @@
       "src": "https://github.com/nvim-neotest/nvim-nio"
     },
     "nvim-treesitter": {
-      "rev": "6e42d823ce0a5a76180c473c119c7677738a09d1",
+      "rev": "36fcb4a4238928f0b627e1ab84ade0acc1facc2c",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
