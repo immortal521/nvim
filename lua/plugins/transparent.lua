@@ -6,12 +6,17 @@ vim.pack.add({
   { src = "https://github.com/xiyaowong/transparent.nvim" },
 })
 
-require("transparent").setup({
-  extra_groups = {
-    "TinyInlineDiagnosticVirtualTextArrow",
-    "TinyInlineInvDiagnosticVirtualTextHint",
-    "TinyInlineInvDiagnosticVirtualTextInfo",
-    "TinyInlineInvDiagnosticVirtualTextWarn",
-    "TinyInlineInvDiagnosticVirtualTextError",
-  },
+vim.api.nvim_create_autocmd("VimEnter", {
+  once = true,
+  callback = function()
+    require("transparent").setup({
+      extra_groups = {
+        "TinyInlineDiagnosticVirtualTextArrow",
+        "TinyInlineInvDiagnosticVirtualTextHint",
+        "TinyInlineInvDiagnosticVirtualTextInfo",
+        "TinyInlineInvDiagnosticVirtualTextWarn",
+        "TinyInlineInvDiagnosticVirtualTextError",
+      },
+    })
+  end,
 })

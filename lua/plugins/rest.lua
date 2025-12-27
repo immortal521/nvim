@@ -2,8 +2,6 @@ vim.pack.add({
   { src = "https://github.com/mistweaverco/kulala.nvim" },
 })
 
-require("kulala").setup({})
-
 local keys = {
   { "<leader>R", "", desc = "+Rest" },
   { "<leader>Rb", "<cmd>lua require('kulala').scratchpad()<cr>", desc = "Open scratchpad" },
@@ -25,4 +23,11 @@ local keys = {
   { "<leader>Rt", "<cmd>lua require('kulala').toggle_view()<cr>", desc = "Toggle headers/body" },
 }
 
-Utils.keymap.add(keys)
+vim.api.nvim_create_autocmd("BufRead", {
+  once = true,
+  pattern = { "*.graphql", "*.gql", "*.http" },
+  callback = function()
+    require("kulala").setup({})
+    Utils.keymap.add(keys)
+  end,
+})

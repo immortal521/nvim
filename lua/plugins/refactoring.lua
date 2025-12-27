@@ -126,5 +126,10 @@ local keys = {
   },
 }
 
-refactoring.setup(opts)
-Utils.keymap.add(keys)
+vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+  once = true,
+  callback = function()
+    require("refactoring").setup(opts)
+    Utils.keymap.add(keys)
+  end,
+})

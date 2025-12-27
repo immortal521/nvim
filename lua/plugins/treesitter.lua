@@ -1,10 +1,10 @@
 vim.pack.add({
   { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
-  { src = "https://github.com/windwp/nvim-ts-autotag" },
-  { src = "https://github.com/folke/ts-comments.nvim" },
 })
 
-require("nvim-treesitter").install({
+local TS = require("nvim-treesitter")
+
+local langs = {
   "bash",
   "c",
   "diff",
@@ -44,4 +44,18 @@ require("nvim-treesitter").install({
   "vimdoc",
   "xml",
   "yaml",
+}
+
+vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+  once = true,
+  callback = function()
+    TS.install(langs)
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = langs,
+  callback = function()
+    vim.treesitter.start()
+  end,
 })

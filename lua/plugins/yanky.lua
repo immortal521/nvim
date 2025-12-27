@@ -2,13 +2,6 @@ vim.pack.add({
   { src = "https://github.com/gbprod/yanky.nvim" },
 })
 
-require("yanky").setup({
-  system_clipboard = {
-    sync_with_ring = not vim.env.SSH_CIBBECTION,
-  },
-  highlight = { timer = 150 },
-})
-
 local keys = {
   {
     "<leader>v",
@@ -35,4 +28,15 @@ local keys = {
   { "=P", "<Plug>(YankyPutBeforeFilter)", desc = "Put Before Applying a Filter" },
 }
 
-Utils.keymap.add(keys)
+vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+  once = true,
+  callback = function()
+    require("yanky").setup({
+      system_clipboard = {
+        sync_with_ring = not vim.env.SSH_CIBBECTION,
+      },
+      highlight = { timer = 150 },
+    })
+    Utils.keymap.add(keys)
+  end,
+})

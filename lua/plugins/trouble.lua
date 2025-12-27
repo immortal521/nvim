@@ -2,14 +2,6 @@ vim.pack.add({
   { src = "https://github.com/folke/trouble.nvim" },
 })
 
-require("trouble").setup({
-  modes = {
-    lsp = {
-      win = { position = "right" },
-    },
-  },
-})
-
 -- stylua: ignore
 local keys = {
   { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", mode = "n", desc = "Diagnostics (Trouble)" },
@@ -52,4 +44,16 @@ local keys = {
   }
 }
 
-Utils.keymap.add(keys)
+vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+  once = true,
+  callback = function()
+    require("trouble").setup({
+      modes = {
+        lsp = {
+          win = { position = "right" },
+        },
+      },
+    })
+    Utils.keymap.add(keys)
+  end,
+})

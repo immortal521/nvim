@@ -3,18 +3,24 @@ vim.pack.add({
   -- { src = "https://github.com/mrcjkb/rustaceanvim" },
 })
 
-require("crates").setup({
-  completion = {
-    crates = {
-      enabled = true,
-    },
-  },
-  lsp = {
-    enabled = true,
-    actions = true,
-    completion = true,
-    hover = true,
-  },
+vim.api.nvim_create_autocmd({ "BufRead" }, {
+  pattern = { "rust", "cargo.toml" },
+  once = true,
+  callback = function()
+    require("crates").setup({
+      completion = {
+        crates = {
+          enabled = true,
+        },
+      },
+      lsp = {
+        enabled = true,
+        actions = true,
+        completion = true,
+        hover = true,
+      },
+    })
+  end,
 })
 
 -- require("rustaceanvim").setup({
