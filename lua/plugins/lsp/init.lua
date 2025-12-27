@@ -2,6 +2,7 @@ vim.pack.add({
   { src = "https://github.com/mfussenegger/nvim-lint" },
   { src = "https://github.com/mason-org/mason.nvim" },
   { src = "https://github.com/neovim/nvim-lspconfig" },
+  { src = "https://github.com/mfussenegger/nvim-jdtls" },
 })
 
 vim.api.nvim_create_autocmd(Utils.autocmd.BufEdit, {
