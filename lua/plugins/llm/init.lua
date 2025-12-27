@@ -55,10 +55,11 @@ local opts = {
 
   models = {
     models.GithubModels,
+    models.OpenRouter,
+    models.DeepSeek,
     models.Chatanywhere,
     models.SiliconFlow,
     models.GLM,
-    models.DeepSeek,
     models.Ollama,
     models.Kimi,
     models.Cloudflare,

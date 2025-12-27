@@ -17,7 +17,7 @@ return {
     name = "OpenRouter",
     url = "https://openrouter.ai/api/v1/chat/completions",
     -- model = "google/gemini-2.0-flash-exp:free",
-    model = "qwen/qwen3-coder:free",
+    model = "openai/gpt-oss-20b:free",
     max_tokens = 8000,
     api_type = "openai",
     fetch_key = vim.env.OPENROUTER_KEY,
