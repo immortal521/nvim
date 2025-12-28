@@ -1,6 +1,7 @@
 vim.pack.add({
   { src = "https://github.com/xzbdmw/colorful-menu.nvim" },
-  { src = "https://github.com/Exafunction/windsurf.nvim" },
+  -- { src = "https://github.com/Exafunction/windsurf.nvim" },
+  { src = "https://github.com/fang2hou/blink-copilot" },
   { src = "https://github.com/saghen/blink.cmp", version = vim.version.range(">=1.0.0 <2.0.0") },
   { src = "https://github.com/L3MON4D3/LuaSnip", version = vim.version.range(">=2.0.0 <3.0.0") },
   { src = "https://github.com/rafamadriz/friendly-snippets" },
@@ -26,10 +27,6 @@ require("luasnip").setup({
 require("luasnip.loaders.from_vscode").lazy_load()
 require("luasnip.loaders.from_lua").lazy_load({ paths = { vim.fn.stdpath("config") .. "/snippets" } })
 
-require("codeium").setup({
-  enable_cmp_source = false,
-})
-
 vim.api.nvim_create_autocmd({ "InsertEnter", "CmdlineEnter" }, {
   group = vim.api.nvim_create_augroup("BlinkCmpLazyLoad", { clear = true }),
   once = true,
@@ -46,7 +43,11 @@ vim.api.nvim_create_autocmd({ "InsertEnter", "CmdlineEnter" }, {
       ['<C-h>'] = { 'hide', 'show' },
       ['<cr>'] = { 'accept', 'fallback' },
       ['<S-Tab>'] = { 'select_prev', 'snippet_backward', 'fallback' },
-      ['<Tab>'] = { 'select_next', 'snippet_forward', 'fallback' },
+      ['<Tab>'] = {
+        'select_next',
+        'snippet_forward',
+        'fallback'
+      },
       ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
       ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
       ['<A-1>'] = { function(cmp) cmp.accept({ index = 1 }) end },
@@ -140,7 +141,7 @@ vim.api.nvim_create_autocmd({ "InsertEnter", "CmdlineEnter" }, {
               kind = {
                 highlight = function(ctx)
                   if vim.tbl_contains({ "Path" }, ctx.source_name) then
-                    local mini_icon, mini_hl = require("mini.ons").get("default", ctx.item.data.type)
+                    local mini_icon, mini_hl = require("mini.icons").get("default", ctx.item.data.type)
                     if mini_icon then
                       return mini_hl
                     end
@@ -180,6 +181,8 @@ vim.api.nvim_create_autocmd({ "InsertEnter", "CmdlineEnter" }, {
           },
         },
         documentation = {
+          auto_show = true,
+          auto_show_delay_ms = 500,
           window = { border = "rounded" },
         },
         trigger = {
@@ -200,12 +203,16 @@ vim.api.nvim_create_autocmd({ "InsertEnter", "CmdlineEnter" }, {
           if vim.bo.filetype == "oil" then
             return {}
           else
-            return { "lsp", "path", "codeium", "ripgrep", "snippets", "buffer" }
+            return { "lsp", "path", "copilot", "ripgrep", "snippets", "buffer" }
           end
         end,
         providers = {
           buffer = { max_items = 3 },
-          codeium = { name = "Codeium", module = "codeium.blink", async = true, max_items = 3 },
+          copilot = {
+            name = "copilot",
+            module = "blink-copilot",
+            async = true,
+          },
           ripgrep = {
             name = "Ripgrep",
             module = "blink-cmp-rg",

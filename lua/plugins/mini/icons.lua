@@ -216,6 +216,7 @@ MiniIcons.setup({
   lsp = {
     ["function"] = { glyph = "󰊕" },
     codeium = { glyph = "󰚩", hl = "MiniIconsPurple" },
+    copilot = { glyph = "󰚩", hl = "MiniIconsPurple" },
     variable = { glyph = "󰫧" },
     method = { glyph = "󰡱" },
     snippet = { glyph = "󰲋" },

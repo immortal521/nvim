@@ -13,6 +13,10 @@
       "rev": "722d8ab5d29369d604133064816657203cf24540",
       "src": "https://github.com/niuiic/blink-cmp-rg.nvim"
     },
+    "blink-copilot": {
+      "rev": "7ad8209b2f880a2840c94cdcd80ab4dc511d4f39",
+      "src": "https://github.com/fang2hou/blink-copilot"
+    },
     "blink.cmp": {
       "rev": "b19413d214068f316c78978b08264ed1c41830ec",
       "src": "https://github.com/saghen/blink.cmp",
@@ -72,7 +76,7 @@
       "src": "https://github.com/oribarilan/lensline.nvim"
     },
     "llm.nvim": {
-      "rev": "66c97d137479baa3ddfa313c00565906ad5fc5e5",
+      "rev": "0d38c2e08fc1b4eca7a946825c7784f1dc8cfdd2",
       "src": "https://github.com/Kurama622/llm.nvim"
     },
     "mason-lspconfig.nvim": {
@@ -189,7 +193,7 @@
       "src": "https://github.com/windwp/nvim-ts-autotag"
     },
     "oil.nvim": {
-      "rev": "756dec855b4811f2d27f067a3aca477f368d99f5",
+      "rev": "bbfa7cba85967dc9dbfe0ca486fd4b17084bf846",
       "src": "https://github.com/stevearc/oil.nvim"
     },
     "overseer.nvim": {
@@ -214,7 +218,7 @@
       "src": "https://github.com/ThePrimeagen/refactoring.nvim"
     },
     "rustaceanvim": {
-      "rev": "01c45937691914ce985a66f22bab34a1098aa26f",
+      "rev": "3d20d7bf5d2fc6a23be679355f9203915b6862af",
       "src": "https://github.com/mrcjkb/rustaceanvim"
     },
     "screenkey.nvim": {
@@ -253,10 +257,6 @@
     "vim-wakatime": {
       "rev": "d7973b157a632d1edeff01818f18d67e584eeaff",
       "src": "https://github.com/wakatime/vim-wakatime"
-    },
-    "windsurf.nvim": {
-      "rev": "821b570b526dbb05b57aa4ded578b709a704a38a",
-      "src": "https://github.com/Exafunction/windsurf.nvim"
     },
     "yanky.nvim": {
       "rev": "04fc42b94305d94948c9c197f679336668af3292",
