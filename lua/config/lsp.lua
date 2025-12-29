@@ -11,14 +11,6 @@ Utils.keymap({
   desc = "Lsp Info",
 })
 
-local actions = setmetatable({}, {
-  __index = function(_, action)
-    return function()
-      vim.lsp.buf.code_action({ apply = true, context = { only = { action }, diagnostics = {} } })
-    end
-  end,
-})
-
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("SetupLSP", {}),
   callback = function(event)
@@ -39,7 +31,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
     Utils.keymap({
       "<leader>cA",
-      actions.source,
+      Utils.lsp.action.source,
       desc = "Source Action",
     })
 

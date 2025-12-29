@@ -7,11 +7,19 @@ M.get_lsp_names = function()
   for _, file in ipairs(lsp_files) do
     -- 从路径中提取不带后缀的名字
     local name = vim.fn.fnamemodify(file, ":t:r")
-    if name then
+    if name ~= "" then
       table.insert(lsp_names, name)
     end
   end
   return lsp_names
 end
+
+M.action = setmetatable({}, {
+  __index = function(_, action)
+    return function()
+      vim.lsp.buf.code_action({ apply = true, context = { only = { action }, diagnostics = {} } })
+    end
+  end,
+})
 
 return M
