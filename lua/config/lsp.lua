@@ -1,5 +1,4 @@
 -- 获取 lsp 文件夹中所有 lua 文件
-
 for _, name in pairs(Utils.lsp.get_lsp_names()) do
   vim.lsp.enable(name)
 end
@@ -12,17 +11,37 @@ Utils.keymap({
   desc = "Lsp Info",
 })
 
+local actions = setmetatable({}, {
+  __index = function(_, action)
+    return function()
+      vim.lsp.buf.code_action({ apply = true, context = { only = { action }, diagnostics = {} } })
+    end
+  end,
+})
+
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("SetupLSP", {}),
   callback = function(event)
     local client = assert(vim.lsp.get_client_by_id(event.data.client_id))
 
     -- [inlay hint]
-    if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
-      vim.keymap.set("n", "<leader>th", function()
-        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
-      end, { buffer = event.buf, desc = "LSP: Toggle Inlay Hints" })
+    if client and client:supports_method("textDocument/inlayHint") then
+      vim.lsp.inlay_hint.enable()
+      Utils.keymap({
+        "<leader>uh",
+        function()
+          vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+        end,
+        buffer = event.buf,
+        desc = "LSP: Toggle Inlay Hints",
+      })
     end
+
+    Utils.keymap({
+      "<leader>cA",
+      actions.source,
+      desc = "Source Action",
+    })
 
     -- [folding]
     if client and client:supports_method("textDocument/foldingRange") then
