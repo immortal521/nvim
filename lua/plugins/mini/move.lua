@@ -1,3 +1,3 @@
-local MiniMove = require("mini.move")
+local move = require("mini.move")
 
-MiniMove.setup({})
+move.setup({})

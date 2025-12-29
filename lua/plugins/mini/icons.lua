@@ -1,6 +1,6 @@
-local MiniIcons = require("mini.icons")
+local icons = require("mini.icons")
 
-MiniIcons.setup({
+icons.setup({
   style = "glyph",
 
   -- 文件图标配置

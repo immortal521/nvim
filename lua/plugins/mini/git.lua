@@ -1,3 +1,3 @@
-local MiniGit = require("mini.git")
+local git = require("mini.git")
 
-MiniGit.setup({})
+git.setup({})

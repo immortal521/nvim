@@ -1,5 +1,5 @@
-local MiniSplitjoin = require("mini.splitjoin")
+local splitjoin = require("mini.splitjoin")
 
-MiniSplitjoin.setup({
+splitjoin.setup({
 
 })

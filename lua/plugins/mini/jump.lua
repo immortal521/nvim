@@ -1,3 +1,3 @@
-local MiniJump = require("mini.jump")
+local jump = require("mini.jump")
 
-MiniJump.setup({})
+jump.setup({})

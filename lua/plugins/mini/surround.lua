@@ -1,5 +1,6 @@
-local MiniSurround = require("mini.surround")
-MiniSurround.setup({
+local surround = require("mini.surround")
+
+surround.setup({
   mappings = {
     -- 添加环绕的映射
     add = "gsa",

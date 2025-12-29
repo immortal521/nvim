@@ -1,6 +1,6 @@
-local MiniClue = require("mini.clue")
+local clue = require("mini.clue")
 
-MiniClue.setup({
+clue.setup({
   triggers = {
     -- Leader triggers
     { mode = "n", keys = "<Leader>" },
@@ -43,13 +43,13 @@ MiniClue.setup({
     Config.leader_group_clues,
 
     -- Enhance this by adding descriptions for <Leader> mapping groups
-    MiniClue.gen_clues.builtin_completion(),
-    MiniClue.gen_clues.g(),
-    MiniClue.gen_clues.square_brackets(),
-    MiniClue.gen_clues.marks(),
-    MiniClue.gen_clues.registers(),
-    MiniClue.gen_clues.windows(),
-    MiniClue.gen_clues.z(),
+    clue.gen_clues.builtin_completion(),
+    clue.gen_clues.g(),
+    clue.gen_clues.square_brackets(),
+    clue.gen_clues.marks(),
+    clue.gen_clues.registers(),
+    clue.gen_clues.windows(),
+    clue.gen_clues.z(),
   },
 
   window = {

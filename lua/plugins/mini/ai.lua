@@ -1,4 +1,4 @@
-local MiniAI = require("mini.ai")
+local ai = require("mini.ai")
 
 local function ai_buffer(ai_type)
   local start_line, end_line = 1, vim.fn.line("$")
@@ -16,15 +16,15 @@ local function ai_buffer(ai_type)
   return { from = { line = start_line, col = 1 }, to = { line = end_line, col = to_col } }
 end
 
-MiniAI.setup({
+ai.setup({
   n_lines = 500,
   custom_textobjects = {
-    o = MiniAI.gen_spec.treesitter({ -- code block
+    o = ai.gen_spec.treesitter({ -- code block
       a = { "@block.outer", "@conditional.outer", "@loop.outer" },
       i = { "@block.inner", "@conditional.inner", "@loop.inner" },
     }),
-    f = MiniAI.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }), -- function
-    c = MiniAI.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }), -- class
+    f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }), -- function
+    c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }), -- class
     t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" }, -- tags
     d = { "%f[%d]%d+" }, -- digits
     e = { -- Word with case
@@ -32,8 +32,8 @@ MiniAI.setup({
       "^().*()$",
     },
     g = ai_buffer, -- buffer
-    u = MiniAI.gen_spec.function_call(), -- u for "Usage"
-    U = MiniAI.gen_spec.function_call({ name_pattern = "[%w_]" }), -- without dot in function name
+    u = ai.gen_spec.function_call(), -- u for "Usage"
+    U = ai.gen_spec.function_call({ name_pattern = "[%w_]" }), -- without dot in function name
   },
   mappings = {
     goto_left = "[",

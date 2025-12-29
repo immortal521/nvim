@@ -1,6 +1,6 @@
-local MiniFiles = require("mini.files")
+local files = require("mini.files")
 
-MiniFiles.setup({
+files.setup({
   options = {
     use_as_default_explorer = false,
   },

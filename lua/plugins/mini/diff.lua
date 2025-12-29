@@ -1,6 +1,6 @@
-local MiniDiff = require("mini.diff")
+local diff = require("mini.diff")
 
-MiniDiff.setup({
+diff.setup({
   -- 视图配置
   view = {
     -- 差异显示样式：'sign' 或 'number'
