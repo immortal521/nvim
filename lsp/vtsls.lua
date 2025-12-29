@@ -15,6 +15,20 @@ return {
   settings = {
     vtsls = {
       autoUseWorkspaceTsdk = true,
+      typescript = {
+        inlayHints = {
+          parameterNames = {
+            enabled = "all",
+          },
+        },
+      },
+      javascript = {
+        inlayHints = {
+          parameterNames = {
+            enabled = "all",
+          },
+        },
+      },
     },
   },
   root_dir = function(bufnr, on_dir)

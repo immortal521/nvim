@@ -45,4 +45,12 @@ return {
 
     client.handlers["tsserver/request"] = typescriptHandler
   end,
+  settings = {
+    vue = {
+      inlayHints = {
+        inlineHandlerLeading = true,
+        destructuredProps = true,
+      },
+    },
+  },
 }
