@@ -16,13 +16,11 @@ local detail = false
 vim.api.nvim_create_autocmd("User", {
   pattern = "OilActionsPost",
   callback = function(event)
-    if event.data and event.data.actions and #event.data.actions > 0 then
+    if event and event.data and event.data.actions and #event.data.actions > 0 then
       local action = event.data.actions[1]
       if action.type == "move" then
         require("snacks").rename.on_rename_file(action.src_url, action.dest_url)
       end
-    else
-      print("Error: event.data.actions is nil or empty")
     end
   end,
 })
