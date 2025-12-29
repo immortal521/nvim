@@ -11,6 +11,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
   callback = function()
     require("transparent").setup({
       extra_groups = {
+        "LspInlayHint",
         "TinyInlineDiagnosticVirtualTextArrow",
         "TinyInlineInvDiagnosticVirtualTextHint",
         "TinyInlineInvDiagnosticVirtualTextInfo",
