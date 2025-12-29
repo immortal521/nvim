@@ -6,9 +6,6 @@ vim.pack.add({
   { src = "https://github.com/niuiic/blink-cmp-rg.nvim" },
 })
 
-require("codeium").setup({
-  enable_cmp_source = false,
-})
-
 require("plugins.completion.blink-cmp")
 require("plugins.completion.luasnip")
+require("plugins.completion.windsurf")
