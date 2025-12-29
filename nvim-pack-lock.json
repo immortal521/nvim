@@ -255,7 +255,7 @@
       "src": "https://github.com/wakatime/vim-wakatime"
     },
     "windsurf.nvim": {
-      "rev": "6dbdb84495653a5613c51f961864d029ceb22aa8",
+      "rev": "30a14a1cdf0887a820b7394d98f09b95e8676228",
       "src": "https://github.com/immortal521/windsurf.nvim"
     },
     "yanky.nvim": {
