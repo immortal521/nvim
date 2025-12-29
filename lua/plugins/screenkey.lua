@@ -11,7 +11,13 @@ vim.api.nvim_create_autocmd(Utils.autocmd.BufEdit, {
   callback = function()
     require("screenkey").setup({
       win_opts = {
-        anchor = "SW",
+        relative = "editor",
+        row = vim.o.lines - 1,
+        col = vim.o.columns - 32,
+        height = 3,
+        width = 20,
+        border = "rounded",
+        title = "",
       },
     })
     Utils.keymap.add(keys)
