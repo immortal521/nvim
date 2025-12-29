@@ -13,6 +13,7 @@ vim.pack.add({
   { src = "https://github.com/nvim-mini/mini.surround" },
   { src = "https://github.com/nvim-mini/mini.splitjoin" },
   { src = "https://github.com/nvim-mini/mini.jump" },
+  { src = "https://github.com/nvim-mini/mini.hipatterns" },
 })
 
 vim.api.nvim_create_autocmd(Utils.autocmd.BufEdit, {

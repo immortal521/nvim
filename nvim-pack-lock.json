@@ -13,10 +13,6 @@
       "rev": "722d8ab5d29369d604133064816657203cf24540",
       "src": "https://github.com/niuiic/blink-cmp-rg.nvim"
     },
-    "blink-copilot": {
-      "rev": "7ad8209b2f880a2840c94cdcd80ab4dc511d4f39",
-      "src": "https://github.com/fang2hou/blink-copilot"
-    },
     "blink.cmp": {
       "rev": "b19413d214068f316c78978b08264ed1c41830ec",
       "src": "https://github.com/saghen/blink.cmp",
@@ -111,6 +107,10 @@
       "rev": "22c64f010eef047ed270e29e7cc266cd4740787e",
       "src": "https://github.com/nvim-mini/mini.files"
     },
+    "mini.hipatterns": {
+      "rev": "add8d8abad602787377ec5d81f6b248605828e0f",
+      "src": "https://github.com/nvim-mini/mini.hipatterns"
+    },
     "mini.icons": {
       "rev": "ff2e4f1d29f659cc2bad0f9256f2f6195c6b2428",
       "src": "https://github.com/nvim-mini/mini.icons"
@@ -162,10 +162,6 @@
     "nvim-dap-virtual-text": {
       "rev": "fbdb48c2ed45f4a8293d0d483f7730d24467ccb6",
       "src": "https://github.com/theHamsta/nvim-dap-virtual-text"
-    },
-    "nvim-highlight-colors": {
-      "rev": "e0c4a58ec8c3ca7c92d3ee4eb3bc1dd0f7be317e",
-      "src": "https://github.com/brenoprata10/nvim-highlight-colors"
     },
     "nvim-jdtls": {
       "rev": "f73731b543f5971e0da9665eb1d7ceffe1fde71f",
@@ -222,7 +218,7 @@
       "src": "https://github.com/mrcjkb/rustaceanvim"
     },
     "screenkey.nvim": {
-      "rev": "459a9955dde2e99fbd5a8926990f3503c430571f",
+      "rev": "68f03f52faf52ccfe954e5430ce17f7590bac2a0",
       "src": "https://github.com/NStefan002/screenkey.nvim",
       "version": "'main'"
     },
@@ -257,6 +253,10 @@
     "vim-wakatime": {
       "rev": "d7973b157a632d1edeff01818f18d67e584eeaff",
       "src": "https://github.com/wakatime/vim-wakatime"
+    },
+    "windsurf.nvim": {
+      "rev": "6dbdb84495653a5613c51f961864d029ceb22aa8",
+      "src": "https://github.com/immortal521/windsurf.nvim"
     },
     "yanky.nvim": {
       "rev": "04fc42b94305d94948c9c197f679336668af3292",
