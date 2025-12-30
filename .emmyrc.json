@@ -1,0 +1,52 @@
+{
+  "$schema": "https://raw.githubusercontent.com/EmmyLuaLs/emmylua-analyzer-rust/refs/heads/main/crates/emmylua_code_analysis/resources/schema.json",
+  "completion": {
+    "autoRequire": true,
+    "autoRequireFunction": "require",
+    "autoRequireNamingConvention": "keep",
+    "autoRequireSeparator": ".",
+    "baseFunctionIncludesName": true,
+    "callSnippet": true,
+    "enable": true,
+    "postfix": "@"
+  },
+  "diagnostics": {
+    "diagnosticInterval": 500,
+    "disable": [
+      "duplicate-type",
+      "missing-fields"
+    ],
+    "enable": true,
+    "enables": [],
+    "globals": [],
+    "globalsRegex": [],
+    "severity": {}
+  },
+  "runtime": {
+    "version": "LuaJIT",
+    "extensions": [
+      ".lua"
+    ],
+    "requirePattern": [
+      "lua/?.lua",
+      "lua/?/init.lua"
+    ]
+  },
+  "workspace": {
+    "library": [
+      "$VIMRUNTIME",
+      "$HOME/.local/share/nvim/lazy"
+    ],
+    "ignoreGlobs": [
+      "**/*_spec.lua"
+    ]
+  },
+  "strict": {
+    "arrayIndex": true,
+    "docBaseConstMatchBaseType": true,
+    "metaOverrideFileDefine": true,
+    "requireExportGlobal": false,
+    "requirePath": false,
+    "typeCall": true
+  }
+}

@@ -1,141 +1,141 @@
 -- 获取 lsp 文件夹中所有 lua 文件
 for _, name in pairs(Utils.lsp.get_lsp_names()) do
-  vim.lsp.enable(name)
+	vim.lsp.enable(name)
 end
 
 Utils.keymap({
-  "<leader>cl",
-  function()
-    require("snacks").picker.lsp_config()
-  end,
-  desc = "Lsp Info",
+	"<leader>cl",
+	function()
+		require("snacks").picker.lsp_config()
+	end,
+	desc = "Lsp Info",
 })
 
 vim.api.nvim_create_autocmd("LspAttach", {
-  group = vim.api.nvim_create_augroup("SetupLSP", {}),
-  callback = function(event)
-    local client = assert(vim.lsp.get_client_by_id(event.data.client_id))
+	group = vim.api.nvim_create_augroup("SetupLSP", {}),
+	callback = function(event)
+		local client = assert(vim.lsp.get_client_by_id(event.data.client_id))
 
-    -- [inlay hint]
-    if client and client:supports_method("textDocument/inlayHint") then
-      vim.lsp.inlay_hint.enable()
-      Utils.keymap({
-        "<leader>uh",
-        function()
-          vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
-        end,
-        buffer = event.buf,
-        desc = "LSP: Toggle Inlay Hints",
-      })
-    end
+		-- [inlay hint]
+		if client and client:supports_method("textDocument/inlayHint") then
+			vim.lsp.inlay_hint.enable()
+			Utils.keymap({
+				"<leader>uh",
+				function()
+					vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+				end,
+				buffer = event.buf,
+				desc = "LSP: Toggle Inlay Hints",
+			})
+		end
 
-    Utils.keymap({
-      "<leader>cA",
-      Utils.lsp.action.source,
-      desc = "Source Action",
-    })
+		Utils.keymap({
+			"<leader>cA",
+			Utils.lsp.action.source,
+			desc = "Source Action",
+		})
 
-    -- [folding]
-    if client and client:supports_method("textDocument/foldingRange") then
-      local win = vim.api.nvim_get_current_win()
-      vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
-    end
+		-- [folding]
+		if client and client:supports_method("textDocument/foldingRange") then
+			local win = vim.api.nvim_get_current_win()
+			vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
+		end
 
-    local function jump_to_current_function_start()
-      local params = { textDocument = vim.lsp.util.make_text_document_params() }
-      local responses = vim.lsp.buf_request_sync(0, "textDocument/documentSymbol", params, 1000)
-      if not responses then
-        return
-      end
+		local function jump_to_current_function_start()
+			local params = { textDocument = vim.lsp.util.make_text_document_params() }
+			local responses = vim.lsp.buf_request_sync(0, "textDocument/documentSymbol", params, 1000)
+			if not responses then
+				return
+			end
 
-      local pos = vim.api.nvim_win_get_cursor(0)
-      local line = pos[1] - 1
+			local pos = vim.api.nvim_win_get_cursor(0)
+			local line = pos[1] - 1
 
-      local function find_symbol(symbols)
-        for _, s in ipairs(symbols) do
-          local range = s.range or (s.location and s.location.range)
-          if range and line >= range.start.line and line <= range["end"].line then
-            if s.children then
-              local child = find_symbol(s.children)
-              if child then
-                return child
-              end
-            end
-            return s
-          end
-        end
-      end
+			local function find_symbol(symbols)
+				for _, s in ipairs(symbols) do
+					local range = s.range or (s.location and s.location.range)
+					if range and line >= range.start.line and line <= range["end"].line then
+						if s.children then
+							local child = find_symbol(s.children)
+							if child then
+								return child
+							end
+						end
+						return s
+					end
+				end
+			end
 
-      for _, resp in pairs(responses) do
-        local sym = find_symbol(resp.result or {})
-        if sym and sym.range then
-          vim.api.nvim_win_set_cursor(0, { sym.range.start.line + 1, 0 })
-          return
-        end
-      end
-    end
-    vim.keymap.set("n", "[f", jump_to_current_function_start, { desc = "Jump to start of current function" })
-    local function jump_to_current_function_end()
-      local params = { textDocument = vim.lsp.util.make_text_document_params() }
-      local responses = vim.lsp.buf_request_sync(0, "textDocument/documentSymbol", params, 1000)
-      if not responses then
-        return
-      end
+			for _, resp in pairs(responses) do
+				local sym = find_symbol(resp.result or {})
+				if sym and sym.range then
+					vim.api.nvim_win_set_cursor(0, { sym.range.start.line + 1, 0 })
+					return
+				end
+			end
+		end
+		vim.keymap.set("n", "[f", jump_to_current_function_start, { desc = "Jump to start of current function" })
+		local function jump_to_current_function_end()
+			local params = { textDocument = vim.lsp.util.make_text_document_params() }
+			local responses = vim.lsp.buf_request_sync(0, "textDocument/documentSymbol", params, 1000)
+			if not responses then
+				return
+			end
 
-      local pos = vim.api.nvim_win_get_cursor(0)
-      local line = pos[1] - 1
+			local pos = vim.api.nvim_win_get_cursor(0)
+			local line = pos[1] - 1
 
-      local function find_symbol(symbols)
-        for _, s in ipairs(symbols) do
-          local range = s.range or (s.location and s.location.range)
-          if range and line >= range.start.line and line <= range["end"].line then
-            if s.children then
-              local child = find_symbol(s.children)
-              if child then
-                return child
-              end
-            end
-            return s
-          end
-        end
-      end
+			local function find_symbol(symbols)
+				for _, s in ipairs(symbols) do
+					local range = s.range or (s.location and s.location.range)
+					if range and line >= range.start.line and line <= range["end"].line then
+						if s.children then
+							local child = find_symbol(s.children)
+							if child then
+								return child
+							end
+						end
+						return s
+					end
+				end
+			end
 
-      for _, resp in pairs(responses) do
-        local sym = find_symbol(resp.result or {})
-        if sym and sym.range then
-          -- jump to end of the symbol
-          vim.api.nvim_win_set_cursor(0, { sym.range["end"].line + 1, 0 })
-          return
-        end
-      end
-    end
-    vim.keymap.set("n", "]f", jump_to_current_function_end, { desc = "Jump to end of current function" })
-  end,
+			for _, resp in pairs(responses) do
+				local sym = find_symbol(resp.result or {})
+				if sym and sym.range then
+					-- jump to end of the symbol
+					vim.api.nvim_win_set_cursor(0, { sym.range["end"].line + 1, 0 })
+					return
+				end
+			end
+		end
+		vim.keymap.set("n", "]f", jump_to_current_function_end, { desc = "Jump to end of current function" })
+	end,
 })
 
 vim.diagnostic.config({
-  update_in_insert = false,
-  underline = true,
-  -- virtual_lines = { current_line = true },
-  virtual_text = {
-    spacing = 4,
-    source = "if_many",
-    prefix = "●",
-  },
-  float = { severity_sort = true },
-  severity_sort = true,
-  signs = {
-    text = {
-      [vim.diagnostic.severity.ERROR] = " ",
-      [vim.diagnostic.severity.WARN] = " ",
-      [vim.diagnostic.severity.INFO] = " ",
-      [vim.diagnostic.severity.HINT] = " ",
-    },
-    numhl = {
-      [vim.diagnostic.severity.ERROR] = "DiagnosticError",
-      [vim.diagnostic.severity.WARN] = "DiagnosticWarning",
-      [vim.diagnostic.severity.INFO] = "DiagnosticInfo",
-      [vim.diagnostic.severity.HINT] = "DiagnosticHint",
-    },
-  },
+	update_in_insert = false,
+	underline = true,
+	-- virtual_lines = { current_line = true },
+	virtual_text = {
+		spacing = 4,
+		source = "if_many",
+		prefix = "●",
+	},
+	float = { severity_sort = true },
+	severity_sort = true,
+	signs = {
+		text = {
+			[vim.diagnostic.severity.ERROR] = " ",
+			[vim.diagnostic.severity.WARN] = " ",
+			[vim.diagnostic.severity.INFO] = " ",
+			[vim.diagnostic.severity.HINT] = " ",
+		},
+		numhl = {
+			[vim.diagnostic.severity.ERROR] = "DiagnosticError",
+			[vim.diagnostic.severity.WARN] = "DiagnosticWarning",
+			[vim.diagnostic.severity.INFO] = "DiagnosticInfo",
+			[vim.diagnostic.severity.HINT] = "DiagnosticHint",
+		},
+	},
 })

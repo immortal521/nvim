@@ -5,9 +5,9 @@ g.mapleader = " "
 g.maplocalleader = "\\"
 
 if Utils.is_win() then
-  Utils.terminal("nu")
+	Utils.terminal("nu")
 else
-  Utils.terminal("zsh")
+	Utils.terminal("zsh")
 end
 
 opt.autowrite = true
@@ -19,12 +19,12 @@ opt.confirm = false
 opt.cursorline = true
 opt.expandtab = true
 opt.fillchars = {
-  foldopen = "",
-  foldclose = "",
-  fold = " ",
-  foldsep = " ",
-  diff = "╱",
-  eob = " ",
+	foldopen = "",
+	foldclose = "",
+	fold = " ",
+	foldsep = " ",
+	diff = "╱",
+	eob = " ",
 }
 opt.foldlevel = 99
 opt.foldmethod = "indent"
@@ -76,7 +76,7 @@ g.have_nerd_font = true
 vim.o.winborder = "rounded"
 
 if vim.env.TERM_PROGRAM == "WezTerm" then
-  vim.g.wezterm_render = true
+	vim.g.wezterm_render = true
 end
 
 -- Neovide 基础设置

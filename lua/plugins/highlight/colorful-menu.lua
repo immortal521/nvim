@@ -1,1 +1,9 @@
-require("colorful-menu").setup({})
+-- Auto Completion Menu Highlight
+---@type LazyPluginSpec
+return {
+	"xzbdmw/colorful-menu.nvim",
+	lazy = true,
+
+	---@type ColorfulMenuConfig
+	opts = {},
+}
