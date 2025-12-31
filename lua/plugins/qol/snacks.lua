@@ -84,6 +84,7 @@ return {
 						action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})",
 					},
 					{ icon = " ", key = "s", desc = "Restore Session", section = "session" },
+					{ icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
 					{
 						icon = " ",
 						key = "S",
@@ -96,6 +97,7 @@ return {
 			sections = {
 				{ section = "header" },
 				{ section = "keys", gap = 0.5 },
+				{ section = "startup" },
 			},
 		},
 	},
