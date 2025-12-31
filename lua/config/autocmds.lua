@@ -87,18 +87,6 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
--- 终端窗口自动进入插入模式
--- vim.api.nvim_create_autocmd("TermOpen", {
---   desc = "终端窗口自动进入插入模式",
---   group = vim.api.nvim_create_augroup("auto_console_insert_mode", { clear = true }),
---   callback = function()
---     vim.cmd("startinsert")
---     vim.wo.number = false
---     vim.wo.relativenumber = false
---     vim.wo.signcolumn = "no"
---   end,
--- })
-
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 	group = vim.api.nvim_create_augroup("env_filetype", { clear = true }),
 	pattern = { "*.env", ".env.*" },
