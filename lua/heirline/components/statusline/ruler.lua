@@ -10,7 +10,7 @@ return {
 	{
 		provider = "",
 		hl = function(self)
-			return { fg = self.mode_colors[self.mode], bg = "fg" }
+			return { fg = self.mode_colors[self.mode], bg = colors.fg_gutter }
 		end,
 	},
 }
