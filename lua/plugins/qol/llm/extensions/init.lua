@@ -5,7 +5,7 @@ return {
 		BashRunner = require("plugins.qol.llm.extensions.bash_runner"),
 		CodeExplain = require("plugins.qol.llm.extensions.code_explain"),
 		CommitMsg = require("plugins.qol.llm.extensions.commit_msg"),
-		Completion = require("plugins..qol.llm.extensions.completion"),
+		-- Completion = require("plugins..qol.llm.extensions.completion"),
 		DocString = require("plugins.qol.llm.extensions.docstring"),
 		FormulaRecognition = require("plugins.qol.llm.extensions.formula_recognition"),
 		OptimCompare = require("plugins.qol.llm.extensions.optim_compare"),
