@@ -206,6 +206,8 @@ local keys = {
 	{ "<leader><tab>]", "<cmd>tabnext<cr>", desc = "Next Tab" },
 	{ "<leader><tab>d", "<cmd>tabclose<cr>", desc = "Close Tab" },
 	{ "<leader><tab>[", "<cmd>tabprevious<cr>", desc = "Previous Tab" },
+
+	{ "<leader>fs", "<cmd>e<cr>", desc = "Reload File" },
 }
 
 Utils.keymap.add(keys)
