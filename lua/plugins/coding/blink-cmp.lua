@@ -55,6 +55,7 @@ return {
 				trigger = { show_on_insert = true },
 				window = { border = "rounded", treesitter_highlighting = true, show_documentation = true },
 			},
+			snippets = { preset = "luasnip" },
 			sources = {
 				default = { "lsp", "path", "snippets", "buffer", "codeium" },
 				providers = {
