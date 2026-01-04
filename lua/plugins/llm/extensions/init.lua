@@ -5,7 +5,6 @@ return {
     BashRunner = require("plugins.llm.extensions.bash_runner"),
     CodeExplain = require("plugins.llm.extensions.code_explain"),
     CommitMsg = require("plugins.llm.extensions.commit_msg"),
-    Completion = require("plugins.llm.extensions.completion"),
     DocString = require("plugins.llm.extensions.docstring"),
     FormulaRecognition = require("plugins.llm.extensions.formula_recognition"),
     OptimCompare = require("plugins.llm.extensions.optim_compare"),
