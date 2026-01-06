@@ -5,7 +5,7 @@ return {
 		provider = function()
 			return require("noice").api.status.command.get()
 		end,
-		hl = { fg = colors.fg_gutter },
+		hl = { fg = colors.magenta },
 	},
 	{ provider = " " },
 }
