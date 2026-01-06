@@ -25,6 +25,9 @@ return {
 			provider = function(self)
 				return self.icon and (self.icon .. " ")
 			end,
+			condition = function(self)
+				return self.filename ~= ""
+			end,
 			hl = function(self)
 				return {
 					fg = self.icon_color,

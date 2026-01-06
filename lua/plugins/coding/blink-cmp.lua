@@ -59,7 +59,7 @@ return {
 			sources = {
 				default = { "lsp", "path", "snippets", "buffer", "codeium" },
 				providers = {
-					codeium = { name = "codeium", module = "codeium.blink", async = true, max_items = 3 },
+					codeium = { name = "Codeium", module = "codeium.blink", async = true, max_items = 3 },
 					ripgrep = {
 						name = "Ripgrep",
 						module = "blink-cmp-rg",
@@ -123,49 +123,11 @@ return {
 				kind_icon = {
 					ellipsis = false,
 					text = function(ctx)
-						local icon = ctx.kind_icon
-						if ctx.source_id == "lsp" then
-							if ctx.kind == "File" then
-								icon, _ = mini_icons.get("file", ctx.item.detail)
-							elseif ctx.kind == "Folder" then
-								icon, _ = mini_icons.get("directory", ctx.item.label)
-							elseif ctx.kind == "Color" and ctx.item.documentation then
-								-- local color_item = highlight_colors.format(ctx.item.documentation, { kind = "Color" })
-								-- if color_item and color_item.abbr then
-								-- 	icon = color_item.abbr
-								-- end
-							else
-								icon, _ = mini_icons.get("lsp", ctx.kind)
-							end
-						elseif ctx.source_id == "path" then
-							if ctx.item.data.type ~= "link" then
-								icon, _ = mini_icons.get(ctx.item.data.type, ctx.label)
-							end
-						end
-
-						return icon .. ctx.icon_gap
+						local icon, _, _ = mini_icons.get("lsp", ctx.kind)
+						return icon .. (ctx.icon_gap or "")
 					end,
 					highlight = function(ctx)
-						local hl = ctx.kind_hl
-						if ctx.source_id == "lsp" then
-							if ctx.kind == "File" then
-								_, hl = mini_icons.get("file", ctx.item.detail)
-							elseif ctx.kind == "Folder" then
-								_, hl = mini_icons.get("directory", ctx.item.label)
-							elseif ctx.kind == "Color" and ctx.item.documentation then
-								-- local color_item = highlight_colors.format(ctx.item.documentation, { kind = "Color" })
-								-- if color_item and color_item.abbr then
-								-- 	hl = color_item.abbr_hl_group
-								-- end
-							else
-								_, hl = mini_icons.get("lsp", ctx.kind)
-							end
-						elseif ctx.source_id == "path" then
-							if ctx.item.data.type ~= "link" then
-								_, hl = mini_icons.get(ctx.item.data.type, ctx.label)
-							end
-						end
-
+						local _, hl, _ = mini_icons.get("lsp", ctx.kind)
 						return hl
 					end,
 				},

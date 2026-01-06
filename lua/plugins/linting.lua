@@ -9,7 +9,7 @@ return {
 			go = { "golangcilint" },
 			vue = { "eslint" },
 			javascript = { "eslint" },
-			typescript = { "eslint", "oxlint" },
+			typescript = { "eslint" },
 		}
 
 		local events = {
