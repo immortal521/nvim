@@ -170,7 +170,7 @@ return {
 					end,
 				},
 				label = {
-					width = { fill = true, max = 30 },
+					width = { max = 20 },
 					text = function(ctx)
 						return colorful_menu.blink_components_text(ctx)
 					end,
@@ -191,7 +191,7 @@ return {
 				},
 
 				label_description = {
-					width = { max = 30 },
+					width = { max = 20 },
 					text = function(ctx)
 						return ctx.label_description
 					end,
