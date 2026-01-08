@@ -56,6 +56,7 @@ return {
 				"css-variables-language-server",
 				"cssmodules-language-server",
 				"delve",
+				"emmet-language-server",
 				"gofumpt",
 				"goimports",
 				"golangci-lint",
