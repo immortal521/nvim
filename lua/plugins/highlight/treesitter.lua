@@ -10,7 +10,6 @@ local langs = {
 	"javascript",
 	"jsdoc",
 	"json",
-	"jsonc",
 	"jsx",
 	"lua",
 	"luadoc",
