@@ -14,7 +14,7 @@ return {
 		end,
 		provider = function()
 			local summary = vim.b.minigit_summary or {}
-			return " " .. icons.branch .. (summary.head_name or "") .. " "
+			return " " .. icons.branch .. " " .. (summary.head_name or "") .. " "
 		end,
 		hl = function(self)
 			return { fg = self.mode_colors[self.mode], bg = colors.fg_gutter, bold = true }
