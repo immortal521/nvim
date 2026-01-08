@@ -3,23 +3,38 @@ local M = {}
 
 local lsp_files = vim.fn.globpath(vim.fn.stdpath("config") .. "/lsp", "*.lua", false, true)
 M.get_lsp_names = function()
-  local lsp_names = {}
-  for _, file in ipairs(lsp_files) do
-    -- 从路径中提取不带后缀的名字
-    local name = vim.fn.fnamemodify(file, ":t:r")
-    if name ~= "" then
-      table.insert(lsp_names, name)
-    end
-  end
-  return lsp_names
+	local lsp_names = {}
+	for _, file in ipairs(lsp_files) do
+		-- 从路径中提取不带后缀的名字
+		local name = vim.fn.fnamemodify(file, ":t:r")
+		if name ~= "" then
+			table.insert(lsp_names, name)
+		end
+	end
+	return lsp_names
+end
+
+---@param ignored_lsps? string[]
+M.enable_lsps = function(ignored_lsps)
+	local disabled = {}
+
+	for _, name in ipairs(ignored_lsps or {}) do
+		disabled[name] = true
+	end
+
+	for _, name in ipairs(M.get_lsp_names()) do
+		if not disabled[name] then
+			vim.lsp.enable(name)
+		end
+	end
 end
 
 M.action = setmetatable({}, {
-  __index = function(_, action)
-    return function()
-      vim.lsp.buf.code_action({ apply = true, context = { only = { action }, diagnostics = {} } })
-    end
-  end,
+	__index = function(_, action)
+		return function()
+			vim.lsp.buf.code_action({ apply = true, context = { only = { action }, diagnostics = {} } })
+		end
+	end,
 })
 
 return M

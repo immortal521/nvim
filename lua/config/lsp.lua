@@ -1,7 +1,6 @@
--- 获取 lsp 文件夹中所有 lua 文件
-for _, name in pairs(Utils.lsp.get_lsp_names()) do
-	vim.lsp.enable(name)
-end
+local ignored_lsps = {}
+
+Utils.lsp.enable_lsps(ignored_lsps)
 
 Utils.keymap({
 	"<leader>cl",
