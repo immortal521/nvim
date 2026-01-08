@@ -10,7 +10,7 @@ return {
 			enabled = true,
 		},
 		image = {
-			enabled = true,
+			enabled = not vim.g.neovide and true or false,
 		},
 		bigfile = {
 			enabled = true,
