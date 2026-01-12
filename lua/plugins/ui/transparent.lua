@@ -15,6 +15,5 @@ return {
 			},
 		}
 		require("transparent").setup(opts)
-		vim.cmd([[TransparentEnable]])
 	end,
 }
