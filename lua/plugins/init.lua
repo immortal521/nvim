@@ -16,6 +16,8 @@ return {
   require("plugins.grug-far"),
   require("plugins.dial"),
   require("plugins.comment"),
+  require("plugins.live-preview"),
+  require("plugins.colorful-winsep"),
   -- require("plugins.lensline"),
   require("plugins.diagnostic"),
   require("plugins.transparent"),
