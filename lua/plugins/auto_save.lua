@@ -9,6 +9,10 @@ require("auto-save").setup({
   condition = function(buf)
     local fn = vim.fn
 
+    if fn.getbufvar(buf, "&filetype") == "oil" then
+      return false
+    end
+
     if fn.getbufvar(buf, "&modifiable") == 1 then
       return fn.mode() == "n"
     end
