@@ -46,6 +46,7 @@ local keys = {
 
 require("trouble").setup({
   modes = {
+    focus = true,
     lsp = {
       win = { position = "right" },
     },
