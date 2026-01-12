@@ -1,6 +1,6 @@
 local icons = require("mini.icons")
 
-icons.setup({
+local opts = {
   style = "glyph",
 
   -- 文件图标配置
@@ -241,4 +241,7 @@ icons.setup({
     operator = { glyph = "󰆕" },
     TypeParameter = { glyph = "" },
   },
-})
+}
+
+icons.mock_nvim_web_devicons()
+icons.setup(opts)
