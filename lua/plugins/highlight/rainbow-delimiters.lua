@@ -12,7 +12,6 @@ require("rainbow-delimiters.setup").setup({
     lua = 210,
   },
   highlight = {
-    "RainbowDelimiterRed",
     "RainbowDelimiterYellow",
     "RainbowDelimiterBlue",
     "RainbowDelimiterOrange",
