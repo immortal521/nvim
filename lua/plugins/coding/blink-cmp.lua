@@ -7,6 +7,7 @@ return {
 		version = "1.*",
 		dependencies = {
 			"immortal521/windsurf.nvim",
+			"niuiic/blink-cmp-rg.nvim",
 		},
 
 		---@type blink.cmp.Config
@@ -56,7 +57,7 @@ return {
 			},
 			snippets = { preset = "luasnip" },
 			sources = {
-				default = { "lsp", "path", "snippets", "buffer", "codeium" },
+				default = { "lsp", "codeium", "snippets", "path", "ripgrep", "buffer" },
 				providers = {
 					codeium = { name = "Codeium", module = "codeium.blink", async = true, max_items = 3 },
 					ripgrep = {
