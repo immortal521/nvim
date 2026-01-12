@@ -61,7 +61,6 @@ M.completion = {
   menu = {
     scrollbar = false,
     border = "rounded",
-    winhighlight = "Normal:BlinkCmpMenu,FloatBorder:FloatBorder",
     draw = {
       treesitter = { "lsp" },
       columns = {
@@ -87,8 +86,7 @@ M.sources = {
   end,
   providers = {
     buffer = { max_items = 3 },
-    codeium = { name = "codeium", module = "codeium.blink", async = true, max_items = 3 },
-    copilot = { name = "copilot", module = "blink-copilot", async = true },
+    codeium = { name = "Codeium", module = "codeium.blink", async = true, max_items = 3 },
     ripgrep = {
       name = "Ripgrep",
       module = "blink-cmp-rg",
