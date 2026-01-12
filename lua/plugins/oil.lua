@@ -27,6 +27,19 @@ vim.api.nvim_create_autocmd("User", {
 
 require("oil").setup({
   default_file_explorer = true,
+  columns = { "icon" },
+  buf_options = {
+    buflisted = false,
+    bufhidden = "hide",
+  },
+  delete_to_trash = false,
+  skip_confirm_for_simple_edits = true,
+  lsp_file_methods = {
+    enabled = true,
+    timeout_ms = 1000,
+    autosave_changes = false,
+  },
+  constrain_cursor = "editable",
   keymaps = {
     ["<C-h>"] = false,
     ["<C-l>"] = false,
