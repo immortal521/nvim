@@ -1,5 +1,6 @@
 vim.pack.add({
   { src = "https://github.com/stevearc/oil.nvim" },
+  { src = "https://github.com/malewicz1337/oil-git.nvim" },
 })
 
 function _G.get_oil_winbar()
@@ -69,6 +70,12 @@ require("oil").setup({
   win_options = {
     winbar = "%!v:lua.get_oil_winbar()",
   },
+})
+
+require("oil-git").setup({
+  show_file_highlights = true,
+  show_directory_highlights = false,
+  show_ignored_files = true,
 })
 
 Utils.keymap.add({
