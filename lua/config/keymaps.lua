@@ -148,7 +148,7 @@ local keys = {
 			local success, err =
 				pcall(vim.fn.getloclist(0, { winid = 0 }).winid ~= 0 and vim.cmd.lclose or vim.cmd.lopen)
 			if not success and err then
-				Utils.log.error(err)
+				Utils.log.error(tostring(err))
 			end
 		end,
 		desc = "Location List",
@@ -160,7 +160,7 @@ local keys = {
 		function()
 			local success, err = pcall(vim.fn.getqflist({ winid = 0 }).winid ~= 0 and vim.cmd.cclose or vim.cmd.copen)
 			if not success and err then
-				Utils.log.error(err)
+				Utils.log.error(tostring(err))
 			end
 		end,
 
@@ -261,28 +261,28 @@ local self_keys = {
 	{
 		"<leader>bd",
 		function()
-			require("snacks").bufdelete()
+			Snacks.bufdelete()
 		end,
 		desc = "Delete Buffer",
 	},
 	{
 		"<leader>bo",
 		function()
-			require("snacks").bufdelete.other()
+			Snacks.bufdelete.other()
 		end,
 		desc = "Delete Other Buffers",
 	},
 	{
 		"<leader>gg",
 		function()
-			require("snacks").lazygit()
+			Snacks.lazygit()
 		end,
 		desc = "Lazygit",
 	},
 	{
 		"<leader>tf",
 		function()
-			require("snacks").terminal(nil, { win = win })
+			Snacks.terminal(nil, { win = win })
 		end,
 
 		desc = "Terminal Float",
@@ -290,7 +290,7 @@ local self_keys = {
 	{
 		"<leader>tm",
 		function()
-			require("snacks").terminal("rmpc", { win = win })
+			Snacks.terminal("rmpc", { win = win })
 		end,
 		desc = "Music Player",
 		silent = true,
