@@ -16,21 +16,14 @@ vim.pack.add({
   { src = "https://github.com/nvim-mini/mini.hipatterns" },
 })
 
-vim.api.nvim_create_autocmd(Utils.autocmd.BufEdit, {
-  once = true,
-  callback = function()
-    require("plugins.mini.ai")
-    require("plugins.mini.move")
-    require("plugins.mini.splitjoin")
-    require("plugins.mini.jump")
-    require("plugins.mini.pairs")
-    require("plugins.mini.surround")
-    require("plugins.mini.diff")
-    require("plugins.mini.git")
-  end,
-})
-
--- 设置各个 mini 插件
+require("plugins.mini.ai")
+require("plugins.mini.move")
+require("plugins.mini.splitjoin")
+require("plugins.mini.jump")
+require("plugins.mini.pairs")
+require("plugins.mini.surround")
+require("plugins.mini.diff")
+require("plugins.mini.git")
 require("plugins.mini.icons")
 require("plugins.mini.files")
 require("plugins.mini.clue")

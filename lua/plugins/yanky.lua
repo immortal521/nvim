@@ -28,15 +28,10 @@ local keys = {
   { "=P", "<Plug>(YankyPutBeforeFilter)", desc = "Put Before Applying a Filter" },
 }
 
-vim.api.nvim_create_autocmd(Utils.autocmd.BufEdit, {
-  once = true,
-  callback = function()
-    require("yanky").setup({
-      system_clipboard = {
-        sync_with_ring = not vim.env.SSH_CIBBECTION,
-      },
-      highlight = { timer = 150 },
-    })
-    Utils.keymap.add(keys)
-  end,
+require("yanky").setup({
+  system_clipboard = {
+    sync_with_ring = not vim.env.SSH_CIBBECTION,
+  },
+  highlight = { timer = 150 },
 })
+Utils.keymap.add(keys)

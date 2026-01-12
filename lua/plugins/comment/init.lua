@@ -4,11 +4,6 @@ vim.pack.add({
   { src = "https://github.com/danymat/neogen" },
 })
 
-vim.api.nvim_create_autocmd(Utils.autocmd.BufEdit, {
-  once = true,
-  callback = function()
-    require("plugins.comment.ts-comments")
-    require("plugins.comment.todo-comments")
-    require("plugins.comment.neogen")
-  end,
-})
+require("plugins.comment.ts-comments")
+require("plugins.comment.todo-comments")
+require("plugins.comment.neogen")

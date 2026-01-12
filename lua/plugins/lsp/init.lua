@@ -5,13 +5,8 @@ vim.pack.add({
   { src = "https://github.com/mfussenegger/nvim-jdtls" },
 })
 
-vim.api.nvim_create_autocmd(Utils.autocmd.BufEdit, {
-  once = true,
-  callback = function()
-    require("plugins.lsp.mason")
-    require("plugins.lsp.mason-registry")
-  end,
-})
+require("plugins.lsp.mason")
+require("plugins.lsp.mason-registry")
 
 local keys = {
   {

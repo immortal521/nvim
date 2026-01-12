@@ -44,16 +44,11 @@ local keys = {
   }
 }
 
-vim.api.nvim_create_autocmd(Utils.autocmd.BufEdit, {
-  once = true,
-  callback = function()
-    require("trouble").setup({
-      modes = {
-        lsp = {
-          win = { position = "right" },
-        },
-      },
-    })
-    Utils.keymap.add(keys)
-  end,
+require("trouble").setup({
+  modes = {
+    lsp = {
+      win = { position = "right" },
+    },
+  },
 })
+Utils.keymap.add(keys)

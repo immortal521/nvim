@@ -126,10 +126,5 @@ local keys = {
   },
 }
 
-vim.api.nvim_create_autocmd(Utils.autocmd.BufEdit, {
-  once = true,
-  callback = function()
-    require("refactoring").setup(opts)
-    Utils.keymap.add(keys)
-  end,
-})
+require("refactoring").setup(opts)
+Utils.keymap.add(keys)

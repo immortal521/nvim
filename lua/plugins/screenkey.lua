@@ -6,20 +6,15 @@ local keys = {
   { "<leader>uk", "<cmd>lua require('screenkey').toggle()<cr>", desc = "Toggle Screenkey" },
 }
 
-vim.api.nvim_create_autocmd(Utils.autocmd.BufEdit, {
-  once = true,
-  callback = function()
-    require("screenkey").setup({
-      win_opts = {
-        relative = "editor",
-        row = vim.o.lines - 1,
-        col = vim.o.columns - 32,
-        height = 3,
-        width = 20,
-        border = "rounded",
-        title = "",
-      },
-    })
-    Utils.keymap.add(keys)
-  end,
+require("screenkey").setup({
+  win_opts = {
+    relative = "editor",
+    row = vim.o.lines - 1,
+    col = vim.o.columns - 32,
+    height = 3,
+    width = 20,
+    border = "rounded",
+    title = "",
+  },
 })
+Utils.keymap.add(keys)

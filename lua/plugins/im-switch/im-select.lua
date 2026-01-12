@@ -22,23 +22,18 @@ local function find_im_command()
   return "fcitx5-remote" -- 或者返回一个你认为安全的默认值，比如 "ibus"
 end
 
-vim.api.nvim_create_autocmd(Utils.autocmd.BufEdit, {
-  once = true,
-  callback = function()
-    local default_im_cmd = find_im_command()
-    if not default_im_cmd then
-      require("utils").log.error("im-select.nvim 未能自动配置输入法切换命令。请手动检查并设置。")
-      return
-    end
+local default_im_cmd = find_im_command()
+if not default_im_cmd then
+  require("utils").log.error("im-select.nvim 未能自动配置输入法切换命令。请手动检查并设置。")
+  return
+end
 
-    -- 如果找到了默认的 IM 命令，配置 IM 切换
-    require("im_select").setup({
-      default_command = default_im_cmd, -- 使用自动检测到的命令
-      default_im_select = "keyboard-us",
-      set_default_events = { "VimEnter", "FocusGained", "InsertLeave", "CmdlineLeave" },
-      set_previous_events = { "InsertEnter" },
-      keep_quiet_on_no_binary = false,
-      async_switch_im = true,
-    })
-  end,
+-- 如果找到了默认的 IM 命令，配置 IM 切换
+require("im_select").setup({
+  default_command = default_im_cmd, -- 使用自动检测到的命令
+  default_im_select = "keyboard-us",
+  set_default_events = { "VimEnter", "FocusGained", "InsertLeave", "CmdlineLeave" },
+  set_previous_events = { "InsertEnter" },
+  keep_quiet_on_no_binary = false,
+  async_switch_im = true,
 })

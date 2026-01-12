@@ -92,10 +92,5 @@ local keys = {
   -- { "<leader>at", "<cmd>LLMSelectedTextHandler 英译汉<cr>", mode = "x", desc = "Translate" },
 }
 
-vim.api.nvim_create_autocmd(Utils.autocmd.BufEdit, {
-  once = true,
-  callback = function()
-    require("llm").setup(opts)
-    Utils.keymap.add(keys)
-  end,
-})
+require("llm").setup(opts)
+Utils.keymap.add(keys)
