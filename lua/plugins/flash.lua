@@ -2,7 +2,11 @@ vim.pack.add({
   { src = "https://github.com/folke/flash.nvim" },
 })
 
-require("flash").setup({})
+require("flash").setup({
+  jump = {
+    autojump = true,
+  },
+})
 
 local keys = {
   {
