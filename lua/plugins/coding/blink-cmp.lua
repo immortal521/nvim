@@ -33,7 +33,6 @@ return {
 				menu = {
 					scrollbar = false,
 					border = "rounded",
-					winhighlight = "Normal:BlinkCmpMenu,FloatBorder:FloatBorder",
 					draw = {
 						treesitter = { "lsp" },
 						columns = {
