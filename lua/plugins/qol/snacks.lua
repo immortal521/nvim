@@ -172,6 +172,7 @@ return {
 		{ "<leader>sR", "<cmd>lua Snacks.picker.resume()<cr>", desc = "Resume" },
 		{ "<leader>sq", "<cmd>lua Snacks.picker.qflist()<cr>", desc = "Quickfix List" },
 		{ "<leader>su", "<cmd>lua Snacks.picker.undo()<cr>", desc = "Undotree" },
+		{ "<leader>st", "<cmd>lua Snacks.picker.todo_comments()<cr>", desc = "Todo" },
 
 		-- ui
 		{ "<leader>uC", "<cmd>lua Snacks.picker.colorschemes()<cr>", desc = "Colorschemes" },

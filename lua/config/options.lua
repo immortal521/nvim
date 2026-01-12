@@ -76,7 +76,7 @@ g.have_nerd_font = true
 vim.o.winborder = "rounded"
 
 if vim.env.TERM_PROGRAM == "WezTerm" then
-	vim.g.wezterm_render = true
+	g.wezterm_render = true
 end
 
 -- Neovide 基础设置

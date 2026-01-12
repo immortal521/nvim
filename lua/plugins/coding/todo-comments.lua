@@ -32,7 +32,5 @@ return {
 			mode = "n",
 			desc = "Todo/Fix/Fixme (Trouble)",
 		},
-		{ "<leader>st", "<cmd>TodoTelescope<cr>", mode = "n", desc = "Todo" },
-		{ "<leader>sT", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>", mode = "n", desc = "Todo/Fix/Fixme" },
 	},
 }

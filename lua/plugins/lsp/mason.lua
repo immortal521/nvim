@@ -42,7 +42,7 @@ return {
 		opts = {
 			automatic_enable = false,
 		},
-		config = function(self, opts)
+		config = function()
 			local mr = require("mason-registry")
 			local ensure_installed = {
 				"bacon-ls",

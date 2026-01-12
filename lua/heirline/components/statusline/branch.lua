@@ -1,18 +1,18 @@
 local icons = require("config.icons")
 local colors = Utils.colors()
 
-local function truncate_middle(str, max)
-	if #str <= max then
-		return str
-	end
-
-	local ellipsis = "..."
-	local keep = max - #ellipsis
-	local left = math.ceil(keep / 2)
-	local right = math.floor(keep / 2)
-
-	return str:sub(1, left) .. ellipsis .. str:sub(-right)
-end
+-- local function truncate_middle(str, max)
+-- 	if #str <= max then
+-- 		return str
+-- 	end
+--
+-- 	local ellipsis = "..."
+-- 	local keep = max - #ellipsis
+-- 	local left = math.ceil(keep / 2)
+-- 	local right = math.floor(keep / 2)
+--
+-- 	return str:sub(1, left) .. ellipsis .. str:sub(-right)
+-- end
 
 local function truncate_tail(str, max)
 	if #str <= max then

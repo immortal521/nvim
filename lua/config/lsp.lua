@@ -5,7 +5,7 @@ Utils.lsp.enable_lsps(ignored_lsps)
 Utils.keymap({
 	"<leader>cl",
 	function()
-		require("snacks").picker.lsp_config()
+		Snacks.picker.lsp_config()
 	end,
 	desc = "Lsp Info",
 })
