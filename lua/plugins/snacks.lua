@@ -7,7 +7,7 @@ require("snacks").setup({
     enabled = true,
   },
   image = {
-    enabled = true,
+    enabled = not vim.g.neovide and true or false,
   },
   bigfile = {
     enabled = true,
@@ -33,7 +33,7 @@ require("snacks").setup({
   input = { enabled = true },
   notifier = { enabled = true },
   scope = { enabled = true },
-  scroll = { enabled = false },
+  scroll = { enabled = true },
   words = { enabled = true },
   dashboard = {
     preset = {
