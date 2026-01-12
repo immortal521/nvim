@@ -2,7 +2,10 @@ vim.pack.add({
   { src = "https://github.com/folke/persistence.nvim" },
 })
 
-require("persistence").setup({})
+require("persistence").setup({
+  need = 1,
+  branch = true,
+})
 
 -- 加载 session 前同样删除 Oil buffer，避免恢复
 vim.api.nvim_create_autocmd("User", {
