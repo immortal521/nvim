@@ -17,4 +17,5 @@ require("screenkey").setup({
     title = "",
   },
 })
+
 Utils.keymap.add(keys)
