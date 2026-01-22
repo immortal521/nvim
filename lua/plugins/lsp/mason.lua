@@ -57,6 +57,7 @@ return {
 				"cssmodules-language-server",
 				"delve",
 				"emmet-language-server",
+				"emmylua_ls",
 				"gofumpt",
 				"goimports",
 				"golangci-lint",

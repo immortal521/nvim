@@ -139,5 +139,3 @@ g.neovide_cursor_short_animation_length = 0.02
 g.neovide_cursor_trail_size = 0.5
 g.neovide_cursor_vfx_mode = "pixiedust"
 g.neovide_cursor_antialiasing = true
-
-
