@@ -1,6 +1,9 @@
--- Lsp config
----@type LazyPluginSpec
-return {
-	"neovim/nvim-lspconfig",
-	lazy = true,
-}
+return {}
+
+-- -- Lsp config
+-- ---@type LazyPluginSpec
+-- return {
+-- 	"neovim/nvim-lspconfig",
+-- 	enabled = false,
+-- 	lazy = true,
+-- }
