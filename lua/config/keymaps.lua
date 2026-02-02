@@ -208,6 +208,13 @@ local keys = {
 	{ "<leader><tab>[", "<cmd>tabprevious<cr>", desc = "Previous Tab" },
 
 	{ "<leader>fs", "<cmd>e<cr>", desc = "Reload File" },
+	{
+		"<leader>fe",
+		function()
+			Utils.project.change_cwd()
+		end,
+		desc = "Change Current Working Directory",
+	},
 }
 
 Utils.keymap.add(keys)
@@ -216,6 +223,7 @@ _G.Config.leader_group_clues = {
 	{ keys = "<leader>a", mode = { "n", "x" }, desc = "+ai" },
 	{ keys = "<leader>b", mode = "n", desc = "+buffer" },
 	{ keys = "<leader>c", mode = { "n", "x" }, desc = "+code" },
+	{ keys = "<leader>cp", mode = { "n", "x" }, desc = "+code preview" },
 	{ keys = "<leader>d", mode = { "n", "x" }, desc = "+debug" },
 	{ keys = "<leader>f", mode = "n", desc = "+find" },
 	{ keys = "<leader>g", mode = "n", desc = "+git" },

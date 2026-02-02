@@ -21,12 +21,16 @@ M._cache = {
 
 --- 从文件列表检测项目根目录
 ---@param files string[] 文件列表
----@return string|nil 根目录路径
+---@return string 根目录路径
 local function detect_root_from_files(files)
 	local buf_name = vim.api.nvim_buf_get_name(0)
+
 	if buf_name == "" then
-		local result = root and vim.fs.dirname(root) or vim.uv.cwd()
-		return result
+		return vim.uv.cwd() or vim.fn.getcwd()
+	end
+
+	if not vim.uv.fs_stat(buf_name) then
+		return vim.uv.cwd() or vim.fn.getcwd()
 	end
 
 	local root = vim.fs.find(files, {
@@ -34,7 +38,11 @@ local function detect_root_from_files(files)
 		path = buf_name,
 	})[1]
 
-	return root and vim.fs.dirname(root) or vim.uv.cwd()
+	if root then
+		return vim.fs.dirname(root)
+	end
+
+	return vim.fs.dirname(buf_name)
 end
 
 ---@class GetProjectRootOpts
@@ -111,6 +119,12 @@ M.clear_cache = function(buf)
 		M._cache.project_root = {}
 		M._cache.git_root = {}
 	end
+end
+
+M.change_cwd = function()
+	local root = M.get_project_root()
+	vim.cmd.cd(root)
+	require("utils.log").info("切换工作目录到 " .. root, { time = false })
 end
 
 --- 缓冲区自动清理
