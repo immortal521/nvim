@@ -8,7 +8,6 @@ return {
 			"BufReadPost",
 			"BufWritePost",
 			"InsertLeave",
-			"TextChanged",
 		},
 
 		linters_by_ft = {
@@ -102,8 +101,8 @@ return {
 
 			return function(...)
 				local argv = { ... }
+				timer:stop()
 				timer:start(ms, 0, function()
-					timer:stop()
 					vim.schedule_wrap(fn)(unpack(argv))
 				end)
 			end
