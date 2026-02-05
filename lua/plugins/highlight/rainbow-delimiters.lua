@@ -3,6 +3,7 @@
 return {
 	"HiPhish/rainbow-delimiters.nvim",
 	event = "BufEdit",
+  enabled = false,
 	main = "rainbow-delimiters.setup",
 
 	---@type rainbow_delimiters.config

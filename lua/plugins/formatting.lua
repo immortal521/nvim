@@ -69,7 +69,7 @@ return {
 			lcg_clang_format = { command = "lcg-clang-format-8.0.0", args = { "$FILENAME" } },
 			prettier = {
 				condition = function(_, ctx)
-					return has_prettier_parser(ctx) and has_prettier_config(ctx)
+					return has_prettier_parser(ctx)
 				end,
 			},
 			injected = { options = { ignore_errors = true } },
