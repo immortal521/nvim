@@ -10,20 +10,26 @@ Utils.keymap({
 	desc = "Lsp Info",
 })
 
+local grp = vim.api.nvim_create_augroup("SetupLSP", { clear = true })
+
 vim.api.nvim_create_autocmd("LspAttach", {
-	group = vim.api.nvim_create_augroup("SetupLSP", {}),
+	group = grp,
 	callback = function(event)
-		local client = assert(vim.lsp.get_client_by_id(event.data.client_id))
+		local bufnr = event.buf
+		local client = vim.lsp.get_client_by_id(event.data.client_id)
+		if not client then
+			return
+		end
 
 		-- [inlay hint]
-		if client and client:supports_method("textDocument/inlayHint") then
-			vim.lsp.inlay_hint.enable()
+		if client:supports_method("textDocument/inlayHint") then
+			vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
 			Utils.keymap({
 				"<leader>uh",
 				function()
-					vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+					vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }))
 				end,
-				buffer = event.buf,
+				buffer = bufnr,
 				desc = "LSP: Toggle Inlay Hints",
 			})
 		end
@@ -35,87 +41,95 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		})
 
 		-- [folding]
-		if client and client:supports_method("textDocument/foldingRange") then
-			local win = vim.api.nvim_get_current_win()
-			vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
+		if client:supports_method("textDocument/foldingRange") then
+			vim.opt_local.foldmethod = "expr"
+			vim.opt_local.foldexpr = "v:lua.vim.lsp.foldexpr()"
+			-- 可选：让 foldexpr 生效时更自然
+			vim.opt_local.foldlevel = 99
+			vim.opt_local.foldenable = true
 		end
 
-		local function jump_to_current_function_start()
-			local params = { textDocument = vim.lsp.util.make_text_document_params() }
-			local responses = vim.lsp.buf_request_sync(0, "textDocument/documentSymbol", params, 1000)
-			if not responses then
+		if client:supports_method("textDocument/documentHighlight") then
+			local hlg = vim.api.nvim_create_augroup("LspDocumentHighlight_" .. bufnr, { clear = true })
+
+			vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+				group = hlg,
+				buffer = bufnr,
+				callback = function()
+					pcall(vim.lsp.buf.document_highlight)
+				end,
+			})
+
+			vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "BufLeave" }, {
+				group = hlg,
+				buffer = bufnr,
+				callback = function()
+					pcall(vim.lsp.buf.clear_references)
+				end,
+			})
+		end
+
+		local function find_symbol_containing_line(symbols, line)
+			for _, s in ipairs(symbols or {}) do
+				local range = s.range or (s.location and s.location.range)
+				if range and line >= range.start.line and line <= range["end"].line then
+					if s.children then
+						local child = find_symbol_containing_line(s.children, line)
+						if child then
+							return child
+						end
+					end
+					return s
+				end
+			end
+			return nil
+		end
+
+		local function jump_to_symbol_edge(which)
+			-- which: "start" or "end"
+			local params = { textDocument = vim.lsp.util.make_text_document_params(bufnr) }
+
+			-- 若 server 不支持 documentSymbol，直接返回
+			if not (client.supports_method and client:supports_method("textDocument/documentSymbol")) then
+				return
+			end
+
+			local ok, responses = pcall(vim.lsp.buf_request_sync, bufnr, "textDocument/documentSymbol", params, 1000)
+			if not ok or not responses or vim.tbl_isempty(responses) then
 				return
 			end
 
 			local pos = vim.api.nvim_win_get_cursor(0)
 			local line = pos[1] - 1
 
-			local function find_symbol(symbols)
-				for _, s in ipairs(symbols) do
-					local range = s.range or (s.location and s.location.range)
-					if range and line >= range.start.line and line <= range["end"].line then
-						if s.children then
-							local child = find_symbol(s.children)
-							if child then
-								return child
-							end
+			for _, resp in pairs(responses) do
+				local result = resp and resp.result
+				if result then
+					local sym = find_symbol_containing_line(result, line)
+					if sym and sym.range then
+						if which == "start" then
+							vim.api.nvim_win_set_cursor(0, { sym.range.start.line + 1, 0 })
+						else
+							vim.api.nvim_win_set_cursor(0, { sym.range["end"].line + 1, 0 })
 						end
-						return s
+						return
 					end
 				end
 			end
-
-			for _, resp in pairs(responses) do
-				local sym = find_symbol(resp.result or {})
-				if sym and sym.range then
-					vim.api.nvim_win_set_cursor(0, { sym.range.start.line + 1, 0 })
-					return
-				end
-			end
 		end
-		vim.keymap.set("n", "[f", jump_to_current_function_start, { desc = "Jump to start of current function" })
-		local function jump_to_current_function_end()
-			local params = { textDocument = vim.lsp.util.make_text_document_params() }
-			local responses = vim.lsp.buf_request_sync(0, "textDocument/documentSymbol", params, 1000)
-			if not responses then
-				return
-			end
 
-			local pos = vim.api.nvim_win_get_cursor(0)
-			local line = pos[1] - 1
-
-			local function find_symbol(symbols)
-				for _, s in ipairs(symbols) do
-					local range = s.range or (s.location and s.location.range)
-					if range and line >= range.start.line and line <= range["end"].line then
-						if s.children then
-							local child = find_symbol(s.children)
-							if child then
-								return child
-							end
-						end
-						return s
-					end
-				end
-			end
-
-			for _, resp in pairs(responses) do
-				local sym = find_symbol(resp.result or {})
-				if sym and sym.range then
-					-- jump to end of the symbol
-					vim.api.nvim_win_set_cursor(0, { sym.range["end"].line + 1, 0 })
-					return
-				end
-			end
-		end
-		vim.keymap.set("n", "]f", jump_to_current_function_end, { desc = "Jump to end of current function" })
+		vim.keymap.set("n", "[f", function()
+			jump_to_symbol_edge("start")
+		end, { buffer = bufnr, desc = "Jump to start of current function" })
+		vim.keymap.set("n", "]f", function()
+			jump_to_symbol_edge("end")
+		end, { buffer = bufnr, desc = "Jump to end of current function" })
 	end,
 })
 
 vim.diagnostic.config({
 	update_in_insert = false,
 	underline = true,
-	-- virtual_lines = { current_line = true },
 	virtual_text = {
 		spacing = 4,
 		source = "if_many",

@@ -327,7 +327,7 @@ local lsp_keymap = {
 	{
 		"K",
 		function()
-			return vim.lsp.buf.hover()
+			return Utils.lsp.hover()
 		end,
 		desc = "Hover",
 	},

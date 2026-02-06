@@ -29,6 +29,102 @@ M.enable_lsps = function(ignored_lsps)
 	end
 end
 
+local hover_ns = vim.api.nvim_create_namespace("hover")
+
+---@param config? table
+M.hover = function(config)
+	config = config or {}
+	config = vim.tbl_deep_extend("force", {
+		border = "rounded",
+		focus_id = "textDocument/hover",
+		max_width = 80,
+		max_height = 20,
+		-- close_events = { "CursorMoved", "InsertEnter", "BufHidden", "WinScrolled" },
+	}, config)
+
+	vim.lsp.buf_request_all(0, "textDocument/hover", function(client)
+		return vim.lsp.util.make_position_params(nil, client.offset_encoding)
+	end, function(results, context)
+		local bufnr = assert(context.bufnr)
+		if vim.api.nvim_get_current_buf() ~= bufnr then
+			return
+		end
+
+		local filtered = {}
+		for client_id, resp in pairs(results) do
+			local err, result = resp.err, resp.result
+			if err then
+				Utils.log.error((err.code or "") .. (err.message or ""))
+			elseif result then
+				filtered[client_id] = result
+			end
+		end
+
+		if vim.tbl_isempty(filtered) then
+			if config.silent ~= true then
+				Utils.log.info("No information available", { title = "Lsp Hover" })
+			end
+			return
+		end
+
+		vim.api.nvim_buf_clear_namespace(bufnr, hover_ns, 0, -1)
+
+		local contents = {}
+		local nresults = #vim.tbl_keys(filtered)
+		local format = "markdown"
+
+		for client_id, result in pairs(filtered) do
+			local client = assert(vim.lsp.get_client_by_id(client_id))
+			if nresults > 1 then
+				contents[#contents + 1] = string.format("# %s", client.name)
+			end
+
+			if type(result.contents) == "table" and result.contents.kind == "plaintext" then
+				if nresults == 1 then
+					format = "plaintext"
+					contents = vim.split(result.contents.value or "", "\n", { trimempty = true })
+				else
+					contents[#contents + 1] = "```"
+					vim.list_extend(contents, vim.split(result.contents.value or "", "\n", { trimempty = true }))
+					contents[#contents + 1] = "```"
+				end
+			else
+				vim.list_extend(contents, vim.lsp.util.convert_input_to_markdown_lines(result.contents))
+			end
+
+			if result.range then
+				local start = result.range.start
+				local end_ = result.range["end"]
+				local start_idx = vim.lsp.util._get_line_byte_from_position(bufnr, start, client.offset_encoding)
+				local end_idx = vim.lsp.util._get_line_byte_from_position(bufnr, end_, client.offset_encoding)
+				vim.hl.range(bufnr, hover_ns, "LspReferenceTarget", { start.line, start_idx }, { end_.line, end_idx }, {
+					priority = vim.hl.priorities.user,
+				})
+			end
+
+			contents[#contents + 1] = "---"
+		end
+		contents[#contents] = nil
+
+		if vim.tbl_isempty(contents) then
+			if config.silent ~= true then
+				Utils.log.info("No information available", { title = "Lsp Hover" })
+			end
+			return
+		end
+
+		local _, winid = vim.lsp.util.open_floating_preview(contents, format, config)
+
+		vim.api.nvim_create_autocmd("WinClosed", {
+			pattern = tostring(winid),
+			once = true,
+			callback = function()
+				vim.api.nvim_buf_clear_namespace(bufnr, hover_ns, 0, -1)
+			end,
+		})
+	end)
+end
+
 M.action = setmetatable({}, {
 	__index = function(_, action)
 		return function()
