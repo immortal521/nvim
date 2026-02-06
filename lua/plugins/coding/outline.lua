@@ -2,6 +2,7 @@
 return {
 	"hedyhli/outline.nvim",
 	lazy = true,
+	enabled = false,
 	opts = {
 		outline_window = {
 			auto_jump = true,
