@@ -95,7 +95,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			end
 
 			local ok, responses = pcall(vim.lsp.buf_request_sync, bufnr, "textDocument/documentSymbol", params, 1000)
-			if not ok or not responses or vim.tbl_isempty(responses) then
+			if not ok or type(responses) ~= "table" or vim.tbl_isempty(responses) then
 				return
 			end
 
