@@ -6,13 +6,13 @@ return {
 			return " " .. os.date("%H:%M") .. " "
 		end,
 		hl = function(self)
-			return { fg = colors.fg_gutter, bg = self.mode_colors[self.mode], bold = true, italic = true }
+			return { fg = colors.fg_gutter, bg = self.mode_colors[self.mode_key], bold = true, italic = true }
 		end,
 	},
 	{
 		provider = "",
 		hl = function(self)
-			return { fg = self.mode_colors[self.mode] }
+			return { fg = self.mode_colors[self.mode_key] }
 		end,
 	},
 }

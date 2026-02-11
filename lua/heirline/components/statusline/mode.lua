@@ -4,7 +4,7 @@ return {
 	{
 		provider = "",
 		hl = function(self)
-			return { fg = self.mode_colors[self.mode] }
+			return { fg = self.mode_colors[self.mode_key] }
 		end,
 	},
 	{
