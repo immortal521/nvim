@@ -22,7 +22,7 @@ local attached_keys = {
 	{ "gD", function() Snacks.picker.lsp_declarations() end, desc = "Goto Declaration" },
 	{ "K", function() Utils.lsp.hover() end, desc = "Hover" },
 	{ "<leader>ca", vim.lsp.buf.code_action, mode = { "n", "x" }, desc = "Code Action" },
-	{ "<leader>cr", vim.lsp.buf.rename, desc = "Rename", requires = "textDocument/rename" },
+	{ "<leader>cr", vim.lsp.buf.rename, desc = "Rename" },
 	{ "<leader>cR", function() Snacks.rename.rename_file() end, desc = "Rename File" },
 	{ "<leader>ld", function() Snacks.picker.diagnostics() end, desc = "LSP Open Diagnostic" },
 	{ "<leader>co", Utils.lsp.action["source.organizeImports"], desc = "Organize Imports" },
@@ -69,7 +69,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 		-- [codelens]
 		if client:supports_method("textDocument/codeLens") then
-			vim.lsp.codelens.enable(true, { bufnr = bufnr, client_id = client.id })
+			vim.lsp.codelens.enable(true, { bufnr = bufnr })
 			Utils.keymap({
 				"<leader>cc",
 				function()
