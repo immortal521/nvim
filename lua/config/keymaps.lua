@@ -9,13 +9,14 @@ local diagnostic_goto = function(next, severity)
 end
 
 -- Normal / Visual
--- 在 nvim 0.12 版本前需要注释，0.12 版本以前不注释会报错
-vim.keymap.del({ "n", "v" }, "gra")
-vim.keymap.del("n", "gri")
-vim.keymap.del("n", "grn")
-vim.keymap.del("n", "grr")
-vim.keymap.del("n", "grt")
-vim.keymap.del("n", "gO")
+if vim.fn.has("nvim-0.12") then
+	vim.keymap.del({ "n", "v" }, "gra")
+	vim.keymap.del("n", "gri")
+	vim.keymap.del("n", "grn")
+	vim.keymap.del("n", "grr")
+	vim.keymap.del("n", "grt")
+	vim.keymap.del("n", "gO")
+end
 
 -- Insert
 vim.keymap.del("i", "<C-s>")
