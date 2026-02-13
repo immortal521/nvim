@@ -9,6 +9,7 @@ local diagnostic_goto = function(next, severity)
 end
 
 -- Normal / Visual
+-- 在 nvim 0.12 版本前需要注释，0.12 版本以前不注释会报错
 vim.keymap.del({ "n", "v" }, "gra")
 vim.keymap.del("n", "gri")
 vim.keymap.del("n", "grn")
