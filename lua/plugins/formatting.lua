@@ -1,15 +1,74 @@
 -- Formatter
 
-local function has_prettier_config(ctx)
+local function assign(map, fts, formatters)
+	for _, ft in ipairs(fts) do
+		map[ft] = formatters
+	end
+end
+
+local function config_find_up(ctx, names)
+	local dir = vim.fs.dirname(ctx.filename)
+	local found = vim.fs.find(names, {
+		path = dir,
+		upward = true,
+		stop = vim.uv.os_homedir(),
+	})
+	return found and #found > 0
+end
+
+local function has_any_config(ctx, names)
+	return config_find_up(ctx, names)
+end
+
+local function has_any_of(ctx, groups)
+	for _, names in ipairs(groups) do
+		if has_any_config(ctx, names) then
+			return true
+		end
+	end
+	return false
+end
+
+local function with_config(names, extra)
+	return function(_, ctx)
+		if not has_any_config(ctx, names) then
+			return false
+		end
+		if extra then
+			return extra(ctx)
+		end
+		return true
+	end
+end
+
+local function has_prettier_config_cli(ctx)
 	vim.fn.system({ "prettier", "--find-config-path", ctx.filename })
 	return vim.v.shell_error == 0
 end
 
-local function has_prettier_parser(ctx)
-	local ret = vim.fn.system({ "prettier", "--file-info", ctx.filename })
-	local ok, info = pcall(vim.fn.json_decode, ret)
-	return ok and info.inferredParser and info.inferredParser ~= vim.NIL
-end
+local PRETTIER_CONFIGS = {
+	".prettierrc",
+	".prettierrc.json",
+	".prettierrc.js",
+	".prettierrc.yaml",
+	".prettierrc.yml",
+	".prettierrc.toml",
+	"prettier.config.js",
+	"prettier.config.cjs",
+	"prettier.config.mjs",
+}
+
+local BIOME_CONFIGS = {
+	"biome.json",
+	"biome.jsonc",
+}
+
+local OXFMT_CONFIGS = {
+	".oxfmtrc.json",
+	".oxfmtrc.jsonc",
+	"oxfmt.json",
+	"oxfmt.jsonc",
+}
 
 ---@type LazyPluginSpec
 return {
@@ -18,6 +77,7 @@ return {
 
 	---@type conform.setupOpts
 	opts = {
+		-- log_level = vim.log.levels.DEBUG,
 		default_format_opts = {
 			timeout_ms = 3000,
 			async = false,
@@ -25,56 +85,72 @@ return {
 			lsp_format = "fallback",
 		},
 		notify_on_error = true,
-		formatters_by_ft = {
-			lua = { "stylua" },
-			cpp = { "clang-format" },
-			python = { "yapf", "isort" },
-			sh = { "shfmt" },
-			snakemake = { "snakefmt" },
-			typst = { "typstyle" },
-			nix = { "nixfmt" },
-			toml = { "taplo" },
-			tex = { "tex-fmt" },
-			go = { "goimports", "gofumpt" },
-			css = { "prettier" },
-			graphql = { "prettier" },
-			rust = { "rustfmt" },
-			handlebars = { "prettier" },
-			html = { "prettier" },
-			java = { "google-java-format" },
-			javascript = { "prettier" },
-			javascriptreact = { "prettier" },
-			json = { "prettier" },
-			jsonc = { "prettier" },
-			less = { "prettier" },
-			markdown = { "prettier" },
-			["markdown.mdx"] = { "prettier" },
-			scss = { "prettier" },
-			typescript = { "prettier" },
-			typescriptreact = { "prettier" },
-			vue = { "prettier" },
-			yaml = { "prettier" },
-		},
+
+		formatters_by_ft = (function()
+			local ft = {}
+
+			assign(ft, {
+				"javascript",
+				"javascriptreact",
+				"typescript",
+				"typescriptreact",
+				"json",
+				"jsonc",
+				"css",
+				"scss",
+				"less",
+				"html",
+				"vue",
+				"yaml",
+				"graphql",
+				"markdown",
+				"markdown.mdx",
+				"handlebars",
+			}, { "prettier", "biome", "oxfmt" })
+
+			ft.python = { "ruff_format", "isort", "yapf" }
+			ft.sh = { "shfmt" }
+			ft.toml = { "taplo" }
+			ft.rust = { "rustfmt" }
+			ft.cpp = { "clang_format" }
+			ft.c = { "clang_format" }
+			ft.go = { "goimports", "gofumpt" }
+			ft.lua = { "stylua" }
+
+			return ft
+		end)(),
+
 		formatters = {
-			cbfmt = {
-				command = "cbfmt",
-				args = { "-w", "--config", vim.fn.expand("~") .. "/.config/cbfmt.toml", "$FILENAME" },
-			},
-			taplo = { command = "taplo", args = { "fmt", "--option", "indent_tables=false", "-" } },
-			ruff_fix = {
-				command = "ruff",
-				args = { "check", "--select", "I", "--fix", "--stdin-filename", "$FILENAME", "-" },
-				stdin = true,
-			},
-			lcg_clang_format = { command = "lcg-clang-format-8.0.0", args = { "$FILENAME" } },
 			prettier = {
 				condition = function(_, ctx)
-					return has_prettier_parser(ctx)
+					return has_any_config(ctx, PRETTIER_CONFIGS)
+				end,
+
+				-- condition = function(_, ctx)
+				-- 	return has_prettier_config_cli(ctx)
+				-- end,
+			},
+
+			biome = {
+				condition = function(_, ctx)
+					return has_any_config(ctx, BIOME_CONFIGS)
+					-- and not has_any_config(ctx, PRETTIER_CONFIGS)
 				end,
 			},
+
+			oxfmt = {
+				condition = function(_, ctx)
+					if has_any_config(ctx, OXFMT_CONFIGS) then
+						return true
+					end
+					return not has_any_of(ctx, { PRETTIER_CONFIGS, BIOME_CONFIGS, OXFMT_CONFIGS })
+				end,
+			},
+
 			injected = { options = { ignore_errors = true } },
 		},
 	},
+
 	keys = {
 		{
 			"<leader>cf",
