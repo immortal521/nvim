@@ -24,6 +24,7 @@ return {
 				local cmd = string.format('!git commit -m "%s"', table.concat(contents, '" -m "'))
 				cmd = (cmd:gsub(".", {
 					["#"] = "\\#",
+					["%"] = "\\%",
 				}))
 				vim.api.nvim_command(cmd)
 

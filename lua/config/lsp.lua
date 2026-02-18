@@ -130,46 +130,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			end
 			return nil
 		end
-
-		local function jump_to_symbol_edge(which)
-			-- which: "start" or "end"
-			local params = { textDocument = vim.lsp.util.make_text_document_params(bufnr) }
-
-			-- 若 server 不支持 documentSymbol，直接返回
-			if not (client.supports_method and client:supports_method("textDocument/documentSymbol")) then
-				return
-			end
-
-			local ok, responses = pcall(vim.lsp.buf_request_sync, bufnr, "textDocument/documentSymbol", params, 1000)
-			if not ok or type(responses) ~= "table" or vim.tbl_isempty(responses) then
-				return
-			end
-
-			local pos = vim.api.nvim_win_get_cursor(0)
-			local line = pos[1] - 1
-
-			for _, resp in pairs(responses) do
-				local result = resp and resp.result
-				if result then
-					local sym = find_symbol_containing_line(result, line)
-					if sym and sym.range then
-						if which == "start" then
-							vim.api.nvim_win_set_cursor(0, { sym.range.start.line + 1, 0 })
-						else
-							vim.api.nvim_win_set_cursor(0, { sym.range["end"].line + 1, 0 })
-						end
-						return
-					end
-				end
-			end
-		end
-
-		vim.keymap.set("n", "[f", function()
-			jump_to_symbol_edge("start")
-		end, { buffer = bufnr, desc = "Jump to start of current function" })
-		vim.keymap.set("n", "]f", function()
-			jump_to_symbol_edge("end")
-		end, { buffer = bufnr, desc = "Jump to end of current function" })
 	end,
 })
 
