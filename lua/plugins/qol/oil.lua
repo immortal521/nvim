@@ -12,8 +12,8 @@ return {
 				"icon",
 			},
 			buf_options = {
-				-- buflisted = false,
-				-- bufhidden = "hide",
+				buflisted = false,
+				bufhidden = "hide",
 			},
 			delete_to_trash = false,
 			skip_confirm_for_simple_edits = true,
