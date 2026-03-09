@@ -7,10 +7,8 @@ return {
 	filetypes = {
 		"javascript",
 		"javascriptreact",
-		"javascript.jsx",
 		"typescript",
 		"typescriptreact",
-		"typescript.tsx",
 	},
 	settings = {
 		vtsls = {
@@ -37,6 +35,7 @@ return {
 		-- We select then from the project root, which is identified by the presence of a package
 		-- manager lock file.
 		local root_markers = { "package-lock.json", "yarn.lock", "pnpm-lock.yaml", "bun.lockb", "bun.lock" }
+		---@diagnostic disable-next-line: assign-type-mismatch
 		-- Give the root markers equal priority by wrapping them in a table
 		root_markers = vim.fn.has("nvim-0.11.3") == 1 and { root_markers, { ".git" } }
 			or vim.list_extend(root_markers, { ".git" })
