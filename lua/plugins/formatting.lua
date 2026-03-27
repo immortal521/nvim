@@ -167,5 +167,5 @@ return {
 			end,
 			desc = "Format",
 		},
-for	},
+	},
 }
