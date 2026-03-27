@@ -108,6 +108,11 @@ return {
 				"handlebars",
 			}, { "prettier", "biome", "oxfmt" })
 
+			assign(ft, {
+				"xml",
+				"svg",
+			}, { "xmlformatter" })
+
 			ft.python = { "ruff_format", "isort", "yapf" }
 			ft.sh = { "shfmt" }
 			ft.toml = { "taplo" }
@@ -162,5 +167,5 @@ return {
 			end,
 			desc = "Format",
 		},
-	},
+for	},
 }
