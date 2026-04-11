@@ -3,6 +3,7 @@
 return {
 	"folke/todo-comments.nvim",
 	event = "BufEdit",
+	enabled = false,
 
 	---@type TodoOptions
 	opts = {},

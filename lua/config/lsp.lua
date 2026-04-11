@@ -26,7 +26,6 @@ local attached_keys = {
 	{ "<leader>cR", function() Snacks.rename.rename_file() end, desc = "Rename File" },
 	{ "<leader>ld", function() Snacks.picker.diagnostics() end, desc = "LSP Open Diagnostic" },
 	{ "<leader>co", Utils.lsp.action["source.organizeImports"], desc = "Organize Imports" },
-	{ "<leader>cA", Utils.lsp.action.source, desc = "Source Action" },
 	{ "gai", function() Snacks.picker.lsp_incoming_calls() end, desc = "Calls Incoming" },
 	{ "gao", function() Snacks.picker.lsp_outgoing_calls() end, desc = "Calls Outgoing" },
 	{ "<leader>ss", function() Snacks.picker.lsp_symbols() end, desc = "LSP Symbols" },
