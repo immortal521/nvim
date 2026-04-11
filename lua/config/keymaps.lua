@@ -9,21 +9,22 @@ local diagnostic_goto = function(next, severity)
 end
 
 -- Normal / Visual
-if vim.fn.has("nvim-0.12") then
+if vim.fn.has("nvim-0.12") == 1 then
 	vim.keymap.del({ "n", "v" }, "gra")
 	vim.keymap.del("n", "gri")
 	vim.keymap.del("n", "grn")
 	vim.keymap.del("n", "grr")
 	vim.keymap.del("n", "grt")
+	vim.keymap.del("n", "grx")
 	vim.keymap.del("n", "gO")
+
+	-- Insert
+	vim.keymap.del("i", "<C-s>")
+
+	-- Visual / Operator-pending（文本对象）
+	vim.keymap.del({ "x", "o" }, "an")
+	vim.keymap.del({ "x", "o" }, "in")
 end
-
--- Insert
-vim.keymap.del("i", "<C-s>")
-
--- Visual / Operator-pending（文本对象）
-vim.keymap.del({ "x", "o" }, "an")
-vim.keymap.del({ "x", "o" }, "in")
 
 local keys = {
 	-- better up/down
