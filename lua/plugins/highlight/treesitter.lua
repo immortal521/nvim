@@ -44,7 +44,7 @@ local langs = {
 }
 
 return {
-	"nvim-treesitter/nvim-treesitter",
+	"neovim-treesitter/nvim-treesitter",
 	branch = "main",
 	build = ":TSUpdate",
 	event = { "BufEdit", "VeryLazy" },

@@ -2,6 +2,6 @@
 return {
 	"nvim-treesitter/nvim-treesitter-textobjects",
 	event = "BufEdit",
-	dependencies = { "nvim-treesitter/nvim-treesitter" },
+	dependencies = { "neovim-treesitter/nvim-treesitter" },
 	opts = {},
 }
