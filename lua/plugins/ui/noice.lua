@@ -2,7 +2,8 @@
 ---@type LazyPluginSpec
 return {
 	"folke/noice.nvim",
-  lazy = false,
+	-- enabled = false,
+	lazy = false,
 
 	---@type NoiceConfig
 	opts = {
