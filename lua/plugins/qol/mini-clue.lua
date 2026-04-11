@@ -23,6 +23,7 @@ local leader_group_clues = {
 return {
 	"nvim-mini/mini.clue",
 	event = "VeryLazy",
+	enabled = false,
 	opts = function()
 		local clue = require("mini.clue")
 		return {
