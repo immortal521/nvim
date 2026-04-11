@@ -1,0 +1,6 @@
+require("config.keymaps.general")
+require("config.keymaps.buffer")
+require("config.keymaps.diagnostic")
+require("config.keymaps.file")
+require("config.keymaps.tab")
+require("config.keymaps.window")
