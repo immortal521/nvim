@@ -17,6 +17,7 @@ if vim.fn.has("nvim-0.12") == 1 then
 end
 
 local keys = {
+	{ "jk", "<esc>", mode = "i" },
 	-- better up/down
 	{ "j", "v:count == 0 ? 'gj' : 'j'", mode = { "n", "x" }, desc = "Down", expr = true, silent = true },
 	{ "<Down>", "v:count == 0 ? 'gj' : 'j'", mode = { "n", "x" }, desc = "Down", expr = true, silent = true },
