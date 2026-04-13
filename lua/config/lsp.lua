@@ -12,7 +12,6 @@ local keys = {
 	},
 }
 
-
 -- stylua: ignore
 local attached_keys = {
 	{ "gd", function() Snacks.picker.lsp_definitions() end, desc = "Goto Definition" },

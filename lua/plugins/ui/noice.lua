@@ -2,7 +2,6 @@
 ---@type LazyPluginSpec
 return {
 	"folke/noice.nvim",
-	-- enabled = false,
 	lazy = false,
 
 	---@type NoiceConfig
@@ -12,6 +11,9 @@ return {
 			override = {
 				["vim.lsp.util.convert_input_to_markdown_lines"] = true,
 				["vim.lsp.util.stylize_markdown"] = true,
+			},
+			hover = {
+				enabled = false,
 			},
 		},
 		routes = {

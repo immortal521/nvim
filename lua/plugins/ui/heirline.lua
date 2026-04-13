@@ -2,7 +2,7 @@
 ---@type LazyPluginSpec
 return {
 	"rebelot/heirline.nvim",
-	event = "BufEdit",
+	event = "UIEnter",
 	opts = function()
 		local tabline = require("heirline.layouts.tabline")
 		local statusline = require("heirline.layouts.statusline")
