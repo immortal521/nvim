@@ -35,6 +35,7 @@ return {
 	branch = "main",
 	build = ":TSUpdate",
 	event = { "BufEdit", "VeryLazy" },
+	dependencies = { "neovim-treesitter/treesitter-parser-registry" },
 	opts = {},
 	init = function()
 		vim.api.nvim_create_autocmd("FileType", {
