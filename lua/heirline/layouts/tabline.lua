@@ -1,7 +1,6 @@
 local icons = require("config.icons")
 local utils = require("heirline.utils")
 local tabline = require("heirline.components.tabline")
-local colors = Utils.colors()
 
 local buflist_cache = {}
 local get_bufs = function()
@@ -61,7 +60,8 @@ local BufferBlock = {
 	end,
 
 	hl = function(self)
-		return self.is_active and { bg = colors.bg, bold = true } or { bg = colors.black, bold = false }
+		return self.is_active and { bg = self.colors.normal.bg, bold = true }
+			or { bg = self.colors.black.bg, bold = false }
 	end,
 
 	on_click = {
@@ -85,10 +85,14 @@ local BufferBlock = {
 
 local BufferLine = utils.make_buflist(BufferBlock, {
 	provider = " " .. icons.bufferline.trunc_left,
-	hl = { fg = colors.comment },
+	hl = function(self)
+		return { fg = self.colors.comment.fg }
+	end,
 }, {
 	provider = "%=" .. icons.bufferline.trunc_right .. " ",
-	hl = { fg = colors.comment },
+	hl = function(self)
+		return { fg = self.colors.comment.fg }
+	end,
 }, function()
 	return buflist_cache
 end, false)
@@ -97,18 +101,10 @@ local Tabpage = {
 	provider = function(self)
 		return "%" .. self.tabnr .. "T " .. self.tabpage .. " %T"
 	end,
-	hl = function(self)
-		if not self.is_active then
-			return "TabLine"
-		else
-			return "TabLineSel"
-		end
-	end,
 }
 
 local TabpageClose = {
 	provider = "%999X ✗ %X",
-	hl = "TabLine",
 }
 
 local TabPages = {
@@ -122,6 +118,9 @@ local TabPages = {
 }
 
 return {
+	init = function(self)
+		self.colors = Utils.color.get_colors()
+	end,
 	tabline.Offset,
 	BufferLine,
 	TabPages,

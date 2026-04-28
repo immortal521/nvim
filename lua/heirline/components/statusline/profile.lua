@@ -1,11 +1,11 @@
-local colors = Utils.colors()
-
 return {
 	{
 		provider = function()
 			-- return require("noice").api.status.command.get()
 		end,
-		hl = { fg = colors.magenta },
+		hl = function(self)
+			return { fg = self.colors.magenta.fg }
+		end,
 	},
 	{ provider = " " },
 }

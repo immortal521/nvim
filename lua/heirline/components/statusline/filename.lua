@@ -1,13 +1,13 @@
-local colors = Utils.colors()
-
 return {
 	{
 		provider = "",
 		condition = function(self)
 			return self.has_branch
 		end,
-		hl = { fg = colors.fg_gutter },
 	},
+	hl = function(self)
+		return { fg = self.colors.gutter.fg }
+	end,
 	{
 		init = function(self)
 			local filename = vim.fn.expand("%:t")

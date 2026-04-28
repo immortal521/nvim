@@ -1,30 +1,28 @@
 local common = require("heirline.components.common")
 local statusline = require("heirline.components.statusline")
-local colors = Utils.colors()
 
 local has_branch = function()
 	return vim.b.minigit_summary ~= nil
 end
 
 return {
-	static = {
-		mode_colors = {
-			n = colors.blue,
-			i = colors.green,
-			v = colors.magenta,
-			V = colors.magenta,
-			["\22"] = colors.magenta,
-			c = colors.red,
-			s = colors.yellow,
-			S = colors.yellow,
-			["\19"] = colors.yellow,
-			R = colors.teal,
-			r = colors.teal,
-			["!"] = colors.red,
-			t = colors.green,
-		},
-	},
 	init = function(self)
+		self.colors = Utils.color.get_colors()
+		self.mode_colors = {
+			n = self.colors.blue,
+			i = self.colors.green,
+			v = self.colors.magenta,
+			V = self.colors.magenta,
+			["\22"] = self.colors.magenta,
+			c = self.colors.red,
+			s = self.colors.yellow,
+			S = self.colors.yellow,
+			["\19"] = self.colors.yellow,
+			R = self.colors.teal,
+			r = self.colors.teal,
+			["!"] = self.colors.red,
+			t = self.colors.green,
+		}
 		-- Mode
 		self.mode = vim.fn.mode(1)
 		self.mode_key = self.mode:sub(1, 1)

@@ -1,5 +1,4 @@
 local icons = require("config.icons")
-local colors = Utils.colors()
 
 -- local function truncate_middle(str, max)
 -- 	if #str <= max then
@@ -25,7 +24,7 @@ return {
 	{
 		provider = "",
 		hl = function(self)
-			return { fg = self.mode_colors[self.mode_key], bg = self.has_branch and colors.fg_gutter or nil }
+			return { fg = self.mode_colors[self.mode_key].fg, bg = self.has_branch and self.colors.gutter.fg or nil }
 		end,
 	},
 	{
@@ -38,7 +37,7 @@ return {
 			return " " .. icons.branch .. " " .. truncate_tail(head, 10)
 		end,
 		hl = function(self)
-			return { fg = self.mode_colors[self.mode_key], bg = colors.fg_gutter, bold = true }
+			return { fg = self.mode_colors[self.mode_key].fg, bg = self.colors.gutter.bg, bold = true }
 		end,
 	},
 }

@@ -1,5 +1,3 @@
-local colors = Utils.colors()
-
 return {
 	provider = function(self)
 		local modified = vim.api.nvim_get_option_value("modified", { buf = self.bufnr })
@@ -7,8 +5,8 @@ return {
 	end,
 	hl = function(self)
 		return {
-			fg = self.is_active and colors.blue or colors.comment,
-			bg = self.is_active and colors.bg or colors.black,
+			fg = self.is_active and self.colors.blue.fg or self.colors.comment.fg,
+			bg = self.is_active and self.colors.normal.bg or self.colors.black.bg,
 			bold = self.is_active or self.is_visible,
 			italic = self.is_active,
 		}

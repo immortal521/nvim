@@ -1,5 +1,3 @@
-local colors = Utils.colors()
-
 return {
 	init = function(self)
 		self.enc = vim.bo.fenc ~= "" and vim.bo.fenc or vim.o.enc
@@ -12,10 +10,14 @@ return {
 		provider = function(self)
 			return " " .. self.enc:upper() .. self.bomb .. " "
 		end,
-		hl = { fg = colors.fg_gutter },
+		hl = function(self)
+			return { fg = self.colors.gutter.fg }
+		end,
 	},
 	{
 		provider = "",
-		hl = { fg = colors.fg_gutter },
+		hl = function(self)
+			return { fg = self.colors.gutter.fg }
+		end,
 	},
 }

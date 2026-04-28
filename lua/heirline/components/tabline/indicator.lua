@@ -1,5 +1,4 @@
 local icons = require("config.icons")
-local colors = Utils.colors()
 
 return {
 	static = {
@@ -10,9 +9,9 @@ return {
 	end,
 	hl = function(self)
 		if self.is_active then
-			return { fg = colors.blue, bg = colors.bg, bold = true }
+			return { fg = self.colors.blue.fg, bg = self.colors.normal.bg, bold = true }
 		else
-			return { fg = colors.comment, bold = true }
+			return { fg = self.colors.comment.fg, bold = true }
 		end
 	end,
 }

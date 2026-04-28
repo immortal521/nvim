@@ -1,5 +1,4 @@
 local conditions = require("heirline.conditions")
-local colors = Utils.colors()
 
 return {
 	condition = conditions.is_active,
@@ -12,13 +11,17 @@ return {
 		end,
 		{
 			provider = " 󰻃 ",
-			hl = { fg = colors.magenta },
+			hl = function(self)
+				return { fg = self.colors.magenta.fg }
+			end,
 		},
 		{
 			provider = function(self)
 				return self.reg_recording
 			end,
-			hl = { fg = colors.magenta, italic = false, bold = true },
+			hl = function(self)
+				return { fg = self.colors.magenta.fg, italic = false, bold = true }
+			end,
 		},
 	},
 	update = { "RecordingEnter", "RecordingLeave" },

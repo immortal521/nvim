@@ -1,10 +1,8 @@
-local colors = Utils.colors()
-
 return {
 	{
 		provider = "",
 		hl = function(self)
-			return { fg = self.mode_colors[self.mode_key] }
+			return { fg = self.mode_colors[self.mode_key].fg }
 		end,
 	},
 	{
@@ -51,7 +49,7 @@ return {
 			return "%1(" .. self.mode_names[self.mode] .. "%)"
 		end,
 		hl = function(self)
-			return { fg = colors.fg_gutter, bg = self.mode_colors[self.mode_key], bold = true }
+			return { fg = self.colors.gutter.fg, bg = self.mode_colors[self.mode_key].bg, bold = true }
 		end,
 	},
 

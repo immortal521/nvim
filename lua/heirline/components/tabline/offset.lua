@@ -1,5 +1,4 @@
 local icons = require("config.icons")
-local colors = Utils.colors()
 
 return {
 	static = {
@@ -15,5 +14,7 @@ return {
 	provider = function(self)
 		return string.rep(" ", vim.api.nvim_win_get_width(self.winid)) .. self.separator
 	end,
-	hl = { fg = colors.fg_gutter },
+	hl = function(self)
+		return { fg = self.colors.gutter.fg }
+	end,
 }
