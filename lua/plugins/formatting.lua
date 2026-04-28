@@ -121,6 +121,7 @@ return {
 			ft.c = { "clang_format" }
 			ft.go = { "goimports", "gofumpt" }
 			ft.lua = { "stylua" }
+			ft.sql = { "sqruff" }
 
 			return ft
 		end)(),

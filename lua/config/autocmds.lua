@@ -83,13 +83,6 @@ vim.api.nvim_create_autocmd("FileType", {
 			silent = true,
 			desc = "关闭特殊窗口",
 		})
-
-		-- ESC 键也关闭
-		vim.keymap.set("n", "<ESC>", ":close<CR>", {
-			buffer = event.buf,
-			silent = true,
-			desc = "关闭特殊窗口",
-		})
 	end,
 })
 

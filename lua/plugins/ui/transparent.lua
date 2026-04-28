@@ -12,6 +12,7 @@ return {
 				"TinyInlineInvDiagnosticVirtualTextInfo",
 				"TinyInlineInvDiagnosticVirtualTextWarn",
 				"TinyInlineInvDiagnosticVirtualTextError",
+				"TabLineFill",
 			},
 		}
 		require("transparent").setup(opts)

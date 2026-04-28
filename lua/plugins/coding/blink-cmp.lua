@@ -4,27 +4,20 @@ return {
 	{
 		"saghen/blink.cmp",
 		event = { "InsertEnter", "CmdlineEnter" },
-		version = "1.*",
 		dependencies = {
 			"immortal521/windsurf.nvim",
 			"niuiic/blink-cmp-rg.nvim",
+			"saghen/blink.lib",
 		},
+		build = function()
+			require("blink.cmp").build():wait(60000)
+		end,
 
 		---@type blink.cmp.Config
 		opts = {
 			appearance = { nerd_font_variant = "mono" },
 			cmdline = {
 				enabled = true,
-				sources = function()
-					local type = vim.fn.getcmdtype()
-					if type == "/" or type == "?" then
-						return { "buffer" }
-					end
-					if type == ":" or type == "@" then
-						return { "cmdline" }
-					end
-					return {}
-				end,
 				completion = {
 					menu = { auto_show = true },
 					list = { selection = { preselect = false, auto_insert = true } },
@@ -37,22 +30,25 @@ return {
 					draw = {
 						treesitter = { "lsp" },
 						columns = {
-							{ "kind_icon", gap = 1 },
-							{ "label", gap = 1, "label_description" },
-							{ "kind", gap = 1 },
-							{ "source_name", gap = 1 },
+							{ "kind_icon" },
+							{ "label", "label_description", gap = 1 },
+							{ "kind" },
+							{ "source_name" },
 						},
 					},
 				},
 				keyword = { range = "full" },
 				list = { selection = { preselect = false, auto_insert = true } },
 				documentation = { auto_show = true, auto_show_delay_ms = 500, window = { border = "rounded" } },
-				trigger = { prefetch_on_insert = true, show_on_blocked_trigger_characters = {} },
+				trigger = {
+					show_on_keyword = true,
+					show_on_insert_on_trigger_character = true,
+				},
 				accept = { dot_repeat = true, auto_brackets = { enabled = true } },
 			},
 			signature = {
 				enabled = true,
-				trigger = { show_on_insert = true },
+				-- trigger = { show_on_insert = true },
 				window = { border = "rounded", treesitter_highlighting = true, show_documentation = true },
 			},
 			snippets = { preset = "luasnip" },
@@ -84,6 +80,21 @@ return {
 						max_items = 3,
 						score_offset = -20,
 					},
+				},
+			},
+			fuzzy = {
+				implementation = "prefer_rust",
+				max_typos = function(k)
+					return math.floor(#k / 4)
+				end,
+				frecency = {
+					enabled = true,
+				},
+				use_proximity = true,
+				sorts = {
+					"score",
+					"exact",
+					"sort_text",
 				},
 			},
 			keymap = {

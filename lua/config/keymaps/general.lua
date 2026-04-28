@@ -72,9 +72,9 @@ local keys = {
 			vim.cmd("noh")
 			return "<esc>"
 		end,
-		mode = { "i", "n", "s" },
 		expr = true,
 		desc = "Escape and Clear hlsearch",
+    mode = { "i", "n", "s" },
 	},
 
 	-- clear search / diff / redraw
