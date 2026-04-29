@@ -70,7 +70,7 @@ local OXFMT_CONFIGS = {
 	"oxfmt.jsonc",
 }
 
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"stevearc/conform.nvim",
 	event = { "BufReadPost", "BufNewFile", "BufWritePre" },

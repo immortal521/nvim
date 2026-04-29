@@ -1,5 +1,5 @@
 -- Diagnostics list
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"folke/trouble.nvim",
 

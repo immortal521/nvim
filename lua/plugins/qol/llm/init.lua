@@ -1,4 +1,4 @@
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"Kurama622/llm.nvim",
 	event = { "BufReadPost", "BufNewFile", "BufWritePre" },

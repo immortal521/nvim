@@ -1,5 +1,5 @@
 -- Noice
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"folke/noice.nvim",
 	lazy = false,

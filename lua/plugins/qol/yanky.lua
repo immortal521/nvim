@@ -1,4 +1,4 @@
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"gbprod/yanky.nvim",
 	lazy = true,

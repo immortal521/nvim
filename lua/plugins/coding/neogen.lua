@@ -1,4 +1,4 @@
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"danymat/neogen",
 	cmd = "Neogen",

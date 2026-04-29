@@ -1,5 +1,5 @@
 -- Statusline, Winbar and Tabline
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"rebelot/heirline.nvim",
 	event = "UIEnter",

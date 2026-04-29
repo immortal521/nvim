@@ -1,4 +1,4 @@
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"malewicz1337/oil-git.nvim",
 	ft = "oil",

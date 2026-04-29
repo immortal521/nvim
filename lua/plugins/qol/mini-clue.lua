@@ -19,7 +19,7 @@ local leader_group_clues = {
 	{ keys = "<leader><tab>", mode = "n", desc = "+tabs" },
 }
 
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"nvim-mini/mini.clue",
 	event = "VeryLazy",

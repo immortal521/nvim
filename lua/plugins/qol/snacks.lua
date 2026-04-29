@@ -1,4 +1,4 @@
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"folke/snacks.nvim",
 	priority = 1000,

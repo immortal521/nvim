@@ -16,7 +16,7 @@ local function ai_buffer(ai_type)
 	return { from = { line = start_line, col = 1 }, to = { line = end_line, col = to_col } }
 end
 
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"nvim-mini/mini.ai",
 	event = { "BufReadPost", "BufNewFile", "BufWritePre" },

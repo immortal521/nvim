@@ -29,7 +29,7 @@ local langs = {
 	"zig",
 }
 
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"neovim-treesitter/nvim-treesitter",
 	branch = "main",

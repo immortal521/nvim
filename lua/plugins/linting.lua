@@ -1,5 +1,5 @@
 -- Linter
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"mfussenegger/nvim-lint",
 	event = { "BufReadPost", "BufNewFile", "BufWritePre" },

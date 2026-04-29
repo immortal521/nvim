@@ -1,5 +1,5 @@
 -- Session Management
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"folke/persistence.nvim",
 	event = "BufReadPre",

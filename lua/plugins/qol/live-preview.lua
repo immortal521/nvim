@@ -1,4 +1,4 @@
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"brianhuster/live-preview.nvim",
 	lazy = true,

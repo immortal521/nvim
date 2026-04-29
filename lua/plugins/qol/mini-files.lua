@@ -1,4 +1,4 @@
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"nvim-mini/mini.files",
 	lazy = true,

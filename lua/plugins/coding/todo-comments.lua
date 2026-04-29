@@ -1,5 +1,5 @@
 -- Highlight TODO comments and can search them
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"folke/todo-comments.nvim",
 	event = { "BufReadPost", "BufNewFile", "BufWritePre" },

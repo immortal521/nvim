@@ -1,4 +1,5 @@
 -- require("vim._core.ui2").enable({})
+---@type zpack.Spec
 return {
 	"rachartier/tiny-cmdline.nvim",
 	enabled = false,

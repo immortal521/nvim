@@ -1,4 +1,4 @@
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"nvim-mini/mini.diff",
 	event = { "BufReadPost", "BufNewFile", "BufWritePre" },

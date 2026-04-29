@@ -1,5 +1,5 @@
 -- tokyonight
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"folke/tokyonight.nvim",
 	lazy = true,

@@ -1,4 +1,4 @@
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"NStefan002/screenkey.nvim",
 	lazy = true,

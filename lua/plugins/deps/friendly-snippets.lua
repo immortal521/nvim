@@ -1,4 +1,4 @@
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"rafamadriz/friendly-snippets",
 	lazy = true,

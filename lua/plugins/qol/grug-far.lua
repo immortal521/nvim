@@ -1,5 +1,5 @@
 -- Find And Replace
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"MagicDuck/grug-far.nvim",
 	cmd = { "GrugFar", "GrugFarWithin" },

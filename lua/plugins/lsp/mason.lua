@@ -63,7 +63,7 @@ local ensure_install = {
 	"tree-sitter-cli", -- 语法树工具
 }
 
----@type LazyPluginSpec[]
+---@type zpack.Spec[]
 return {
 	-- Mason
 	{

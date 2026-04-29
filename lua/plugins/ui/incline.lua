@@ -1,4 +1,4 @@
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"b0o/incline.nvim",
 	event = { "BufReadPost", "BufNewFile", "BufWritePre" },

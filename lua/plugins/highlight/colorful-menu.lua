@@ -1,5 +1,5 @@
 -- Auto Completion Menu Highlight
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"xzbdmw/colorful-menu.nvim",
 	lazy = true,

@@ -1,4 +1,4 @@
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"xiyaowong/transparent.nvim",
 	cond = not vim.g.neovide,

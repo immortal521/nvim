@@ -1,5 +1,5 @@
 -- Auto close tags
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
   "windwp/nvim-ts-autotag",
   event = { "BufReadPost", "BufNewFile", "BufWritePre" },

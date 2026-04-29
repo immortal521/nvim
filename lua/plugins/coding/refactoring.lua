@@ -1,4 +1,4 @@
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"ThePrimeagen/refactoring.nvim",
 	event = { "BufReadPost", "BufNewFile", "BufWritePre" },

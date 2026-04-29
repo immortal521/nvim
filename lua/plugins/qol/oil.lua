@@ -1,5 +1,5 @@
 -- Buffer like Filesystem
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"stevearc/oil.nvim",
 	cmd = "Oil",

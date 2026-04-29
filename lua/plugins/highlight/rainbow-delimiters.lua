@@ -1,5 +1,5 @@
 -- Rainbow Brackets
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"HiPhish/rainbow-delimiters.nvim",
 	event = { "BufReadPost", "BufNewFile", "BufWritePre" },

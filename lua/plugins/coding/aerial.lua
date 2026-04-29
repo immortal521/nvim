@@ -1,4 +1,4 @@
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"stevearc/aerial.nvim",
 	dependencies = { "neovim-treesitter/nvim-treesitter", "nvim-mini/mini.icons" },

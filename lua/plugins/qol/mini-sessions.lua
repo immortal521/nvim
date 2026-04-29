@@ -1,7 +1,7 @@
 -- Session Management
 local filename = vim.fn.fnamemodify(vim.fn.getcwd(), ":t") .. ".session.vim"
 
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"nvim-mini/mini.sessions",
 	event = "BufReadPre",

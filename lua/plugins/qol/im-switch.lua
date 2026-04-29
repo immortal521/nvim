@@ -1,4 +1,4 @@
----@type LazyPluginSpec
+---@type zpack.Spec
 local im_switch_win = {
 	"immoratl521/ime_toggle",
 	event = "InsertEnter",
@@ -25,7 +25,7 @@ local function find_im_command()
 	return "fcitx5-remote" -- 或者返回一个你认为安全的默认值，比如 "ibus"
 end
 
----@type LazyPluginSpec
+---@type zpack.Spec
 local im_switch = {
 	"keaising/im-select.nvim",
 	event = "InsertEnter",

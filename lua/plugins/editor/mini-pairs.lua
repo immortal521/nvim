@@ -1,5 +1,5 @@
 -- Auto pairs
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"nvim-mini/mini.pairs",
 	event = { "BufReadPost", "BufNewFile", "BufWritePre" },

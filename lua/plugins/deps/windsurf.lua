@@ -1,5 +1,5 @@
 -- windsurf
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"immortal521/windsurf.nvim",
 	event = "InsertEnter",

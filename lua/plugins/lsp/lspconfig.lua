@@ -1,7 +1,7 @@
 return {}
 
 -- -- Lsp config
--- ---@type LazyPluginSpec
+-- ---@type zpack.Spec
 -- return {
 -- 	"neovim/nvim-lspconfig",
 -- 	enabled = false,

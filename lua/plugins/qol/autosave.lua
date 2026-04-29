@@ -1,4 +1,4 @@
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"immortal521/auto-save.nvim",
 	event = { "BufReadPost", "BufNewFile", "BufWritePre" },

@@ -15,6 +15,9 @@ function M.setup(extra_plugins)
 
 	local opts = {
 		spec = vim.list_extend(plugin_spec, extra_plugins or {}),
+		defaults = {
+			confirm = false,
+		},
 	}
 
 	require("zpack").setup(opts)

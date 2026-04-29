@@ -17,7 +17,7 @@ local function dial(direction, g)
 	return require("dial.map").manipulate(direction, mode, group)
 end
 
----@type LazyPluginSpec
+---@type zpack.Spec
 return {
 	"monaqa/dial.nvim",
 	opts = function()
