@@ -12,10 +12,7 @@
   },
   "diagnostics": {
     "diagnosticInterval": 500,
-    "disable": [
-      "duplicate-type",
-      "missing-fields"
-    ],
+    "disable": ["duplicate-type", "missing-fields"],
     "enable": true,
     "enables": [],
     "globals": [],
@@ -24,22 +21,12 @@
   },
   "runtime": {
     "version": "LuaJIT",
-    "extensions": [
-      ".lua"
-    ],
-    "requirePattern": [
-      "lua/?.lua",
-      "lua/?/init.lua"
-    ]
+    "extensions": [".lua"],
+    "requirePattern": ["lua/?.lua", "lua/?/init.lua"]
   },
   "workspace": {
-    "library": [
-      "$VIMRUNTIME",
-      "$HOME/.local/share/nvim/lazy"
-    ],
-    "ignoreGlobs": [
-      "**/*_spec.lua"
-    ]
+    "library": ["$VIMRUNTIME", "$HOME/.local/share/nvim/site/pack/core/opt"],
+    "ignoreGlobs": ["**/*_spec.lua"]
   },
   "strict": {
     "arrayIndex": true,
