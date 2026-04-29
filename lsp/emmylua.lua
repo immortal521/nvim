@@ -21,7 +21,7 @@ return {
 			workspace = {
 				library = {
 					"$VIMRUNTIME",
-					vim.fn.stdpath("data") .. "/lazy/",
+					vim.fn.stdpath("data") .. "/site/pack/opt",
 				},
 			},
 		},
