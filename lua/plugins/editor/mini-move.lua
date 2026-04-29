@@ -2,6 +2,6 @@
 ---@type LazyPluginSpec
 return {
 	"nvim-mini/mini.move",
-	event = "BufEdit",
+	event = { "BufReadPost", "BufNewFile", "BufWritePre" },
 	opts = {},
 }

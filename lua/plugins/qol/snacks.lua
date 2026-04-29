@@ -88,7 +88,7 @@ return {
 			sections = {
 				{ section = "header" },
 				{ section = "keys", gap = 0.5 },
-				{ section = "startup" },
+				-- { section = "startup" },
 			},
 		},
 	},

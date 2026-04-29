@@ -34,7 +34,7 @@ return {
 	"neovim-treesitter/nvim-treesitter",
 	branch = "main",
 	build = ":TSUpdate",
-	event = { "BufEdit", "VeryLazy" },
+	event = {  "BufReadPost", "BufNewFile", "BufWritePre" , "VeryLazy" },
 	dependencies = { "neovim-treesitter/treesitter-parser-registry" },
 	opts = {},
 	init = function()

@@ -2,7 +2,7 @@
 return {
 	"NStefan002/screenkey.nvim",
 	lazy = true,
-	version = "*",
+  sem_version = "*",
 	opts = {
 		win_opts = {
 			relative = "editor",

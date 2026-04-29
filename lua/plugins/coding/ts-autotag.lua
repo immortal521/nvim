@@ -2,7 +2,7 @@
 ---@type LazyPluginSpec
 return {
   "windwp/nvim-ts-autotag",
-  event = "BufEdit",
+  event = { "BufReadPost", "BufNewFile", "BufWritePre" },
   opts = {
     ---@type nvim-ts-autotag.Opts
     opts = {

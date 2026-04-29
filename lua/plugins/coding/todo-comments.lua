@@ -2,7 +2,7 @@
 ---@type LazyPluginSpec
 return {
 	"folke/todo-comments.nvim",
-	event = "BufEdit",
+	event = { "BufReadPost", "BufNewFile", "BufWritePre" },
 	enabled = false,
 
 	---@type TodoOptions

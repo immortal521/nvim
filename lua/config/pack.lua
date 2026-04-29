@@ -13,29 +13,11 @@ function M.setup(extra_plugins)
 		{ import = "plugins.ui" },
 	}
 
-	---@type LazyConfig
 	local opts = {
 		spec = vim.list_extend(plugin_spec, extra_plugins or {}),
-		dev = {
-			path = function(plugin)
-				local dir = vim.env.NVIM_DEV_DIR or ""
-				return vim.fs.joinpath(dir, plugin.name)
-			end,
-			patterns = { "." },
-			fallback = true,
-		},
-		install = { colorscheme = { "tokyonight" } },
-		checker = { enabled = true },
-		ui = {
-			border = "rounded",
-		},
-		git = {
-			log = { "-4" },
-		},
 	}
 
-	require("lazy").setup(opts)
-	Utils.keymap.add({ { "<leader>L", "<cmd>Lazy<cr>", desc = "Lazy" } })
+	require("zpack").setup(opts)
 end
 
 return M

@@ -19,7 +19,7 @@ end
 ---@type LazyPluginSpec
 return {
 	"nvim-mini/mini.ai",
-	event = "BufEdit",
+	event = { "BufReadPost", "BufNewFile", "BufWritePre" },
 	opts = function()
 		local ai = require("mini.ai")
 		return {

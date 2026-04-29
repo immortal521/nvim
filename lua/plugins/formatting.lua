@@ -73,7 +73,7 @@ local OXFMT_CONFIGS = {
 ---@type LazyPluginSpec
 return {
 	"stevearc/conform.nvim",
-	event = "BufEdit",
+	event = { "BufReadPost", "BufNewFile", "BufWritePre" },
 
 	---@type conform.setupOpts
 	opts = {

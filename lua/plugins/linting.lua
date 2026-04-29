@@ -2,7 +2,7 @@
 ---@type LazyPluginSpec
 return {
 	"mfussenegger/nvim-lint",
-	event = "BufEdit",
+	event = { "BufReadPost", "BufNewFile", "BufWritePre" },
 	opts = {
 		events = {
 			"BufReadPost",

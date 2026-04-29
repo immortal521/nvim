@@ -1,7 +1,7 @@
 ---@type LazyPluginSpec
 return {
 	"Kurama622/llm.nvim",
-	event = "BufEdit",
+	event = { "BufReadPost", "BufNewFile", "BufWritePre" },
 	config = function()
 		local models = require("plugins.qol.llm.models")
 		local keymaps = require("plugins.qol.llm.keymaps")

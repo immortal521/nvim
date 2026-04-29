@@ -1,7 +1,7 @@
 ---@type LazyPluginSpec
 return {
 	"b0o/incline.nvim",
-	event = "BufEdit",
+	event = { "BufReadPost", "BufNewFile", "BufWritePre" },
 	opts = {
 		window = {
 			padding = 0,

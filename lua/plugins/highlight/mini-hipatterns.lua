@@ -1,7 +1,7 @@
 ---@type LazyPluginSpec
 return {
 	"nvim-mini/mini.hipatterns",
-	event = "BufEdit",
+	event = { "BufReadPost", "BufNewFile", "BufWritePre" },
 	config = function()
 		local hipatterns = require("mini.hipatterns")
 

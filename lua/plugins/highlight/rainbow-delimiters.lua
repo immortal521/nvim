@@ -2,7 +2,7 @@
 ---@type LazyPluginSpec
 return {
 	"HiPhish/rainbow-delimiters.nvim",
-	event = "BufEdit",
+	event = { "BufReadPost", "BufNewFile", "BufWritePre" },
   enabled = false,
 	main = "rainbow-delimiters.setup",
 

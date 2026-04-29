@@ -1,7 +1,7 @@
 ---@type LazyPluginSpec
 return {
 	"ThePrimeagen/refactoring.nvim",
-	event = "BufEdit",
+	event = { "BufReadPost", "BufNewFile", "BufWritePre" },
 	enabled = false,
 	---@type TodoOptions
 	opts = {

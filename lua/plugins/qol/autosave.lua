@@ -1,7 +1,7 @@
 ---@type LazyPluginSpec
 return {
 	"immortal521/auto-save.nvim",
-	event = "BufEdit",
+	event = { "BufReadPost", "BufNewFile", "BufWritePre" },
 	opts = {
 		debounced_dekay = 1000,
 		print_enabled = false,

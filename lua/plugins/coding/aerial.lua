@@ -1,7 +1,7 @@
 ---@type LazyPluginSpec
 return {
 	"stevearc/aerial.nvim",
-	dependencies = { "nvim-treesitter/nvim-treesitter", "mini-nvim/mini.icons" },
+	dependencies = { "neovim-treesitter/nvim-treesitter", "nvim-mini/mini.icons" },
 	lazy = true,
 	opts = {
 		autojump = true,

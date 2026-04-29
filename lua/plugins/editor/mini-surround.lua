@@ -1,7 +1,7 @@
 ---@type LazyPluginSpec
 return {
 	"nvim-mini/mini.surround",
-	event = "BufEdit",
+	event = { "BufReadPost", "BufNewFile", "BufWritePre" },
 	opts = {
 		mappings = {
 			-- 添加环绕的映射

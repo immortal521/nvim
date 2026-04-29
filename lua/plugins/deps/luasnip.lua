@@ -5,7 +5,7 @@ return {
 	dependencies = {
 		"rafamadriz/friendly-snippets",
 	},
-	version = "v2.*",
+	sem_version = "v2.*",
 	opts = {
 		history = true,
 		delete_check_events = "TextChanged",

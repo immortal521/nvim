@@ -1,6 +1,6 @@
 ---@type LazyPluginSpec
 return {
 	"folke/ts-comments.nvim",
-	event = "BufEdit",
+	event = { "BufReadPost", "BufNewFile", "BufWritePre" },
 	opts = {},
 }

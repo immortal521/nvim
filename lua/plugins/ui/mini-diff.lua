@@ -1,7 +1,7 @@
 ---@type LazyPluginSpec
 return {
 	"nvim-mini/mini.diff",
-	event = "BufEdit",
+	event = { "BufReadPost", "BufNewFile", "BufWritePre" },
 	opts = {
 		-- 视图配置
 		view = {

@@ -1,6 +1,6 @@
 ---@type LazyPluginSpec
 return {
 	"nvim-mini/mini.splitjoin",
-	event = "BufEdit",
+	event = { "BufReadPost", "BufNewFile", "BufWritePre" },
 	opts = {},
 }

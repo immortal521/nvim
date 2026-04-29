@@ -2,7 +2,7 @@
 ---@type LazyPluginSpec
 return {
 	"nvim-mini/mini.pairs",
-	event = "BufEdit",
+	event = { "BufReadPost", "BufNewFile", "BufWritePre" },
 	opts = {
 		skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
 		skip_ts = { "string" },
