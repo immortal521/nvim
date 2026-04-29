@@ -21,6 +21,23 @@ function M.setup(extra_plugins)
 	}
 
 	require("zpack").setup(opts)
+	Utils.keymap.add({
+		{
+			"<leader>pc",
+			"<cmd>ZClean<cr>",
+			desc = "Clean Unused Plugins",
+		},
+		{
+			"<leader>pu",
+			"<cmd>ZUpdate<cr>",
+			desc = "Update Plugins",
+		},
+		{
+			"<leader>pb",
+			"<cmd>ZBuild!<cr>",
+			desc = "Build Plugins",
+		},
+	})
 end
 
 return M

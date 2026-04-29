@@ -1,6 +1,6 @@
 ---@type zpack.Spec
 return {
-	'sairyy/zshow.nvim',
+	"sairyy/zshow.nvim",
 	-- uncomment the line above and comment the one below for the GitHub mirror
 	-- src = "https://gitlab.com/sairy/zpack.nvim",
 	lazy = false, -- no need for lazy loading
@@ -9,4 +9,7 @@ return {
 			-- your config here
 		}
 	end,
+	keys = {
+		{ "<leader>zs", "<cmd>Zshow<cr>", desc = "ZShow" },
+	},
 }

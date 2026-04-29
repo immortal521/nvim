@@ -28,6 +28,13 @@ return {
 				},
 				view = "mini",
 			},
+			{
+				filter = {
+					event = "msg_show",
+					find = "vim.pack",
+				},
+				view = "mini",
+			},
 		},
 		popupmenu = {
 			backend = "cmp",
