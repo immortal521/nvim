@@ -29,7 +29,7 @@ local ensure_install = {
 	"ruff",
 	"shellcheck",
 	"sqlfluff",
-	"stylelint-lsp", -- LSP形式的lint
+	"stylelint-language-server",
 	"codespell",
 
 	-- ==================== FORMATTER ====================
