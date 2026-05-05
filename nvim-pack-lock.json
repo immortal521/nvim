@@ -18,11 +18,11 @@
       "src": "https://github.com/niuiic/blink-cmp-rg.nvim"
     },
     "blink.cmp": {
-      "rev": "147c96b976fb5f6f04801fabad83920d5c8817dd",
+      "rev": "d3874d2a13aa19b095bdd10d37a82a8f0aa7cad3",
       "src": "https://github.com/saghen/blink.cmp"
     },
     "blink.lib": {
-      "rev": "dda2666685a5ac3598166577d2e34f1fff6b1637",
+      "rev": "f29d8bac6549bc1e7d699c83f680823d7def98bd",
       "src": "https://github.com/saghen/blink.lib"
     },
     "colorful-menu.nvim": {
@@ -95,11 +95,11 @@
       "src": "https://github.com/nvim-mini/mini-git"
     },
     "mini.ai": {
-      "rev": "43eb2074843950a3a25aae56a5f41362ec043bfa",
+      "rev": "7e10ce8468c0fce4f527ae2c0e5c484f7667f73d",
       "src": "https://github.com/nvim-mini/mini.ai"
     },
     "mini.diff": {
-      "rev": "ab11575a6c147ecfba894d676d0c93e855021d34",
+      "rev": "0ee0459152b141c0e1b0931eb6949105be4850a9",
       "src": "https://github.com/nvim-mini/mini.diff"
     },
     "mini.files": {
