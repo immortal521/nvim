@@ -38,7 +38,9 @@ return {
 			provider = function(self)
 				return self.filename
 			end,
-			hl = { italic = true },
+			hl = function(self)
+				return { italic = true, fg = self.colors.comment.fg }
+			end,
 		},
 	},
 }
