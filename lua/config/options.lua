@@ -121,6 +121,7 @@ vim.o.winborder = "rounded" -- 窗口边框圆角
 -- 窗口设置
 g.neovide_fullscreen = false
 g.neovide_opacity = 0.90
+g.neovide_window_blurred = true
 g.neovide_hide_mouse_when_typing = true
 
 -- 性能优化
