@@ -121,9 +121,9 @@ return {
 			local result = proc:wait()
 
 			if result.code == 0 then
-				Utils.log.info(result.stdout)
+				Utils.log.info(result.stdout or "result stdout empty")
 			else
-				Utils.log.error(result.stderr)
+				Utils.log.error(result.stderr or "result stderr empty")
 			end
 		end
 	end,

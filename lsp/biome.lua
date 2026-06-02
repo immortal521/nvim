@@ -11,11 +11,23 @@
 ---
 --- `biome` supports monorepos by default. It will automatically find the `biome.json` corresponding to the package you are working on, as described in the [documentation](https://biomejs.dev/guides/big-projects/#monorepo). This works without the need of spawning multiple instances of `biome`, saving memory.
 
+local root_markers = {
+	"package-lock.json",
+	"yarn.lock",
+	"pnpm-lock.yaml",
+	"bun.lockb",
+	"bun.lock",
+	"deno.lock",
+	"biome.json",
+	"biome.jsonc",
+	".git",
+}
+
 ---@type vim.lsp.Config
 return {
 	cmd = function(dispatchers, config)
 		local cmd = "biome"
-		local local_cmd = (config or {}).root_dir and config.root_dir .. "/node_modules/.bin/biome"
+		local local_cmd = config.root_dir and config.root_dir .. "/node_modules/.bin/biome"
 		if local_cmd and vim.fn.executable(local_cmd) == 1 then
 			cmd = local_cmd
 		end
@@ -36,41 +48,28 @@ return {
 		"vue",
 	},
 	workspace_required = true,
+	root_markers = root_markers,
 	root_dir = function(bufnr, on_dir)
-		-- The project root is where the LSP can be started from
-		-- As stated in the documentation above, this LSP supports monorepos and simple projects.
-		-- We select then from the project root, which is identified by the presence of a package
-		-- manager lock file.
-		local root_markers = {
-			"package-lock.json",
-			"yarn.lock",
-			"pnpm-lock.yaml",
-			"bun.lockb",
-			"bun.lock",
-			"deno.lock",
+		local filename = vim.api.nvim_buf_get_name(bufnr)
+
+		local biome_config_files = {
 			"biome.json",
 			"biome.jsonc",
 		}
-		-- Give the root markers equal priority by wrapping them in a table
-		root_markers = vim.fn.has("nvim-0.11.3") == 1 and { root_markers, { ".git" } }
-			or vim.list_extend(root_markers, { ".git" })
 
-		-- We fallback to the current working directory if no project root is found
+		biome_config_files = Utils.lsp.insert_package_json(biome_config_files, "biomejs", filename)
+
 		local project_root = vim.fs.root(bufnr, root_markers) or vim.fn.getcwd()
 
-		-- We know that the buffer is using Biome if it has a config file
-		-- in its directory tree.
-		local filename = vim.api.nvim_buf_get_name(bufnr)
-		local biome_config_files = { "biome.json", "biome.jsonc" }
-		biome_config_files = Utils.lsp.insert_package_json(biome_config_files, "biomejs", filename)
-		local is_buffer_using_biome = vim.fs.find(biome_config_files, {
+		local found = vim.fs.find(biome_config_files, {
 			path = filename,
 			type = "file",
 			limit = 1,
 			upward = true,
 			stop = vim.fs.dirname(project_root),
 		})[1]
-		if not is_buffer_using_biome then
+
+		if not found then
 			return
 		end
 
