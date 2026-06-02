@@ -5,7 +5,13 @@ return {
 	cmd = { "GrugFar", "GrugFarWithin" },
 
 	---@type grug.far.Options
-	opts = {},
+	opts = {
+		engines = {
+			ripgrep = {
+				extraArgs = "-U",
+			},
+		},
+	},
 	keys = {
 		{
 			"<leader>sr",
