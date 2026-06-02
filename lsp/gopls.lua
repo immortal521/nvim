@@ -2,7 +2,9 @@
 --- @field envvar_id string
 --- @field custom_subdir string?
 
+--- @type string?
 local mod_cache = nil
+--- @type string?
 local std_lib = nil
 
 ---@param custom_args go_dir_custom_args
@@ -33,7 +35,6 @@ end
 
 ---@return string?
 local function get_std_lib_dir()
-	---@diagnostic disable-next-line: unnecessary-if
 	if std_lib and std_lib ~= "" then
 		return std_lib
 	end
@@ -48,7 +49,6 @@ end
 
 ---@return string?
 local function get_mod_cache_dir()
-	---@diagnostic disable-next-line: unnecessary-if
 	if mod_cache and mod_cache ~= "" then
 		return mod_cache
 	end
@@ -64,14 +64,12 @@ end
 ---@param fname string
 ---@return string?
 local function get_root_dir(fname)
-	---@diagnostic disable-next-line: unnecessary-if
 	if mod_cache and fname:sub(1, #mod_cache) == mod_cache then
 		local clients = vim.lsp.get_clients({ name = "gopls" })
 		if #clients > 0 then
 			return clients[#clients].config.root_dir
 		end
 	end
-	---@diagnostic disable-next-line: unnecessary-if
 	if std_lib and fname:sub(1, #std_lib) == std_lib then
 		local clients = vim.lsp.get_clients({ name = "gopls" })
 		if #clients > 0 then

@@ -1,26 +1,36 @@
----@type vim.lsp.Config
+local root_markers = {
+	".emmyrc.json",
+	".emmyrc.lua",
+	".luarc.json",
+	".luarc.jsonc",
+	".luacheckrc",
+	".stylua.toml",
+	"stylua.toml",
+	"selene.toml",
+	"selene.yml",
+	".git",
+}
+
+---@type vim.lsp.config
 return {
 	cmd = { "emmylua_ls" },
 	filetypes = { "lua" },
-	root_markers = {
-		".luarc.json",
-		".emmyrc.json",
-		".luacheckrc",
-		".git",
-	},
+	root_markers = root_markers,
 	settings = {
-		Lua = {
+		codeLens = { enable = true },
+		hint = { enable = true },
+		lua = {
 			runtime = {
-				version = "LuaJIT",
+				version = "luajit",
 				extensions = { ".lua" },
-				requirePattern = {
+				requirepattern = {
 					"lua/?.lua",
 					"lua/?/init.lua",
 				},
 			},
 			workspace = {
 				library = {
-					"$VIMRUNTIME",
+					"$vimruntime",
 					vim.fn.stdpath("data") .. "/lazy/",
 				},
 			},

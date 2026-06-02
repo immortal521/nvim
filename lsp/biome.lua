@@ -27,7 +27,7 @@ local root_markers = {
 return {
 	cmd = function(dispatchers, config)
 		local cmd = "biome"
-		local local_cmd = config.root_dir and config.root_dir .. "/node_modules/.bin/biome"
+		local local_cmd = config.root_dir and config.root_dir .. "/node_modules/.bin/" .. cmd
 		if local_cmd and vim.fn.executable(local_cmd) == 1 then
 			cmd = local_cmd
 		end
