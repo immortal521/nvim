@@ -3,7 +3,6 @@ return {
 	"ThePrimeagen/refactoring.nvim",
 	event = "BufEdit",
 	enabled = false,
-	---@type TodoOptions
 	opts = {
 		prompt_func_return_type = {
 			go = true,

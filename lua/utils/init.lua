@@ -31,7 +31,7 @@ end
 
 --- 异步执行函数
 ---@param callback function 回调函数
----@param delay? number 延迟时间（毫秒），默认 1000
+---@param delay? integer 延迟时间（毫秒），默认 1000
 M.async_function = function(callback, delay)
 	delay = delay or 1000
 	vim.defer_fn(function()

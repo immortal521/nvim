@@ -115,9 +115,11 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 vim.api.nvim_create_autocmd("User", {
 	pattern = "BlinkCmpMenuOpen",
 	callback = function()
+		---@diagnostic disable-next-line: undefined-field
 		local formatoptions = vim.opt.formatoptions:get()
 		if formatoptions.t then
 			vim.b.restore_formatoptions_t = true
+			---@diagnostic disable-next-line: undefined-field
 			vim.opt.formatoptions:remove("t")
 		end
 	end,
@@ -127,6 +129,7 @@ vim.api.nvim_create_autocmd("User", {
 	pattern = "BlinkCmpMenuClose",
 	callback = function()
 		if vim.b.restore_formatoptions_t then
+			---@diagnostic disable-next-line: undefined-field
 			vim.opt.formatoptions:append("t")
 			vim.b.restore_formatoptions_t = nil
 		end

@@ -46,7 +46,7 @@ local function detect_root_from_files(files)
 end
 
 ---@class GetProjectRootOpts
----@field buf? number 缓冲区编号，默认为当前缓冲区
+---@field buf? integer 缓冲区编号，默认为当前缓冲区
 
 --- 获取项目根目录
 ---@param opts? GetProjectRootOpts 配置选项

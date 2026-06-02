@@ -84,14 +84,6 @@ return {
 				toggle_package_install_log = "l",
 			},
 		},
-		config = function(_, opts)
-			require("mason").setup(opts)
-
-			-- vim.defer_fn(function()
-			-- 	local packages = require("helpers.toolchain").get_mason_packages()
-			-- 	require("helpers.mason").ensure_packages_installed(packages)
-			-- end, 100)
-		end,
 		keys = {
 			{ "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" },
 		},

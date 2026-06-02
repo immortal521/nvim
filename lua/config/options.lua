@@ -6,8 +6,10 @@ local g = vim.g
 -------------------------------------------------------------------------------
 -- 根据操作系统设置默认 Shell
 if Utils.is_win() then
+	---@diagnostic disable-next-line: call-non-callable
 	Utils.terminal("nu")
 else
+	---@diagnostic disable-next-line: call-non-callable
 	Utils.terminal("zsh")
 end
 
@@ -26,7 +28,7 @@ opt.autowrite = true -- 自动保存
 opt.undofile = true -- 开启持久化撤销
 opt.undolevels = 10000 -- 最大撤销步数
 opt.updatetime = 200 -- 响应时间（影响插件触发速度）
-opt.timeoutlen = vim.g.vscode and 1000 or 300 -- 键序列超时时间
+opt.timeoutlen = g.vscode and 1000 or 300 -- 键序列超时时间
 opt.confirm = false -- 退出未保存文件时不弹出确认框
 opt.mouse = "a" -- 开启鼠标支持
 
@@ -90,7 +92,7 @@ opt.fillchars = {
 -------------------------------------------------------------------------------
 -- 补全、折叠与跳转 (Navigation & Completion)
 -------------------------------------------------------------------------------
-opt.completeopt = "menu,menuone,noselect"
+opt.completeopt = { "menu", "menuone", "noselect" }
 opt.complete = "" -- 禁用所有内置补全源（交给插件处理）
 opt.jumpoptions = "stack" -- 跳转列表以栈形式工作
 opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }

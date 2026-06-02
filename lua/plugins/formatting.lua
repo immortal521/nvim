@@ -29,22 +29,22 @@ local function has_any_of(ctx, groups)
 	return false
 end
 
-local function with_config(names, extra)
-	return function(_, ctx)
-		if not has_any_config(ctx, names) then
-			return false
-		end
-		if extra then
-			return extra(ctx)
-		end
-		return true
-	end
-end
-
-local function has_prettier_config_cli(ctx)
-	vim.fn.system({ "prettier", "--find-config-path", ctx.filename })
-	return vim.v.shell_error == 0
-end
+-- local function with_config(names, extra)
+-- 	return function(_, ctx)
+-- 		if not has_any_config(ctx, names) then
+-- 			return false
+-- 		end
+-- 		if extra then
+-- 			return extra(ctx)
+-- 		end
+-- 		return true
+-- 	end
+-- end
+--
+-- local function has_prettier_config_cli(ctx)
+-- 	vim.fn.system({ "prettier", "--find-config-path", ctx.filename })
+-- 	return vim.v.shell_error == 0
+-- end
 
 local PRETTIER_CONFIGS = {
 	".prettierrc",

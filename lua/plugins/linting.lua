@@ -122,6 +122,7 @@ return {
 			names = vim.tbl_filter(function(name)
 				local linter = lint.linters[name]
 				if not linter then
+					---@diagnostic disable-next-line: call-non-callable
 					Utils.log("Linter not found: " .. name, { title = "linter" })
 				end
 				return linter and not (type(linter) == "table" and linter.condition and not linter.condition(ctx))

@@ -4,7 +4,6 @@ return {
 	enabled = false,
 	lazy = false,
 	---@module "toggleterm"
-	---@type ToggleTermConfig
 	opts = {
 		float_opts = {
 			border = "rounded",
