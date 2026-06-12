@@ -3,6 +3,7 @@
 return {
 	"nvim-mini/mini.pairs",
 	event = "BufEdit",
+	enabled = false,
 	opts = {
 		skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
 		skip_ts = { "string" },
