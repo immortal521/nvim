@@ -14,6 +14,9 @@ return {
 				"TinyInlineInvDiagnosticVirtualTextError",
 				"TabLineFill",
 			},
+			-- exclude_groups = {
+			--      "CursorLine"
+			--    },
 		}
 		require("transparent").setup(opts)
 	end,
