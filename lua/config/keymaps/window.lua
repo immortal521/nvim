@@ -1,9 +1,33 @@
 local keys = {
 	-- resize window
-	{ "<C-Up>", "<cmd>resize +2<cr>", desc = "Increase Window Height" },
-	{ "<C-Down>", "<cmd>resize -2<cr>", desc = "Decrease Window Height" },
-	{ "<C-Left>", "<cmd>vertical resize -2<cr>", desc = "Decrease Window Width" },
-	{ "<C-Right>", "<cmd>vertical resize +2<cr>", desc = "Increase Window Width" },
+	{
+		"<leader>+",
+		function()
+			vim.cmd(("resize +%d"):format(vim.v.count1 * 2))
+		end,
+		desc = "Increase Window Height",
+	},
+	{
+		"<leader>_",
+		function()
+			vim.cmd(("resize -%d"):format(vim.v.count1 * 2))
+		end,
+		desc = "Decrease Window Height",
+	},
+	{
+		"<leader>>",
+		function()
+			vim.cmd(("vertical resize +%d"):format(vim.v.count1 * 2))
+		end,
+		desc = "Increase Window Width",
+	},
+	{
+		"<leader><",
+		function()
+			vim.cmd(("vertical resize -%d"):format(vim.v.count1 * 2))
+		end,
+		desc = "Decrease Window Width",
+	},
 
 	-- window move
 	{ "<leader>wh", "<C-w>h", desc = "Go to Left Window", remap = true },
@@ -17,4 +41,3 @@ local keys = {
 }
 
 Utils.keymap.add(keys)
-
