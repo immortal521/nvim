@@ -17,7 +17,7 @@ return {
 				icon = ""
 			end
 			self.icon = icon
-			self.icon_color = string.format("#%06x", vim.api.nvim_get_hl(0, { name = hl })["fg"])
+			self.icon_color = string.format("#%06x", vim.api.nvim_get_hl(0, { name = hl, link = false })["fg"])
 			self.filename = filename
 		end,
 		{ provider = " " },
