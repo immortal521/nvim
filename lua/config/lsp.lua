@@ -39,7 +39,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	group = grp,
 	callback = function(event)
 		local bufnr = event.buf
-		local client = vim.lsp.get_client_by_id(event.data.client_id)
+		local client = vim.lsp.get_clients({ id = event.data.client_id })[1]
 		if not client then
 			return
 		end
@@ -115,22 +115,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 					pcall(vim.lsp.buf.clear_references)
 				end,
 			})
-		end
-
-		local function find_symbol_containing_line(symbols, line)
-			for _, s in ipairs(symbols or {}) do
-				local range = s.range or (s.location and s.location.range)
-				if range and line >= range.start.line and line <= range["end"].line then
-					if s.children then
-						local child = find_symbol_containing_line(s.children, line)
-						if child then
-							return child
-						end
-					end
-					return s
-				end
-			end
-			return nil
 		end
 	end,
 })

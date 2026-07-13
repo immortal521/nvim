@@ -131,7 +131,7 @@ return {
 			"<cmd>lua Snacks.picker.git_diff({ base = 'origin', group = true })<cr>",
 			desc = "Git Diff (origin)",
 		},
-		{ "<leader>gs", "<cmd>lua Snacks.picker.git_status(})<cr>", desc = "Git Status" },
+		{ "<leader>gs", "<cmd>lua Snacks.picker.git_status()<cr>", desc = "Git Status" },
 		{ "<leader>gS", "<cmd>lua Snacks.picker.git_stash()<cr>", desc = "Git Stash" },
 
 		-- grep

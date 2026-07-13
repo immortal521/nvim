@@ -61,7 +61,7 @@ M.hover = function(config)
 			end
 		end
 
-		if vim.tbl_isempty(filtered) then
+		if next(filtered) == nil then
 			if config.silent ~= true then
 				Utils.log.info("No information available", { title = "Lsp Hover" })
 			end
@@ -76,7 +76,7 @@ M.hover = function(config)
 
 		for client_id, result in pairs(filtered) do
 			---@diagnostic disable-next-line: call-non-callable
-			local client = assert(vim.lsp.get_client_by_id(client_id))
+			local client = assert(vim.lsp.get_clients({ id = client_id })[1])
 			if nresults > 1 then
 				contents[#contents + 1] = string.format("# %s", client.name)
 			end
@@ -108,7 +108,7 @@ M.hover = function(config)
 		end
 		contents[#contents] = nil
 
-		if vim.tbl_isempty(contents) then
+		if next(contents) == nil then
 			if config.silent ~= true then
 				Utils.log.info("No information available", { title = "Lsp Hover" })
 			end

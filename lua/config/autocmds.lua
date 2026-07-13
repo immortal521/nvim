@@ -15,62 +15,54 @@ vim.api.nvim_create_autocmd("FileType", {
 -- 处理所有特殊缓冲区类型
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = {
-		"", -- [No Name] 空缓冲区
-		"qf", -- quick fix窗口
-		"nofile", -- 无文件缓冲区
-		"nowrite", -- 只读缓冲区
-		"acwrite", -- 总是可写缓冲区
-		"quickfix", -- 快速修复列表
-		"help", -- 帮助文档
-		"man", -- 手册页
-		"fugitive", -- Git 相关
-		"PlenaryTestPopup",
-		"checkhealth",
+		"",            -- [No Name] 空缓冲区
+		"acwrite",     -- 总是可写缓冲区
+		"checkhealth", -- 健康检查
+		"copilot",     -- Copilot
+		"dap-repl",    -- DAP REPL
+		"dapui_breakpoints", -- DAP UI 断点
+		"dapui_console",     -- DAP UI 控制台
+		"dapui_scopes",      -- DAP UI 作用域
+		"dapui_stacks",      -- DAP UI 堆栈
+		"dapui_watches",     -- DAP UI 监视
 		"dbout",
-		"grug-far",
+		"diff",              -- 差异比较
+		"dirvish",           -- 目录浏览
+		"DiffviewDiffPanel", -- Diffview 差异面板
+		"DiffviewFileHistory", -- Diffview 文件历史
+		"DiffviewFiles",     -- Diffview 文件
+		"fugitive",          -- Git 相关
+		"fugitiveblame",     -- Git blame
+		"git",               -- Git 相关
+		"gitcommit",         -- Git 提交信息
+		"gitconfig",         -- Git 配置
 		"gitgraph",
-		"help",
-		"lspinfo",
+		"gitrebase",         -- Git rebase
+		"gitsigns-blame",
+		"grug-far",
+		"help",              -- 帮助文档
+		"lspinfo",           -- LSP 信息
+		"mason",             -- Mason 包管理
+		"man",               -- 手册页
 		"neotest-output",
 		"neotest-output-panel",
 		"neotest-summary",
+		"netrw",             -- 文件浏览器
+		"nofile",            -- 无文件缓冲区
+		"nowrite",           -- 只读缓冲区
+		"notify",            -- 通知窗口
 		"nvim-pack",
-		"notify",
+		"oil",               -- Oil 文件浏览器
+		"PlenaryTestPopup",  -- Plenary 测试弹窗
+		"popup",             -- 弹出窗口
+		"prompt",            -- 提示窗口
+		"qf",                -- quick fix 窗口
+		"quickfix",          -- 快速修复列表
 		"spectre_panel",
-		"startuptime",
-		"tsplayground",
-		"fugitiveblame", -- Git blame
-		"git", -- Git 相关
-		"gitcommit", -- Git 提交信息
-		"gitrebase", -- Git rebase
-		"gitsigns-blame",
-		"gitconfig", -- Git 配置
-		"terminal", -- 终端
-		"prompt", -- 提示窗口
-		"popup", -- 弹出窗口
-		"netrw", -- 文件浏览器
-		"dirvish", -- 目录浏览
-		"oil", -- Oil 文件浏览器
-		"toggleterm", -- ToggleTerm
-		"startuptime", -- 启动时间分析
-		"checkhealth", -- 健康检查
-		"lspinfo", -- LSP 信息
-		"mason", -- Mason 包管理�
-		"notify", -- 通知窗口
-		"copilot", -- Copilot
-		"dap-repl", -- DAP REPL
-		"dapui_console", -- DAP UI 控制台
-		"dapui_scopes", -- DAP UI 作用域
-		"dapui_watches", -- DAP UI 监视
-		"dapui_breakpoints", -- DAP UI 断点
-		"dapui_stacks", -- DAP UI 堆栈
-		"dapui_console", -- DAP UI 控制台
-		"PlenaryTestPopup", -- Plenary 测试弹窗
-		"tsplayground", -- Treesitter 游乐场
-		"diff", -- 差异比较
-		"DiffviewFiles", -- Diffview 文件
-		"DiffviewFileHistory", -- Diffview 文件历史
-		"DiffviewDiffPanel", -- Diffview 差异面板
+		"startuptime",       -- 启动时间分析
+		"terminal",          -- 终端
+		"toggleterm",        -- ToggleTerm
+		"tsplayground",      -- Treesitter 游乐场
 	},
 	group = vim.api.nvim_create_augroup("quit_window", { clear = true }),
 	callback = function(event)

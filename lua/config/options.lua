@@ -114,8 +114,8 @@ opt.virtualedit = "onemore" -- 光标可以移动到行尾最后一个字符之�
 -------------------------------------------------------------------------------
 opt.spelllang = { "en" }
 g.have_nerd_font = true
-vim.o.guifont = "Maple Mono NF CN:h14"
-vim.o.winborder = "rounded" -- 窗口边框圆角
+opt.guifont = "Maple Mono NF CN:h14"
+opt.winborder = "rounded" -- 窗口边框圆角
 
 -------------------------------------------------------------------------------
 -- Neovide 专属配置 (GUI Setting)

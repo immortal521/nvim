@@ -6,7 +6,7 @@ local function assign(map, fts, formatters)
 	end
 end
 
-local function config_find_up(ctx, names)
+local function has_any_config(ctx, names)
 	local dir = vim.fs.dirname(ctx.filename)
 	local found = vim.fs.find(names, {
 		path = dir,
@@ -14,10 +14,6 @@ local function config_find_up(ctx, names)
 		stop = vim.uv.os_homedir(),
 	})
 	return found and #found > 0
-end
-
-local function has_any_config(ctx, names)
-	return config_find_up(ctx, names)
 end
 
 local function has_any_of(ctx, groups)

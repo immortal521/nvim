@@ -50,5 +50,4 @@ function M.add(configs)
 	end
 end
 
--- 返回模块
 return M
