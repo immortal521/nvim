@@ -10,7 +10,7 @@ local langs = {
 	"git_config", "gitcommit", "gitattributes", "gitignore", "git_rebase",
 	"go", "gomod", "gowork", "gosum",
 	"graphql",
-	"haskell", "html",
+  "haskell", "html", "html_tags",
 	"http",
 	"java", "javascript", "jsdoc", "json", "jsx",
 	"kotlin",

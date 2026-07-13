@@ -41,7 +41,7 @@ local ensure_install = {
 	"google-java-format",
 	"oxfmt",
 	"prettier",
-	"rustfmt",
+	-- "rustfmt",
 	"shfmt",
 	"stylua",
 	"taplo",
