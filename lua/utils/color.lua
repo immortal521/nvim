@@ -24,7 +24,7 @@
 ---@field surface utils.colors.token
 
 ---@class utils.color
----@field get_colors fun(): utils.color.colors
+---@field get_colors fun(): utils.colors.token
 
 ---@type utils.color
 local M = setmetatable({}, {
@@ -33,110 +33,117 @@ local M = setmetatable({}, {
 	end,
 })
 
+local PREFIX = "Utils"
+local nvim_get_hl = vim.api.nvim_get_hl
+local nvim_set_hl = vim.api.nvim_set_hl
+
+---@param name string
+---@return utils.colors.rgb?
+local function fg(name)
+	return nvim_get_hl(0, { name = name }).fg
+end
+
+---@param name string
+---@return utils.colors.rgb?
+local function bg(name)
+	return nvim_get_hl(0, { name = name }).bg
+end
+
+---@return utils.color.colors
+local function build_colors()
+	local todo_fg = fg("Todo")
+	local sep_fg = fg("WinSeparator")
+	local label_fg = fg("@label")
+	local comment_fg = fg("Comment")
+	local string_fg = fg("String")
+	local constructor_fg = fg("@constructor")
+	local module_fg = fg("@module.builtin")
+	local warn_fg = fg("@comment.warning")
+	local hint_fg = fg("@comment.hint")
+	local error_fg = fg("@comment.error")
+	local whitespace_fg = fg("Whitespace")
+
+	local orange_fg = fg("DiagnosticWarn")
+	local cyan_fg = fg("DiagnosticHint")
+	local purple_fg = fg("@keyword")
+	local pink_fg = fg("@string.special")
+
+	local selection_bg = bg("Visual")
+	local surface_bg = bg("NormalFloat")
+	local normal_bg = bg("Normal")
+
+	local transparent = vim.g.transparent_enabled == true
+
+	local set = nvim_set_hl
+	set(0, PREFIX .. "NormalFg", { fg = todo_fg })
+	set(0, PREFIX .. "BlackFg", { fg = sep_fg })
+	set(0, PREFIX .. "BlueFg", { fg = label_fg })
+	set(0, PREFIX .. "CommentFg", { fg = comment_fg })
+	set(0, PREFIX .. "GreenFg", { fg = string_fg })
+	set(0, PREFIX .. "MagentaFg", { fg = constructor_fg })
+	set(0, PREFIX .. "RedFg", { fg = module_fg })
+	set(0, PREFIX .. "YellowFg", { fg = warn_fg })
+	set(0, PREFIX .. "TealFg", { fg = hint_fg })
+	set(0, PREFIX .. "ErrorFg", { fg = error_fg })
+	set(0, PREFIX .. "GutterFg", { fg = whitespace_fg })
+
+	set(0, PREFIX .. "NormalBg", { bg = todo_fg })
+	set(0, PREFIX .. "BlackBg", { bg = sep_fg })
+	set(0, PREFIX .. "BlueBg", { bg = label_fg })
+	set(0, PREFIX .. "CommentBg", { bg = comment_fg })
+	set(0, PREFIX .. "GreenBg", { bg = string_fg })
+	set(0, PREFIX .. "MagentaBg", { bg = constructor_fg })
+	set(0, PREFIX .. "RedBg", { bg = module_fg })
+	set(0, PREFIX .. "YellowBg", { bg = warn_fg })
+	set(0, PREFIX .. "TealBg", { bg = hint_fg })
+	set(0, PREFIX .. "ErrorBg", { bg = error_fg })
+	set(0, PREFIX .. "GutterBg", { bg = whitespace_fg })
+
+	set(0, PREFIX .. "OrangeFg", { fg = orange_fg })
+	set(0, PREFIX .. "CyanFg", { fg = cyan_fg })
+	set(0, PREFIX .. "PurpleFg", { fg = purple_fg })
+	set(0, PREFIX .. "PinkFg", { fg = pink_fg })
+
+	set(0, PREFIX .. "SelectionBg", { bg = selection_bg })
+	set(0, PREFIX .. "SurfaceBg", { bg = surface_bg })
+
+	---@param fg_val utils.colors.rgb?
+	---@param bg_val utils.colors.rgb?
+	---@param name? string
+	---@return utils.colors.token
+	local function token(fg_val, bg_val, name)
+		local bg_color = bg_val or normal_bg
+		if transparent and (name == "Normal" or name == "Black") then
+			bg_color = nil
+		end
+		return { fg = fg_val, bg = bg_color }
+	end
+
+	return {
+		normal = token(todo_fg, todo_fg, "Normal"),
+		black = token(sep_fg, sep_fg, "Black"),
+		blue = token(label_fg, label_fg),
+		comment = token(comment_fg, comment_fg),
+		green = token(string_fg, string_fg),
+		magenta = token(constructor_fg, constructor_fg),
+		red = token(module_fg, module_fg),
+		yellow = token(warn_fg, warn_fg),
+		teal = token(hint_fg, hint_fg),
+		error = token(error_fg, error_fg),
+		gutter = token(whitespace_fg, whitespace_fg),
+		orange = token(orange_fg, orange_fg),
+		cyan = token(cyan_fg, cyan_fg),
+		purple = token(purple_fg, purple_fg),
+		pink = token(pink_fg, pink_fg),
+		selection = token(nil, selection_bg),
+		surface = token(nil, surface_bg),
+	}
+end
+
+--- 每次调用都重新构建颜色，确保 colorscheme 切换后立即生效
 ---@return utils.color.colors
 M.get_colors = function()
-	local function hl(name)
-		return vim.api.nvim_get_hl(0, { name = name })
-	end
-
-	local todo_fg = hl("Todo").fg
-	local sep_fg = hl("WinSeparator").fg
-	local label_fg = hl("@label").fg
-	local comment_fg = hl("Comment").fg
-	local string_fg = hl("String").fg
-	local constructor_fg = hl("@constructor").fg
-	local module_fg = hl("@module.builtin").fg
-	local warn_fg = hl("@comment.warning").fg
-	local hint_fg = hl("@comment.hint").fg
-	local error_fg = hl("@comment.error").fg
-	local whitespace_fg = hl("Whitespace").fg
-
-	local orange_fg = hl("DiagnosticWarn").fg
-	local cyan_fg = hl("DiagnosticHint").fg
-	local purple_fg = hl("@keyword").fg
-	local pink_fg = hl("@string.special").fg
-
-	local selection_bg = hl("Visual").bg
-	local surface_bg = hl("NormalFloat").bg
-
-	local function set(name, opts)
-		vim.api.nvim_set_hl(0, name, opts)
-	end
-
-	local PREFIX = "Utils"
-
-	set(PREFIX .. "NormalFg", { fg = todo_fg })
-	set(PREFIX .. "BlackFg", { fg = sep_fg })
-	set(PREFIX .. "BlueFg", { fg = label_fg })
-	set(PREFIX .. "CommentFg", { fg = comment_fg })
-	set(PREFIX .. "GreenFg", { fg = string_fg })
-	set(PREFIX .. "MagentaFg", { fg = constructor_fg })
-	set(PREFIX .. "RedFg", { fg = module_fg })
-	set(PREFIX .. "YellowFg", { fg = warn_fg })
-	set(PREFIX .. "TealFg", { fg = hint_fg })
-	set(PREFIX .. "ErrorFg", { fg = error_fg })
-	set(PREFIX .. "GutterFg", { fg = whitespace_fg })
-
-	set(PREFIX .. "NormalBg", { bg = todo_fg })
-	set(PREFIX .. "BlackBg", { bg = sep_fg })
-	set(PREFIX .. "BlueBg", { bg = label_fg })
-	set(PREFIX .. "CommentBg", { bg = comment_fg })
-	set(PREFIX .. "GreenBg", { bg = string_fg })
-	set(PREFIX .. "MagentaBg", { bg = constructor_fg })
-	set(PREFIX .. "RedBg", { bg = module_fg })
-	set(PREFIX .. "YellowBg", { bg = warn_fg })
-	set(PREFIX .. "TealBg", { bg = hint_fg })
-	set(PREFIX .. "ErrorBg", { bg = error_fg })
-	set(PREFIX .. "GutterBg", { bg = whitespace_fg })
-
-	set(PREFIX .. "OrangeFg", { fg = orange_fg })
-	set(PREFIX .. "CyanFg", { fg = cyan_fg })
-	set(PREFIX .. "PurpleFg", { fg = purple_fg })
-	set(PREFIX .. "PinkFg", { fg = pink_fg })
-
-	set(PREFIX .. "SelectionBg", { bg = selection_bg })
-	set(PREFIX .. "SurfaceBg", { bg = surface_bg })
-
-	local function token(name)
-		local fg_hl = vim.api.nvim_get_hl(0, { name = PREFIX .. name .. "Fg" })
-		local bg_hl = vim.api.nvim_get_hl(0, { name = PREFIX .. name .. "Bg" })
-
-		local transparent = vim.g.transparent_enabled == true
-
-		local bg = bg_hl.bg or vim.api.nvim_get_hl(0, { name = "Normal" }).bg
-
-		if transparent and (name == "Normal" or name == "Black") then
-			bg = nil
-		end
-
-		return {
-			fg = fg_hl.fg,
-			bg = bg,
-		}
-	end
-
-	local c = {}
-
-	c.normal = token("Normal")
-	c.black = token("Black")
-	c.blue = token("Blue")
-	c.comment = token("Comment")
-	c.green = token("Green")
-	c.magenta = token("Magenta")
-	c.red = token("Red")
-	c.yellow = token("Yellow")
-	c.teal = token("Teal")
-	c.error = token("Error")
-	c.gutter = token("Gutter")
-
-	c.orange = token("Orange")
-	c.cyan = token("Cyan")
-	c.purple = token("Purple")
-	c.pink = token("Pink")
-	c.selection = token("Selection")
-	c.surface = token("Surface")
-
-	return c
+	return build_colors()
 end
 
 return M

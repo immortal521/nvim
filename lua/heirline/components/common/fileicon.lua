@@ -6,7 +6,8 @@ return {
 			self.icon = ""
 		end
 		self.icon = self.icon
-		self.icon_color = string.format("#%06x", vim.api.nvim_get_hl(0, { name = self.icon_hl, link = false })["fg"])
+		local hl = vim.api.nvim_get_hl(0, { name = self.icon_hl, link = false })
+		self.icon_color = hl.fg and string.format("#%06x", hl.fg) or nil
 	end,
 	provider = function(self)
 		return self.icon and (self.icon .. " ")
