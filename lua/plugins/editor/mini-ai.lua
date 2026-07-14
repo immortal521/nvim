@@ -12,7 +12,12 @@ local function ai_buffer(ai_type)
 		start_line, end_line = first_nonblank, last_nonblank
 	end
 
-	local to_col = math.max(vim.fn.getline(end_line):len(), 1)
+	local line_text = vim.fn.getline(end_line)
+	if type(line_text) == "table" then
+		line_text = line_text[1] or ""
+	end
+
+	local to_col = math.max(string.len(line_text or ""), 1)
 	return { from = { line = start_line, col = 1 }, to = { line = end_line, col = to_col } }
 end
 
