@@ -5,7 +5,7 @@ return {
 		"saghen/blink.cmp",
 		event = { "InsertEnter", "CmdlineEnter" },
 		dependencies = {
-			"immortal521/windsurf.nvim",
+			"milanglacier/minuet-ai.nvim",
 			"niuiic/blink-cmp-rg.nvim",
 			"saghen/blink.lib",
 		},
@@ -44,6 +44,7 @@ return {
 				trigger = {
 					show_on_keyword = true,
 					show_on_insert_on_trigger_character = true,
+					prefetch_on_insert = false,
 				},
 				accept = { dot_repeat = true, auto_brackets = { enabled = true } },
 			},
@@ -54,9 +55,15 @@ return {
 			},
 			snippets = { preset = "luasnip" },
 			sources = {
-				default = { "lsp", "codeium", "snippets", "path", "ripgrep", "buffer" },
+				default = { "lsp", "snippets", "path", "buffer", "ripgrep", "minuet" },
 				providers = {
-					codeium = { name = "Codeium", module = "codeium.blink", async = true, max_items = 3 },
+					minuet = {
+						name = "minuet",
+						module = "minuet.blink",
+						async = true,
+						timeout_ms = 10000,
+						score_offset = 50,
+					},
 					ripgrep = {
 						name = "Ripgrep",
 						module = "blink-cmp-rg",
@@ -118,6 +125,7 @@ return {
         ['<A-8>'] = { function(cmp) cmp.accept({ index = 8 }) end },
         ['<A-9>'] = { function(cmp) cmp.accept({ index = 9 }) end },
         ['<A-0>'] = { function(cmp) cmp.accept({ index = 10 }) end },
+        ['<A-y>'] = { function() require('minuet').make_blink_map() end},
 				-- stylua: ignore start
 			},
 		},
