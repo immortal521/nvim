@@ -30,7 +30,7 @@ return {
 
 				-- just for lazygit
 				vim.schedule(function()
-					Snacks.lazygit()
+					Core.lazygit()
 				end)
 			end,
 		},
