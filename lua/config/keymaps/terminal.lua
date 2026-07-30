@@ -17,6 +17,7 @@ local win = {
 }
 
 local self_keys = {
+	{ "jk", "<C-\\><C-n>", mode = "t", desc = "Exit terminal mode" },
 	{
 		"<leader>pu",
 		function()
