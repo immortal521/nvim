@@ -1,7 +1,7 @@
 ---@type LazyPluginSpec
 return {
 	"immortal521/toggleterm.nvim",
-	-- enabled = false,
+	enabled = false,
 	lazy = false,
 	---@module "toggleterm"
 	opts = {
