@@ -8,6 +8,7 @@ return {
 		local dashboard = require("alpha.themes.dashboard")
 
 		local logo = [[
+
          ▀████▀▄▄              ▄█
            █▀    ▀▀▄▄▄▄▄    ▄▄▀▀█
   ▄        █          ▀▀▀▀▄  ▄▀
@@ -33,6 +34,8 @@ return {
       dashboard.button("q", "  Quit",             "<cmd>qa<cr>"),
     }
 
+		dashboard.section.buttons.opts.spacing = 0
+
 		for _, button in ipairs(dashboard.section.buttons.val) do
 			button.opts.hl = "AlphaButtons"
 			button.opts.hl_shortcut = "AlphaShortcut"
@@ -42,7 +45,8 @@ return {
 		dashboard.section.buttons.opts.hl = "AlphaButtons"
 		dashboard.section.footer.opts.hl = "AlphaFooter"
 
-		dashboard.opts.layout[1].val = 2
+		dashboard.opts.layout[1].val = 8
+		dashboard.opts.layout[3].val = 2
 
 		return dashboard
 	end,
@@ -78,18 +82,14 @@ return {
 			end,
 		})
 
-		vim.api.nvim_create_autocmd("User", {
-			pattern = "LazyVimStarted",
-			once = true,
-			callback = function()
-				local stats = require("lazy").stats()
-				local ms = math.floor(stats.startuptime * 100 + 0.5) / 100
+		vim.schedule(function()
+			local stats = require("lazy").stats()
+			local ms = math.floor(stats.startuptime * 100 + 0.5) / 100
 
-				dashboard.section.footer.val =
-					string.format("⚡ Neovim loaded %d/%d plugins in %.2fms", stats.loaded, stats.count, ms)
+			dashboard.section.footer.val =
+				string.format("⚡ Neovim loaded %d/%d plugins in %.2fms", stats.loaded, stats.count, ms)
 
-				pcall(vim.cmd.AlphaRedraw)
-			end,
-		})
+			pcall(vim.cmd.AlphaRedraw)
+		end)
 	end,
 }
