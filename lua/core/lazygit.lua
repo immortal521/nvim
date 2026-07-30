@@ -224,10 +224,10 @@ function M.log_file(opts)
 	return M.open(opts)
 end
 
----@private
-function M.health()
-	local ok = vim.fn.executable("lazygit") == 1
-	Snacks.health[ok and "ok" or "error"](("{lazygit} %sinstalled"):format(ok and "" or "not "))
-end
+--@private
+-- function M.health()
+-- 	local ok = vim.fn.executable("lazygit") == 1
+-- 	Snacks.health[ok and "ok" or "error"](("{lazygit} %sinstalled"):format(ok and "" or "not "))
+-- end
 
 return M
