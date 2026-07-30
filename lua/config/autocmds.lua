@@ -79,6 +79,13 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "fzf",
+  callback = function()
+    vim.keymap.set("t", "jk", [[<C-\><C-n>]], { buffer = true, desc = "Exit fzf terminal mode" })
+  end,
+})
+
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 	group = vim.api.nvim_create_augroup("env_filetype", { clear = true }),
 	pattern = { "*.env", ".env.*" },
