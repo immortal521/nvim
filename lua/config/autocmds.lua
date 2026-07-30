@@ -31,6 +31,7 @@ vim.api.nvim_create_autocmd("FileType", {
 		"DiffviewDiffPanel", -- Diffview 差异面板
 		"DiffviewFileHistory", -- Diffview 文件历史
 		"DiffviewFiles",     -- Diffview 文件
+    "fzf",
 		"fugitive",          -- Git 相关
 		"fugitiveblame",     -- Git blame
 		"git",               -- Git 相关
