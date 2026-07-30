@@ -98,7 +98,7 @@ local defaults = {
 	position = "float",
 	minimal = true,
 	wo = {
-		winhighlight = "Normal:SnacksNormal,NormalNC:SnacksNormalNC,WinBar:SnacksWinBar,WinBarNC:SnacksWinBarNC,FloatTitle:SnacksTitle,FloatFooter:SnacksFooter,WinSeparator:SnacksWinSeparator",
+		winhighlight = "Normal:CoreNormal,NormalNC:CoreNormalNC,WinBar:CoreWinBar,WinBarNC:CoreWinBarNC,FloatTitle:CoreTitle,FloatFooter:CoreFooter,WinSeparator:CoreWinSeparator",
 	},
 	bo = {},
 	title_pos = "center",
@@ -201,6 +201,22 @@ local borders = {
 	hpad = { "", "", "", " ", "", "", "", " " },
 	vpad = { "", " ", "", "", "", " ", "", "" },
 }
+
+Utils.hlgroup.set_hl({
+	Backdrop = { bg = "#000000" },
+	Footer = "FloatFooter",
+	FooterDesc = "DiagnosticInfo",
+	FooterKey = "DiagnosticVirtualTextInfo",
+	Normal = "NormalFloat",
+	NormalNC = "NormalFloat",
+	Title = "FloatTitle",
+	WinBar = "Title",
+	WinBarNC = "CoreWinBar",
+	WinKey = "Keyword",
+	WinKeySep = "NonText",
+	WinKeyDesc = "Function",
+	WinSeparator = "WinSeparator",
+}, { prefix = "Core", default = true })
 
 --@private
 ---@param ...? core.win.Config|string|{}
@@ -877,6 +893,9 @@ function M:show()
 	for k, v in pairs(self.opts.w or {}) do
 		vim.w[self.win][k] = v
 	end
+	if Utils.hlgroup.is_transparent() then
+		self.opts.wo.winblend = 0
+	end
 	---@cast self.win integer
 	Utils.wo(self.win, self.opts.wo or {})
 	if self.opts.on_win then
@@ -1076,11 +1095,25 @@ function M:drop()
 	backdrop = vim.tbl_extend("force", { bg = "#000000", blend = 60, transparent = true }, backdrop)
 	---@cast backdrop core.win.Backdrop
 
-	if backdrop.transparent or not vim.o.termguicolors or backdrop.blend == 100 or not self:is_floating() then
+	if
+		(Utils.hlgroup.is_transparent() and backdrop.transparent)
+		or not vim.o.termguicolors
+		or backdrop.blend == 100
+		or not self:is_floating()
+	then
 		return
 	end
 
 	local bg, winblend = backdrop.bg or "#000000", backdrop.blend
+
+	if not backdrop.transparent then
+		if Utils.hlgroup.is_transparent() then
+			bg = nil
+		else
+			bg = Utils.hlgroup.blend(Utils.hlgroup.color("Normal", "bg"), bg, winblend / 100)
+		end
+		winblend = 0
+	end
 
 	local group = ("CoreBackdrop_%s"):format(bg and bg:sub(2) or "T")
 	vim.api.nvim_set_hl(0, group, { bg = bg })

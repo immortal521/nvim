@@ -9,7 +9,7 @@
 ---@field buffer utils.buffer
 ---@field log utils.log
 ---@field autocmd utils.autocmd
----@field lazygit utils.lazygit
+---@field hlgroup utils.hlgroup
 local M = {}
 
 -- 模块懒加载
