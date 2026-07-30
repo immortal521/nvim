@@ -8,6 +8,7 @@ _G.Config = {}
 
 local colorschemes = "tokyonight"
 
+require("core").setup({})
 require("config.options")
 require("config.autocmds")
 require("config.keymaps")

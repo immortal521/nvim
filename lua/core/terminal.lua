@@ -1,4 +1,4 @@
----@class core.terminal: core.ui.win
+---@class core.terminal: core.win
 ---@field cmd? string | string[]
 ---@field opts core.terminal.Opts
 ---@overload fun(cmd?: string|string[], opts?: core.terminal.Opts): core.terminal
@@ -13,7 +13,7 @@ M.meta = {
 }
 
 ---@class core.terminal.Config
----@field win? core.ui.win.Config|{}
+---@field win? core.win.Config|{}
 ---@field shell? string|string[] The shell to use. Defaults to `vim.o.shell`
 ---@field override? fun(cmd?: string|string[], opts?: core.terminal.Opts) Use this to use a different terminal implementation
 local defaults = {
@@ -29,9 +29,9 @@ local defaults = {
 ---@field auto_close? boolean close the terminal buffer when the process exits
 ---@field interactive? boolean shortcut for `start_insert`, `auto_close` and `auto_insert` (default: true)
 
-require("core.ui.win").style("terminal", {
+Core.config.style("terminal", {
 	bo = {
-		filetype = "snacks_terminal",
+		filetype = "core_terminal",
 	},
 	wo = {},
 	stack = true, -- when enabled, multiple split windows with the same position will be stacked together (useful for terminals)
@@ -67,7 +67,7 @@ require("core.ui.win").style("terminal", {
 	},
 })
 
----@type table<string, core.ui.win>
+---@type table<string, core.win>
 local terminals = setmetatable({}, {
 	__mode = "v",
 })
@@ -86,8 +86,9 @@ end
 ---@param cmd? string | string[]
 ---@param opts? core.terminal.Opts
 function M.open(cmd, opts)
+	opts = Core.config.get("terminal", defaults, opts)
 	local id = opts.count or vim.v.count1
-	opts.win = require("core.ui.win").resolve("terminal", {
+	opts.win = Core.win.resolve("terminal", {
 		position = cmd and "float" or "bottom",
 	}, opts.win, { show = false })
 	opts = vim.deepcopy(opts)
@@ -107,7 +108,7 @@ function M.open(cmd, opts)
 	---@param self core.terminal
 	opts.win.on_buf = function(self)
 		self.cmd = cmd
-		vim.b[self.buf].snacks_terminal = { cmd = cmd, id = id, cwd = opts.cwd, env = opts.env }
+		vim.b[self.buf].core_terminal = { cmd = cmd, id = id, cwd = opts.cwd, env = opts.env }
 		if on_buf then
 			on_buf(self)
 		end
@@ -124,7 +125,7 @@ function M.open(cmd, opts)
 		end
 	end
 
-	local terminal =  require("core.ui.win")(opts.win)
+	local terminal = Core.win(opts.win)
 	local tid = M.tid(cmd, opts)
 	terminals[tid] = terminal
 
@@ -187,7 +188,7 @@ end
 --- `opts.create` defaults to `true`.
 ---@param cmd? string | string[]
 ---@param opts? core.terminal.Opts| {create?: boolean}
----@return core.ui.win? terminal, boolean? created
+---@return core.win? terminal, boolean? created
 function M.get(cmd, opts)
 	opts = opts or {}
 	local id = M.tid(cmd, opts)
@@ -203,7 +204,7 @@ function M.get(cmd, opts)
 	return terminals[id], created
 end
 
----@return core.ui.win[]
+---@return core.win[]
 function M.list()
 	return vim.tbl_filter(function(t)
 		return t:buf_valid()
@@ -306,7 +307,7 @@ end
 
 ---@private
 function M.health()
-	local opts = Snacks.config.get("terminal", defaults --[[@as core.terminal.Opts]])
+	local opts = Core.config.get("terminal", defaults --[[@as core.terminal.Opts]])
 	local cmd = M.parse(opts.shell or vim.o.shell)
 	local ok = cmd[1] and (vim.fn.executable(cmd[1]) == 1)
 	local msg = ("shell %s\n- `vim.o.shell`: %s\n- `parsed`: %s"):format(

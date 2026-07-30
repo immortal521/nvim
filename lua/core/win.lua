@@ -1,19 +1,16 @@
-local SCROLL_UP = Utils.keycode("<c-y>")
-local SCROLL_DOWN = Utils.keycode("<c-e>")
-
----@class core.ui.win
+---@class core.win
 ---@field id integer
 ---@field buf? integer
 ---@field scratch_buf? integer
 ---@field win? integer
----@field opts core.ui.win.Config
+---@field opts core.win.Config
 ---@field augroup? integer
----@field backdrop? core.ui.win
----@field keys core.ui.win.Keys[]
----@field events (core.ui.win.Event|{event:string|string[]})[]
+---@field backdrop? core.win
+---@field keys core.win.Keys[]
+---@field events (core.win.Event|{event:string|string[]})[]
 ---@field meta table<string, any>
 ---@field closed? boolean
----@overload fun(opts? :core.ui.win.Config|{}): core.ui.win
+---@overload fun(opts? :core.win.Config|{}): core.win
 local M = setmetatable({}, {
 	__call = function(t, ...)
 		return t.new(...)
@@ -28,135 +25,133 @@ M.meta = {
 local id = 0
 local event_stack = {} ---@type string[]
 
----@class core.ui.win.Keys: vim.api.keyset.keymap
+local SCROLL_UP = Utils.keycode("<c-y>")
+local SCROLL_DOWN = Utils.keycode("<c-e>")
+
+---@class core.win.Keys: vim.api.keyset.keymap
 ---@field [1]? string
----@field [2]? string|string[]|fun(self: core.ui.win): string?
+---@field [2]? string|string[]|fun(self: core.win): string?
 ---@field mode? string|string[]
 
----@class core.ui.win.Event: vim.api.keyset.create_autocmd
+---@class core.win.Event: vim.api.keyset.create_autocmd
 ---@field buf? true
 ---@field win? true
----@field callback? fun(self: core.ui.win, ev:vim.api.keyset.create_autocmd.callback_args):boolean?
+---@field callback? fun(self: core.win, ev:vim.api.keyset.create_autocmd.callback_args):boolean?
 
----@class core.ui.win.Backdrop
+---@class core.win.Backdrop
 ---@field bg? string
 ---@field blend? integer
 ---@field transparent? boolean defaults to true
----@field win? core.ui.win.Config overrides the backdrop window config
+---@field win? core.win.Config overrides the backdrop window config
 
----@class core.ui.win.Dim
+---@class core.win.Dim
 ---@field width integer width of the window, without borders
 ---@field height integer height of the window, without borders
 ---@field row integer row of the window (0-indexed)
 ---@field col integer column of the window (0-indexed)
 ---@field border? boolean whether the window has a border
 
----@alias core.ui.win.Action.fn fun(self: core.ui.win):(boolean|string?)
----@alias core.ui.win.Action.spec core.ui.win.Action|core.ui.win.Action.fn
----@class core.ui.win.Action
----@field action core.ui.win.Action.fn
+---@alias core.win.Action.fn fun(self: core.win):(boolean|string?)
+---@alias core.win.Action.spec core.win.Action|core.win.Action.fn
+---@class core.win.Action
+---@field action core.win.Action.fn
 ---@field desc? string
 
----@class core.ui.win.Config: vim.api.keyset.win_config
+---@class core.win.Config: vim.api.keyset.win_config
 ---@field style? string
 ---@field show? boolean Show the window immediately (default: true)
 ---@field footer_keys? boolean|string[] Show keys footer. When string[], only show those keys with lhs (default: false)
----@field height? integer|fun(self:core.ui.win):integer Height of the window. Use <1 for relative height. 0 means full height. (default: 0.9)
----@field width? integer|fun(self:core.ui.win):integer Width of the window. Use <1 for relative width. 0 means full width. (default: 0.9)
+---@field height? integer|fun(self:core.win):integer Height of the window. Use <1 for relative height. 0 means full height. (default: 0.9)
+---@field width? integer|fun(self:core.win):integer Width of the window. Use <1 for relative width. 0 means full width. (default: 0.9)
 ---@field min_height? integer Minimum height of the window
 ---@field max_height? integer Maximum height of the window
 ---@field min_width? integer Minimum width of the window
 ---@field max_width? integer Maximum width of the window
----@field col? integer|fun(self:core.ui.win):integer Column of the window. Use <1 for relative column. (default: center)
----@field row? integer|fun(self:core.ui.win):integer Row of the window. Use <1 for relative row. (default: center)
+---@field col? integer|fun(self:core.win):integer Column of the window. Use <1 for relative column. (default: center)
+---@field row? integer|fun(self:core.win):integer Row of the window. Use <1 for relative row. (default: center)
 ---@field minimal? boolean Disable a bunch of options to make the window minimal (default: true)
 ---@field position? "float"|"bottom"|"top"|"left"|"right"|"current"
 ---@field border? "none"|"top"|"right"|"bottom"|"left"|"top_bottom"|"hpad"|"vpad"|"rounded"|"single"|"double"|"solid"|"shadow"|"bold"|string[]|false|true
 ---@field buf? integer If set, use this buffer instead of creating a new one
 ---@field file? string If set, use this file instead of creating a new buffer
 ---@field enter? boolean Enter the window after opening (default: false)
----@field backdrop? integer|false|core.ui.win.Backdrop Opacity of the backdrop (default: 60)
+---@field backdrop? integer|false|core.win.Backdrop Opacity of the backdrop (default: 60)
 ---@field wo? vim.wo|{} window options
 ---@field bo? vim.bo|{} buffer options
 ---@field b? table<string, any> buffer local variables
 ---@field w? table<string, any> window local variables
 ---@field ft? string filetype to use for treesitter/syntax highlighting. Won't override existing filetype
 ---@field scratch_ft? string filetype to use for scratch buffers
----@field keys? table<string, false|string|fun(self: core.ui.win)|core.ui.win.Keys> Key mappings
----@field on_buf? fun(self: core.ui.win) Callback after opening the buffer
----@field on_win? fun(self: core.ui.win) Callback after opening the window
----@field on_close? fun(self: core.ui.win) Callback after closing the window
+---@field keys? table<string, false|string|fun(self: core.win)|core.win.Keys> Key mappings
+---@field on_buf? fun(self: core.win) Callback after opening the buffer
+---@field on_win? fun(self: core.win) Callback after opening the window
+---@field on_close? fun(self: core.win) Callback after closing the window
 ---@field fixbuf? boolean don't allow other buffers to be opened in this window
 ---@field text? string|string[]|fun():(string[]|string) Initial lines to set in the buffer
----@field actions? table<string,  core.ui.win.Action.spec> Actions that can be used in key mappings
+---@field actions? table<string,  core.win.Action.spec> Actions that can be used in key mappings
 ---@field resize? boolean Automatically resize the window when the editor is resized
 ---@field stack? boolean When enabled, multiple split windows with the same position will be stacked together (useful for terminals)
-
-local styles = {
-	defaults = {
-		show = true,
-		fixbuf = true,
-		relative = "editor",
-		position = "float",
-		minimal = true,
-		wo = {
-			winhighlight = "Normal:SnacksNormal,NormalNC:SnacksNormalNC,WinBar:SnacksWinBar,WinBarNC:SnacksWinBarNC,FloatTitle:SnacksTitle,FloatFooter:SnacksFooter,WinSeparator:SnacksWinSeparator",
-		},
-		bo = {},
-		title_pos = "center",
-		keys = {
-			q = "close",
-		},
-		footer_pos = "center",
-		footer_keys = false,
+local defaults = {
+	show = true,
+	fixbuf = true,
+	relative = "editor",
+	position = "float",
+	minimal = true,
+	wo = {
+		winhighlight = "Normal:SnacksNormal,NormalNC:SnacksNormalNC,WinBar:SnacksWinBar,WinBarNC:SnacksWinBarNC,FloatTitle:SnacksTitle,FloatFooter:SnacksFooter,WinSeparator:SnacksWinSeparator",
 	},
-	float = {
-		position = "float",
-		backdrop = 60,
-		height = 0.9,
-		width = 0.9,
-		zindex = 50,
+	bo = {},
+	title_pos = "center",
+	keys = {
+		q = "close",
 	},
-	help = {
-		position = "float",
-		backdrop = false,
-		border = "top",
-		row = -1,
-		width = 0,
-		height = 0.3,
-	},
-	split = {
-		position = "bottom",
-		height = 0.4,
-		width = 0.4,
-	},
-	minimal = {
-		wo = {
-			cursorcolumn = false,
-			cursorline = false,
-			cursorlineopt = "both",
-			colorcolumn = "",
-			fillchars = "eob: ,lastline:…",
-			foldcolumn = "0",
-			list = false,
-			listchars = "extends:…,tab:  ",
-			number = false,
-			relativenumber = false,
-			signcolumn = "no",
-			spell = false,
-			winbar = "",
-			statuscolumn = "",
-			wrap = false,
-			sidescrolloff = 0,
-		},
-	},
+	footer_pos = "center",
+	footer_keys = false,
 }
 
----@param name string
----@param opts table
-function M.style(name, opts)
-	styles[name] = opts
-end
+Core.config.style("float", {
+	position = "float",
+	backdrop = 60,
+	height = 0.9,
+	width = 0.9,
+	zindex = 50,
+})
+
+Core.config.style("help", {
+	position = "float",
+	backdrop = false,
+	border = "top",
+	row = -1,
+	width = 0,
+	height = 0.3,
+})
+
+Core.config.style("split", {
+	position = "bottom",
+	height = 0.4,
+	width = 0.4,
+})
+
+Core.config.style("minimal", {
+	wo = {
+		cursorcolumn = false,
+		cursorline = false,
+		cursorlineopt = "both",
+		colorcolumn = "",
+		fillchars = "eob: ,lastline:…",
+		foldcolumn = "0",
+		list = false,
+		listchars = "extends:…,tab:  ",
+		number = false,
+		relativenumber = false,
+		signcolumn = "no",
+		spell = false,
+		winbar = "",
+		statuscolumn = "",
+		wrap = false,
+		sidescrolloff = 0,
+	},
+})
 
 local split_commands = {
 	editor = {
@@ -208,23 +203,22 @@ local borders = {
 }
 
 --@private
----@param ...? core.ui.win.Config|string|{}
----@return core.ui.win.Config
+---@param ...? core.win.Config|string|{}
+---@return core.win.Config
 function M.resolve(...)
 	local done = {} ---@type table<string, boolean>
-	local merge = {} ---@type core.ui.win.Config[]
+	local merge = {} ---@type core.win.Config[]
 	local stack = {}
-
 	for i = 1, select("#", ...) do
-		local next = select(i, ...) ---@type core.ui.win.Config|string?
+		local next = select(i, ...) ---@type core.win.Config|string?
 		if next then
 			table.insert(stack, next)
 		end
 	end
 	while #stack > 0 do
 		local next = table.remove(stack)
-		next = type(next) == "string" and styles[next] or next
-		---@cast next core.ui.win.Config?
+		next = type(next) == "string" and Core.config.styles[next] or next
+		---@cast next core.win.Config?
 		if next and type(next) == "table" then
 			table.insert(merge, 1, next)
 			if next.style and not done[next.style] then
@@ -238,14 +232,14 @@ function M.resolve(...)
 	return ret
 end
 
----@param opts? core.ui.win.Config|{}
----@return core.ui.win
+---@param opts? core.win.Config|{}
+---@return core.win
 function M.new(opts)
 	local self = setmetatable({}, M)
 	id = id + 1
 	self.id = id
 	self.meta = {}
-	opts = M.resolve("defaults", opts)
+	opts = M.resolve(Core.config.get("win", defaults), opts)
 	if opts.minimal then
 		opts = M.resolve("minimal", opts)
 	end
@@ -258,13 +252,14 @@ function M.new(opts)
 		opts.wo.winfixheight = not vertical
 		opts.wo.winfixwidth = vertical
 	end
+	---@diagnostic disable-next-line: unnecessary-if
 	if opts.relative == "win" then
 		opts.win = opts.win or vim.api.nvim_get_current_win()
 	end
 
 	self.keys = {}
 	self.events = {}
-	local done = {} ---@type table<string, core.ui.win.Keys?>
+	local done = {} ---@type table<string, core.win.Keys?>
 	opts.keys = opts.keys or {}
 	for key, spec in pairs(opts.keys) do
 		if spec then
@@ -276,7 +271,7 @@ function M.new(opts)
 				spec = vim.deepcopy(spec) -- deepcopy just in case
 				spec[1], spec[2] = key, spec[1]
 			end
-			---@cast spec core.ui.win.Keys
+			---@cast spec core.win.Keys
 			local lhs = Utils.normkey(spec[1] or "")
 			local mode = type(spec.mode) == "table" and spec.mode or { spec.mode or "n" }
 			---@cast mode string[]
@@ -315,7 +310,7 @@ function M.new(opts)
 	-- update window size when resizing
 	self:on("VimResized", self.on_resize)
 
-	---@cast opts core.ui.win.Config
+	---@cast opts core.win.Config
 	self.opts = opts
 	if opts.show ~= false then
 		self:show()
@@ -367,7 +362,7 @@ function M:action(actions)
 		table.concat(desc, ", ")
 end
 
----@param opts? {col_width?: integer, key_width?: integer, win?: core.ui.win.Config}
+---@param opts? {col_width?: integer, key_width?: integer, win?: core.win.Config}
 function M:toggle_help(opts)
 	opts = opts or {}
 	local col_width, key_width = opts.col_width or 30, opts.key_width or 10
@@ -378,7 +373,7 @@ function M:toggle_help(opts)
 			return
 		end
 	end
-	local ns = vim.api.nvim_create_namespace("core.ui.win.help")
+	local ns = vim.api.nvim_create_namespace("core.win.help")
 	local win = M.new(M.resolve({ style = "help" }, opts.win or {}, {
 		show = false,
 		focusable = false,
@@ -457,8 +452,8 @@ function M:toggle_help(opts)
 end
 
 ---@param event string|string[]
----@param cb fun(self: core.ui.win, ev:vim.api.keyset.create_autocmd.callback_args):boolean?
----@param opts? core.ui.win.Event
+---@param cb fun(self: core.win, ev:vim.api.keyset.create_autocmd.callback_args):boolean?
+---@param opts? core.win.Event
 function M:on(event, cb, opts)
 	opts = opts or {}
 	opts.callback = cb
@@ -469,7 +464,7 @@ function M:on(event, cb, opts)
 end
 
 ---@param event string|string[]
----@param opts core.ui.win.Event
+---@param opts core.win.Event
 function M:_on(event, opts)
 	local event_opts = {} ---@type vim.api.keyset.create_autocmd
 	local skip = { "buf", "win", "event" }
@@ -1019,7 +1014,7 @@ function M:map()
 		end
 		spec.desc = spec.desc or opts.desc
 		---@diagnostic disable-next-line: param-type-mismatch
-		---@cast spec core.ui.win.Keys
+		---@cast spec core.win.Keys
 		vim.keymap.set(spec.mode or "n", spec[1], rhs, opts)
 	end
 end
@@ -1079,7 +1074,7 @@ function M:drop()
 	backdrop = backdrop == true and {} or backdrop
 	---@diagnostic disable-next-line: param-type-mismatch
 	backdrop = vim.tbl_extend("force", { bg = "#000000", blend = 60, transparent = true }, backdrop)
-	---@cast backdrop core.ui.win.Backdrop
+	---@cast backdrop core.win.Backdrop
 
 	if backdrop.transparent or not vim.o.termguicolors or backdrop.blend == 100 or not self:is_floating() then
 		return
@@ -1281,11 +1276,11 @@ function M:valid()
 	return self:win_valid() and self:buf_valid() and vim.api.nvim_win_get_buf(self.win) == self.buf
 end
 
----@param parent? core.ui.win.Dim
+---@param parent? core.win.Dim
 function M:dim(parent)
 	---@diagnostic disable-next-line: assign-type-mismatch
 	parent = parent or self:parent_size()
-	---@type core.ui.win.Dim
+	---@type core.win.Dim
 	local ret = {
 		height = 0,
 		width = 0,
@@ -1294,7 +1289,7 @@ function M:dim(parent)
 		border = self:has_border(),
 	}
 
-	---@param s? number|fun(win: core.ui.win):number? size
+	---@param s? number|fun(win: core.win):number? size
 	---@param ps number parent size
 	local function size(s, ps, border_offset)
 		s = type(s) == "function" and s(self) or s or 0
@@ -1307,7 +1302,7 @@ function M:dim(parent)
 		return s
 	end
 
-	---@param p? integer|fun(win:core.ui.win):integer? pos
+	---@param p? integer|fun(win:core.win):integer? pos
 	---@param s integer size
 	---@param ps integer parent size
 	local function pos(p, s, ps, border_from, border_to)
