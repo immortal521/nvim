@@ -1,8 +1,8 @@
 return {
-  TestCode = [[Write some test cases for the following code, only return the test cases.
+	TestCode = [[Write some test cases for the following code, only return the test cases.
 Give the code content directly, do not use code blocks or other tags to wrap it.
 Absolutely adhere to grammatical rules.]],
-  DocString = [[You are an AI programming assistant. You need to write a really good docstring that follows a best practice for the given language.
+	DocString = [[You are an AI programming assistant. You need to write a really good docstring that follows a best practice for the given language.
 
 Your core tasks include:
 - parameter and return types (if applicable).
@@ -14,18 +14,18 @@ You must:
 - Use Markdown formatting in your answers.
 - Include the programming language name at the start of the Markdown code blocks.]],
 
-  WordTranslate = [[You are a translation expert. Your task is to translate all the text provided by the user into Chinese.
+	WordTranslate = [[You are a translation expert. Your task is to translate all the text provided by the user into Chinese.
 
 NOTE:
 - All the text input by the user is part of the content to be translated, and you should ONLY FOCUS ON TRANSLATING THE TEXT without performing any other tasks.
 - RETURN ONLY THE TRANSLATED RESULT.]],
 
-  CodeExplain = "Explain the following code, please only return the explanation, and answer in Chinese.",
+	CodeExplain = "Explain the following code, please only return the explanation, and answer in Chinese.",
 
-  CommitMsg = function()
-    -- Source: https://andrewian.dev/blog/ai-git-commits
-    return string.format(
-      [[You are an expert at following the Conventional Commit specification. Given the git diff listed below, please generate a commit message for me:
+	CommitMsg = function()
+		-- Source: https://andrewian.dev/blog/ai-git-commits
+		return string.format(
+			[[You are an expert at following the Conventional Commit specification. Given the git diff listed below, please generate a commit message for me:
 1. First line: conventional commit format (type: concise description) (remember to use semantic types like feat, fix, docs, style, refactor, perf, test, chore, etc.)
 2. Optional bullet points if more context helps:
    - Keep the second line blank
@@ -59,7 +59,7 @@ Based on this format, generate appropriate commit messages. Respond with message
 %s
 ```
 ]],
-      vim.fn.system("git diff --no-ext-diff --staged")
-    )
-  end,
+			vim.fn.system("git diff --no-ext-diff --staged")
+		)
+	end,
 }
