@@ -74,12 +74,8 @@ end
 function M.config.get(snack, defaults, ...)
 	local merge, todo = {}, { defaults, config[snack] or {}, ... }
 	for i = 1, select("#", ...) + 2 do
-		local v = todo[i] --[[@as snacks.Config.base]]
+		local v = todo[i]
 		if type(v) == "table" then
-			if v.example then
-				table.insert(merge, vim.deepcopy(M.config.example(snack, v.example)))
-				v.example = nil
-			end
 			table.insert(merge, vim.deepcopy(v))
 		end
 	end
@@ -92,7 +88,7 @@ end
 
 --- Register a new window style config.
 ---@param name string
----@param defaults snacks.win.Config|{}
+---@param defaults core.win.Config|{}
 ---@return string
 function M.config.style(name, defaults)
 	config.styles[name] = vim.tbl_deep_extend("force", vim.deepcopy(defaults), config.styles[name] or {})

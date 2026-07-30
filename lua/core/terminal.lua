@@ -38,20 +38,25 @@ Core.config.style("terminal", {
 	keys = {
 		q = "hide",
 		gf = function(self)
-			local f = vim.fn.findfile(vim.fn.expand("<cfile>"), "**")
+			local cfile = vim.fn.expand("<cfile>")
+			if type(cfile) == "table" then
+				cfile = cfile[1] or ""
+			end
+
+			local f = vim.fn.findfile(cfile, "**")
 			if f == "" then
 				Utils.log.warn("No file under cursor")
 			else
 				self:hide()
 				vim.schedule(function()
-					vim.cmd("e " .. f)
+					vim.cmd.edit(f)
 				end)
 			end
 		end,
 		term_normal = {
 			"<esc>",
 			function(self)
-				self.esc_timer = self.esc_timer or (vim.uv or vim.loop).new_timer()
+				self.esc_timer = self.esc_timer or vim.uv.new_timer()
 				if self.esc_timer:is_active() then
 					self.esc_timer:stop()
 					vim.cmd("stopinsert")
@@ -74,24 +79,20 @@ local terminals = setmetatable({}, {
 
 local function jobstart(cmd, opts)
 	opts = opts or {}
-	local fn = vim.fn.jobstart
-	if vim.fn.termopen then
-		opts.term = nil
-		fn = vim.fn.termopen
-	end
-	return fn(cmd, vim.tbl_isempty(opts) and vim.empty_dict() or opts)
+	return vim.fn.jobstart(cmd, vim.tbl_isempty(opts) and vim.empty_dict() or opts)
 end
 
 --- Open a new terminal window.
 ---@param cmd? string | string[]
 ---@param opts? core.terminal.Opts
 function M.open(cmd, opts)
-	opts = Core.config.get("terminal", defaults, opts)
+	opts = Core.config.get("terminal", defaults --[[@as core.terminal.Opts]], opts)
 	local id = opts.count or vim.v.count1
 	opts.win = Core.win.resolve("terminal", {
 		position = cmd and "float" or "bottom",
 	}, opts.win, { show = false })
 	opts = vim.deepcopy(opts)
+	---@diagnostic disable-next-line: need-check-nil
 	opts.win.wo.winbar = opts.win.wo.winbar
 		or (opts.win.position == "float" and "" or (id .. ": %{get(b:, 'term_title', '')}"))
 
@@ -158,6 +159,7 @@ function M.open(cmd, opts)
 	end, { buf = true })
 
 	terminal:show()
+	---@cast terminal.buf integer
 	vim.api.nvim_buf_call(terminal.buf, function()
 		jobstart(cmd or M.parse(opts.shell or vim.o.shell), {
 			cwd = opts.cwd,
@@ -315,7 +317,7 @@ function M.health()
 		vim.o.shell,
 		vim.inspect(cmd)
 	)
-	Snacks.health[ok and "ok" or "error"](msg)
+	-- Core.health[ok and "ok" or "error"](msg)
 end
 
 return M
