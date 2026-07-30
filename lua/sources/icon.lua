@@ -178,7 +178,7 @@ end
 
 ---使用 fzf-lua 搜索和复制 Icon
 ---@param opts? { custom_sources?: table<string, string>, icon_sources?: string[] }
-function M.fzf_icons(opts)
+function M.picker(opts)
 	opts = opts or {}
 
 	if opts.custom_sources then

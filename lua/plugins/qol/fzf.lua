@@ -428,7 +428,7 @@ return {
 		{
 			"<leader>si",
 			function()
-				require("sources.icon").fzf_icons()
+				require("sources.icon").picker()
 			end,
 			desc = "Select Icons",
 		},

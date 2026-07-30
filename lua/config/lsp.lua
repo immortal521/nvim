@@ -1,126 +1,12 @@
 local ignored_lsps = {}
 
 Utils.lsp.enable_lsps(ignored_lsps)
-local function lsp_config_picker()
-	local items = {}
-
-	local configs = {}
-
-	-- nvim 0.11+
-	if vim.lsp.config then
-		for name, config in pairs(vim.lsp.config) do
-			configs[name] = config
-		end
-	end
-
-	-- runtime lsp configs
-	for _, file in ipairs(vim.api.nvim_get_runtime_file("lsp/*.lua", true)) do
-		local name = file:match("([^/]+)%.lua$")
-
-		if name then
-			configs[name] = configs[name] or {}
-		end
-	end
-
-	-- active clients
-	local clients = {}
-
-	for _, client in ipairs(vim.lsp.get_clients()) do
-		clients[client.name] = client
-	end
-
-	for name, config in pairs(configs) do
-		local client = clients[name]
-
-		local cmd = config.cmd
-		if client then
-			cmd = client.config.cmd
-		end
-
-		local filetypes = table.concat(config.filetypes or {}, ",")
-
-		local status
-
-		if client then
-			status = "●"
-		elseif cmd then
-			status = "○"
-		else
-			status = "×"
-		end
-
-		table.insert(items, {
-			name = name,
-			status = status,
-			config = config,
-			client = client,
-			text = string.format("%s %-20s %-30s", status, name, filetypes),
-		})
-	end
-
-	table.sort(items, function(a, b)
-		return a.name < b.name
-	end)
-
-	local lines = {}
-
-	for _, item in ipairs(items) do
-		table.insert(lines, item.text)
-	end
-
-	FzfLua.fzf_exec(lines, {
-		prompt = "LSP Config> ",
-
-		preview = function(selected)
-			local name = selected[1]:match("%s*(%S+)")
-
-			local item
-
-			for _, v in ipairs(items) do
-				if v.name == name then
-					item = v
-					break
-				end
-			end
-
-			if not item then
-				return {}
-			end
-
-			local result = {
-				"# " .. item.name,
-				"",
-				"## Config",
-				"",
-				vim.inspect(item.config),
-			}
-
-			if item.client then
-				table.insert(result, "")
-				table.insert(result, "## Client")
-				table.insert(result, "")
-
-				table.insert(result, vim.inspect(item.client.config))
-			end
-
-			return result
-		end,
-
-		actions = {
-			["default"] = function(selected)
-				local name = selected[1]:match("%s*(%S+)")
-
-				vim.notify("LSP: " .. name)
-			end,
-		},
-	})
-end
 
 local keys = {
 	{
 		"<leader>cl",
 		function()
-      lsp_config_picker()
+			require("sources.lsp").picker()
 		end,
 		desc = "Lsp Info",
 	},
