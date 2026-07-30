@@ -61,7 +61,7 @@ return {
 						name = "minuet",
 						module = "minuet.blink",
 						async = true,
-						timeout_ms = 10000,
+						timeout_ms = 3000,
 						score_offset = 50,
 					},
 					ripgrep = {
