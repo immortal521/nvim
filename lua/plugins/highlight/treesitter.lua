@@ -31,11 +31,11 @@ local langs = {
 
 ---@type LazyPluginSpec
 return {
-	"neovim-treesitter/nvim-treesitter",
+	"nvim-treesitter/nvim-treesitter",
 	branch = "main",
 	build = ":TSUpdate",
 	event = { "BufEdit", "VeryLazy" },
-	dependencies = { "neovim-treesitter/treesitter-parser-registry" },
+	-- dependencies = { "neovim-treesitter/treesitter-parser-registry" },
 	opts = {},
 	init = function()
 		vim.api.nvim_create_autocmd({ "FileType" }, {
