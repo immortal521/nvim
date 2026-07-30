@@ -13,10 +13,20 @@ return {
 				"TinyInlineInvDiagnosticVirtualTextWarn",
 				"TinyInlineInvDiagnosticVirtualTextError",
 				"TabLineFill",
+				"NotifyWARNBorder",
+				"NotifyINFOBorder",
+				"NotifyERRORBorder",
+				"NotifyDEBUGBorder",
+				"NotifyTRACEBorder",
+				"NotifyWARNBody",
+				"NotifyINFOBody",
+				"NotifyERRORBody",
+				"NotifyDEBUGBody",
+				"NotifyTRACEBody",
 			},
-			-- exclude_groups = {
-			--      "CursorLine"
-			--    },
+			exclude_groups = {
+				-- "CursorLine",
+			},
 		}
 		require("transparent").setup(opts)
 	end,
