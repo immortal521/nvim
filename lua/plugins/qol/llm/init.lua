@@ -55,15 +55,15 @@ return {
 			history_path = vim.fn.stdpath("cache") .. "/llm-history",
 
 			models = {
-				models.GithubModels,
+				-- models.GithubModels,
 				models.OpenRouter,
-				models.DeepSeek,
-				models.Chatanywhere,
-				models.SiliconFlow,
-				models.GLM,
-				models.Ollama,
-				models.Kimi,
-				models.Cloudflare,
+				-- models.DeepSeek,
+				-- models.Chatanywhere,
+				-- models.SiliconFlow,
+				-- models.GLM,
+				-- models.Ollama,
+				-- models.Kimi,
+				-- models.Cloudflare,
 			},
 		}
 
