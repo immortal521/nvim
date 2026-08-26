@@ -16,6 +16,7 @@ return {
 				scrollbar = "float",
 			},
 		},
+		files = { prompt = "> ", cwd_prompt = false },
 	},
 
 	defaults = {

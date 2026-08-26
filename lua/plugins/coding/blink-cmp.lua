@@ -9,10 +9,10 @@ return {
 			"niuiic/blink-cmp-rg.nvim",
 			"saghen/blink.lib",
 		},
-		version = "1.*",
-		-- build = function()
-		-- 	require("blink.cmp").build():wait(60000)
-		-- end,
+		-- version = "1.*",
+		build = function()
+			require("blink.cmp").build():wait(60000)
+		end,
 
 		---@type blink.cmp.Config
 		opts = {

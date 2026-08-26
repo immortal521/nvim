@@ -118,6 +118,7 @@ return {
 			ft.go = { "goimports", "gofumpt" }
 			ft.lua = { "stylua" }
 			ft.sql = { "sqruff" }
+			ft.luau = { "stylua" }
 
 			return ft
 		end)(),
