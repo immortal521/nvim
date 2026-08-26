@@ -82,8 +82,20 @@ return {
 
 	settings = {
 		stylelint = {
-			validate = { "css", "postcss" },
-			snippet = { "css", "postcss" },
+			validate = {
+				"css",
+				"scss",
+				"less",
+				"postcss",
+				"vue",
+			},
+			snippet = {
+				"css",
+				"scss",
+				"less",
+				"postcss",
+				"vue",
+			},
 		},
 	},
 }

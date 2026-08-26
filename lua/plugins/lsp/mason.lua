@@ -29,7 +29,7 @@ local ensure_install = {
 	"ruff",
 	"shellcheck",
 	"sqlfluff",
-	"stylelint-lsp", -- LSP形式的lint
+	"stylelint-language-server", -- LSP形式的lint
 	"codespell",
 
 	-- ==================== FORMATTER ====================
@@ -44,7 +44,7 @@ local ensure_install = {
 	-- "rustfmt",
 	"shfmt",
 	"stylua",
-	"taplo",
+	"tombi",
 	"xmlformatter",
 
 	-- ==================== DEBUG ====================

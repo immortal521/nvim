@@ -14,18 +14,37 @@ return {
 		vtsls = {
 			autoUseWorkspaceTsdk = true,
 			typescript = {
+				preferences = {
+					preferTypeOnlyAutoImports = true,
+				},
+				format = {
+					insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces = true,
+				},
 				inlayHints = {
 					parameterNames = {
 						enabled = "all",
 					},
+					functionLikeReturnTypes = {
+						enabled = true,
+					},
 				},
+				tsserver = {
+					experimental = {
+						enableProjectDiagnostics = true,
+					},
+				},
+				preferGoToSourceDefinition = true,
 			},
 			javascript = {
+				format = {
+					insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces = true,
+				},
 				inlayHints = {
 					parameterNames = {
 						enabled = "all",
 					},
 				},
+				preferGoToSourceDefinition = true,
 			},
 		},
 	},
