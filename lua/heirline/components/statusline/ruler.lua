@@ -1,14 +1,14 @@
 return {
 	{
-		provider = "%P %(%l:%c%) ",
+		provider = "",
 		hl = function(self)
-			return { bg = self.palette.fg_gutter, fg = self.mode_colors[self.mode_key] }
+			return { fg = self.palette.bg_highlight, bg = "NONE" }
 		end,
 	},
 	{
-		provider = "",
+		provider = "%P %(%l:%c%) ",
 		hl = function(self)
-			return { fg = self.mode_colors[self.mode_key], bg = self.palette.fg_gutter }
+			return { bg = self.palette.bg_highlight, fg = self.mode_colors[self.mode_key], bold = true }
 		end,
 	},
 }

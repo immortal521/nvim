@@ -1,14 +1,13 @@
 return {
 	provider = function(self)
 		local modified = vim.api.nvim_get_option_value("modified", { buf = self.bufnr })
-		return modified and "   " or " ✗ "
+		return modified and " ● " or " ✗ "
 	end,
 	hl = function(self)
 		return {
-			fg = self.is_active and self.palette.blue or self.palette.comment,
+			fg = self.is_active and self.palette.primary or self.palette.comment,
 			bg = self.is_active and self.palette.bg or self.palette.bg_dim,
 			bold = self.is_active or self.is_visible,
-			italic = self.is_active,
 		}
 	end,
 	on_click = {

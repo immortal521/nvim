@@ -20,7 +20,7 @@ return {
 				return self.reg_recording
 			end,
 			hl = function(self)
-				return { fg = self.palette.bg_highlight, italic = false, bold = true }
+				return { fg = self.palette.primary, bold = true }
 			end,
 		},
 	},

@@ -91,7 +91,7 @@ function M.get(palette, opts)
 		-- Punctuation
 		-----------------------------------------------------------------------
 		["@punctuation.bracket"] = { fg = palette.fg_muted },
-		["@punctuation.delimiter"] = { fg = palette.overlay2 or palette.fg_muted },
+		["@punctuation.delimiter"] = { fg = palette.fg_muted }, -- 修正：移除不存在的 overlay2
 		["@punctuation.special"] = { fg = palette.sky },
 
 		-----------------------------------------------------------------------
@@ -137,19 +137,19 @@ function M.get(palette, opts)
 		["@markup.strikethrough"] = { strikethrough = true },
 		["@markup.underline"] = { underline = true },
 
-		["@markup.heading"] = { fg = palette.blue, bold = true },
-		["@markup.heading.1"] = { fg = palette.lavender, bold = true },
-		["@markup.heading.2"] = { fg = palette.mauve, bold = true },
-		["@markup.heading.3"] = { fg = palette.blue, bold = true },
+		["@markup.heading"] = { fg = palette.primary, bold = true }, -- 主阶标题与主基调对齐
+		["@markup.heading.1"] = { fg = palette.primary_bright, bold = true },
+		["@markup.heading.2"] = { fg = palette.primary, bold = true },
+		["@markup.heading.3"] = { fg = palette.primary_dim, bold = true },
 		["@markup.heading.4"] = { fg = palette.teal, bold = true },
 		["@markup.heading.5"] = { fg = palette.peach, bold = true },
 		["@markup.heading.6"] = { fg = palette.flamingo, bold = true },
 
 		["@markup.link"] = { fg = palette.rosewater },
-		["@markup.link.label"] = { fg = palette.blue },
+		["@markup.link.label"] = { fg = palette.primary }, -- 超链接文本采用 primary
 		["@markup.link.url"] = { fg = palette.fg_muted, underline = true },
 
-		["@markup.list"] = { fg = palette.blue },
+		["@markup.list"] = { fg = palette.primary },
 		["@markup.list.checked"] = { fg = palette.green },
 		["@markup.list.unchecked"] = { fg = palette.fg_muted },
 		["@markup.list.markdown"] = { fg = palette.peach, bold = true },
@@ -160,7 +160,7 @@ function M.get(palette, opts)
 
 		["@markup.raw"] = { fg = palette.green },
 		["@markup.raw.markdown_inline"] = {
-			fg = palette.blue_bright,
+			fg = palette.primary_bright,
 			bg = palette.bg_highlight,
 		},
 		["@markup.raw.block"] = { fg = palette.fg, bg = palette.bg_dim },

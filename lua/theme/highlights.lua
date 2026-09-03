@@ -20,18 +20,18 @@ function M.setup(palette, transparent)
 		NormalNC = { fg = palette.fg, bg = bg },
 		NormalFloat = { fg = palette.float.fg, bg = float_bg },
 		FloatBorder = { fg = float_border, bg = float_bg },
-		FloatTitle = { fg = palette.rosewater, bg = float_bg, bold = true },
+		FloatTitle = { fg = palette.primary, bg = float_bg, bold = true }, -- 使用 primary 突出浮窗标题
 		FloatFooter = { fg = palette.fg_muted, bg = float_bg },
 
 		EndOfBuffer = { fg = palette.bg, bg = bg }, -- 隐藏 ~ 符号
 		SignColumn = { fg = palette.fg_gutter, bg = bg },
-		Cursor = { fg = palette.bg, bg = palette.rosewater },
-		TermCursor = { fg = palette.bg, bg = palette.rosewater },
+		Cursor = { fg = palette.bg, bg = palette.primary_bright }, -- 使用 primary_bright 光标
+		TermCursor = { fg = palette.bg, bg = palette.primary_bright },
 		CursorLine = { bg = palette.cursor_line },
 		CursorColumn = { bg = palette.cursor_line },
 
 		LineNr = { fg = palette.fg_gutter, bg = bg },
-		CursorLineNr = { fg = palette.lavender, bg = bg, bold = true },
+		CursorLineNr = { fg = palette.primary_bright, bg = bg, bold = true }, -- 核心焦点行号使用 primary
 		LineNrAbove = { fg = palette.fg_gutter },
 		LineNrBelow = { fg = palette.fg_gutter },
 
@@ -52,10 +52,10 @@ function M.setup(palette, transparent)
 		CurSearch = { link = "IncSearch" },
 
 		MatchParen = { fg = palette.peach, bg = palette.bg_highlight, bold = true },
-		Directory = { fg = palette.blue },
-		Title = { fg = palette.blue, bold = true },
-		Question = { fg = palette.blue },
-		MoreMsg = { fg = palette.blue },
+		Directory = { fg = palette.primary }, -- 目录树改用 primary
+		Title = { fg = palette.primary, bold = true }, -- UI 主标题改用 primary
+		Question = { fg = palette.primary },
+		MoreMsg = { fg = palette.primary },
 		ModeMsg = { fg = palette.fg, bold = true },
 		WarningMsg = { fg = palette.diag.warn },
 		ErrorMsg = { fg = palette.diag.error, bold = true },
@@ -76,13 +76,13 @@ function M.setup(palette, transparent)
 		PmenuThumb = { bg = palette.fg_muted },
 
 		-----------------------------------------------------------------------
-		-- Tabline / Statusline (使用基础前景与背景)
+		-- Tabline / Statusline
 		-----------------------------------------------------------------------
 		StatusLine = { fg = palette.fg, bg = bg_dim },
 		StatusLineNC = { fg = palette.fg_muted, bg = bg_deep },
 		TabLine = { fg = palette.fg_muted, bg = bg_dim },
 		TabLineFill = { bg = bg_deep },
-		TabLineSel = { fg = palette.lavender, bg = bg_highlight, bold = true },
+		TabLineSel = { fg = palette.primary_bright, bg = bg_highlight, bold = true }, -- 选中 Label 联动 primary
 
 		WinBar = { fg = palette.rosewater, bg = bg },
 		WinBarNC = { fg = palette.fg_muted, bg = bg },
@@ -102,7 +102,7 @@ function M.setup(palette, transparent)
 		Float = { fg = palette.orange },
 
 		Identifier = { fg = palette.flamingo },
-		Function = { fg = palette.blue },
+		Function = { fg = palette.blue }, -- 恢复真正的 Syntax 蓝色
 		Statement = { fg = palette.mauve },
 		Conditional = { fg = palette.purple },
 		Repeat = { fg = palette.purple },
@@ -159,7 +159,7 @@ function M.setup(palette, transparent)
 		LspInlayHint = { fg = palette.fg_gutter, bg = transparent and "NONE" or palette.bg_deep },
 
 		-----------------------------------------------------------------------
-		-- Diff & Git (标准 Diff 与 Git 映射)
+		-- Diff & Git
 		-----------------------------------------------------------------------
 		DiffAdd = { bg = palette.diff.add },
 		DiffChange = { bg = palette.diff.change },
@@ -173,9 +173,9 @@ function M.setup(palette, transparent)
 		-----------------------------------------------------------------------
 		-- Misc & Health
 		-----------------------------------------------------------------------
-		helpCommand = { fg = palette.blue, bg = palette.terminal_black },
+		helpCommand = { fg = palette.primary, bg = palette.terminal_black },
 		helpExample = { fg = palette.comment },
-		qfFileName = { fg = palette.blue },
+		qfFileName = { fg = palette.primary },
 		qfLineNr = { fg = palette.fg_gutter },
 		healthError = { fg = palette.diag.error },
 		healthSuccess = { fg = palette.green },

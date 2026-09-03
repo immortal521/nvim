@@ -2,20 +2,23 @@ local icons = require("config.icons")
 
 return {
 	static = {
-		separator = icons.bufferline.separator,
+		separator = (icons.bufferline and icons.bufferline.separator) or "│",
 	},
 	condition = function(self)
-		local win = vim.api.nvim_tabpage_list_wins(0)[1]
-
-		---@cast win integer
+		local wins = vim.api.nvim_tabpage_list_wins(0)
+		if #wins == 0 then
+			return false
+		end
+		local win = wins[1]
 		self.winid = win
 		local config = vim.api.nvim_win_get_config(win)
 		return config.zindex ~= nil and not vim.api.nvim_win_is_valid(vim.api.nvim_get_current_win())
 	end,
 	provider = function(self)
-		return string.rep(" ", vim.api.nvim_win_get_width(self.winid)) .. self.separator
+		local width = vim.api.nvim_win_get_width(self.winid or 0)
+		return string.rep(" ", width) .. self.separator
 	end,
 	hl = function(self)
-		return { fg = self.palette.fg_gutter }
+		return { fg = self.palette.fg_gutter, bg = self.palette.bg_dim }
 	end,
 }

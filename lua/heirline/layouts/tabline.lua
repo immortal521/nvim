@@ -55,12 +55,15 @@ local BufferBlock = {
 
 		-- Padding
 		local current_width = 4 + #self.filename
-		local padding_needed = math.max(0, self.buffer_min_width - current_width) --[[@type number]]
+		local padding_needed = math.max(0, self.buffer_min_width - current_width)
 		self.buffer_padding = math.floor(padding_needed / 2)
 	end,
 
 	hl = function(self)
-		return self.is_active and { bg = self.palette.bg, bold = true } or { bg = self.palette.bg, bold = false }
+		return {
+			bg = self.is_active and self.palette.bg or self.palette.bg_dim,
+			bold = self.is_active,
+		}
 	end,
 
 	on_click = {
@@ -82,15 +85,18 @@ local BufferBlock = {
 	tabline.CloseButton,
 }
 
+local trunc_left_icon = (icons.bufferline and icons.bufferline.trunc_left) or "◀"
+local trunc_right_icon = (icons.bufferline and icons.bufferline.trunc_right) or "▶"
+
 local BufferLine = utils.make_buflist(BufferBlock, {
-	provider = " " .. icons.bufferline.trunc_left,
+	provider = " " .. trunc_left_icon,
 	hl = function(self)
-		return { fg = self.palette.comment }
+		return { fg = self.palette.comment, bg = self.palette.bg_dim }
 	end,
 }, {
-	provider = "%=" .. icons.bufferline.trunc_right .. " ",
+	provider = "%=" .. trunc_right_icon .. " ",
 	hl = function(self)
-		return { fg = self.palette.comment }
+		return { fg = self.palette.comment, bg = self.palette.bg_dim }
 	end,
 }, function()
 	return buflist_cache
@@ -100,14 +106,23 @@ local Tabpage = {
 	provider = function(self)
 		return "%" .. self.tabnr .. "T " .. self.tabpage .. " %T"
 	end,
+	hl = function(self)
+		return {
+			fg = self.is_active and self.palette.primary or self.palette.comment,
+			bg = self.is_active and self.palette.bg or self.palette.bg_dim,
+			bold = self.is_active,
+		}
+	end,
 }
 
 local TabpageClose = {
 	provider = "%999X ✗ %X",
+	hl = function(self)
+		return { fg = self.palette.primary, bg = self.palette.bg_dim }
+	end,
 }
 
 local TabPages = {
-	-- only show this component if there's 2 or more tabpages
 	condition = function()
 		return #vim.api.nvim_list_tabpages() >= 2
 	end,
@@ -118,7 +133,6 @@ local TabPages = {
 
 return {
 	init = function(self)
-		self.colors = Utils.color.get_colors()
 		self.palette = require("theme").get_palette()
 	end,
 	tabline.Offset,

@@ -6,7 +6,7 @@ vim.g.maplocalleader = " "
 _G.Utils = require("utils")
 _G.Config = {}
 
--- local colorschemes = "tokyonight"
+local colorschemes = "tokyonight"
 
 require("core").setup({})
 require("config.options")
@@ -17,8 +17,8 @@ require("config.bootstrap")
 require("config.events").setup()
 require("config.lazy").setup()
 -- require("config.colorschemes").setup(colorschemes)
-require("theme").setup({ transparent = true, json = false })
-
+require("theme").setup({ transparent = not vim.g.neovide, json = true })
+--
 local signal = vim.uv.new_signal()
 signal:start(
 	"sigusr1",
