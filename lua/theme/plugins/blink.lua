@@ -8,8 +8,8 @@ M.url = "https://github.com/Saghen/blink.cmp"
 function M.get(palette, opts)
 	-- stylua: ignore
 	local ret = {
-		BlinkCmpDoc                 = { fg = palette.fg, bg = palette.bg_highlight },
-		BlinkCmpDocBorder           = { fg = palette.fg_gutter, bg = palette.bg_highlight },
+		BlinkCmpDoc                 = { fg = palette.fg, bg = opts.transparent and "NONE" or palette.bg_highlight },
+		BlinkCmpDocBorder           = { fg = palette.fg_gutter,  bg =opts.transparent and "NONE" or palette.bg_highlight },
 		BlinkCmpGhostText           = { fg = palette.terminal_black },
 		BlinkCmpKindCodeium         = { fg = palette.cyan },
 		BlinkCmpKindCopilot         = { fg = palette.cyan },
@@ -19,10 +19,10 @@ function M.get(palette, opts)
 		BlinkCmpLabel               = { fg = palette.fg },
 		BlinkCmpLabelDeprecated     = { fg = palette.fg_gutter, strikethrough = true },
 		BlinkCmpLabelMatch          = { fg = palette.blue_bright },
-		BlinkCmpMenu                = { fg = palette.fg, bg = palette.bg_highlight },
-		BlinkCmpMenuBorder          = { fg = palette.fg_gutter, bg = palette.bg_highlight },
-		BlinkCmpSignatureHelp       = { fg = palette.fg, bg = palette.bg_highlight },
-		BlinkCmpSignatureHelpBorder = { fg = palette.fg_gutter, bg = palette.bg_highlight },
+		BlinkCmpMenu                = { fg = palette.fg, bg = opts.transparent and "NONE" or palette.bg_highlight },
+		BlinkCmpMenuBorder          = { fg = palette.fg_gutter, bg = opts.transparent and "NONE" or palette.bg_highlight },
+		BlinkCmpSignatureHelp       = { fg = palette.fg, bg = opts.transparent and "NONE" or palette.bg_highlight },
+		BlinkCmpSignatureHelpBorder = { fg = palette.fg_gutter, bg = opts.transparent and "NONE" or palette.bg_highlight },
 	}
 
 	require("theme.kinds").kinds(ret, "BlinkCmpKind%s")
