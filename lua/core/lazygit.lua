@@ -90,7 +90,7 @@ local function env(opts)
 			-- add the default config file if it exists and is not already there
 			if #config_files == 0 then
 				local default_config = vim.fs.normalize(config_dir .. "/config.yml")
-				if vim.loop.fs_stat(default_config) then
+				if vim.uv.fs_stat(default_config) then
 					config_files[1] = default_config
 				end
 			end
