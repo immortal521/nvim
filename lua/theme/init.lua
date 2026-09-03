@@ -1,0 +1,105 @@
+local M = {}
+
+local config_path = vim.fn.stdpath("config")
+local palette_path = config_path .. "/palette.json"
+
+---@alias theme.Variant "dark"|"light"|"auto"
+
+---@class theme.Options
+---@field variant theme.Variant
+---@field transparent boolean
+---@field json boolean
+M.options = {
+	json = false,
+	variant = "auto",
+	transparent = false,
+}
+
+---@return "dark" | "light"
+function M.get_variant()
+	if M.options.variant == "auto" then
+		return vim.o.background
+	end
+	return M.options.variant
+end
+
+---@return theme.Palettes|theme.Palette|nil
+local function read_json()
+	if not M.options.json then
+		return nil
+	end
+	local file = io.open(palette_path, "r")
+	if not file then
+		return nil
+	end
+
+	local content = file:read("a")
+	file:close()
+
+	local ok, data = pcall(vim.json.decode, content)
+	if not ok or type(data) ~= "table" then
+		return nil
+	end
+	return data
+end
+
+---@param palettes theme.Palettes
+---@param variant "dark" | "light"
+---@return theme.Palette
+local function resolve_palette(palettes, variant)
+	local json = read_json()
+
+	if not json then
+		return palettes[variant]
+	end
+
+	local has_variants = type(json.dark) == "table" or type(json.light) == "table"
+
+	if has_variants then
+		local override = json[variant]
+
+		if type(override) ~= "table" then
+			return palettes[variant]
+		end
+		return vim.tbl_deep_extend("force", palettes[variant], override)
+	end
+	return vim.tbl_deep_extend("force", palettes[variant], json)
+end
+
+---@return theme.Palette
+local function load_palette()
+	local palettes = require("theme.palette")
+	local variant = M.get_variant()
+	return resolve_palette(palettes, variant)
+end
+
+function M.get_palette()
+	return load_palette()
+end
+
+function M.apply()
+	local palette = load_palette()
+	require("theme.highlights").setup(palette, M.options.transparent)
+	local groups = require("theme.plugins").setup(palette, M.options)
+
+	for name, opts in pairs(groups) do
+		vim.api.nvim_set_hl(0, name, opts)
+	end
+end
+
+function M.setup(options)
+	M.options = vim.tbl_deep_extend("force", M.options, options or {})
+
+	M.apply()
+end
+
+vim.api.nvim_create_autocmd("OptionSet", {
+	pattern = "background",
+	callback = function()
+		if M.options.variant == "auto" then
+			M.apply()
+		end
+	end,
+})
+
+return M

@@ -6,7 +6,7 @@ vim.g.maplocalleader = " "
 _G.Utils = require("utils")
 _G.Config = {}
 
-local colorschemes = "tokyonight"
+-- local colorschemes = "tokyonight"
 
 require("core").setup({})
 require("config.options")
@@ -16,4 +16,13 @@ require("config.lsp")
 require("config.bootstrap")
 require("config.events").setup()
 require("config.lazy").setup()
-require("config.colorschemes").setup(colorschemes)
+-- require("config.colorschemes").setup(colorschemes)
+require("theme").setup({ transparent = false, json = false })
+
+local signal = vim.uv.new_signal()
+signal:start(
+	"sigusr1",
+	vim.schedule_wrap(function()
+		require("theme").apply()
+	end)
+)
