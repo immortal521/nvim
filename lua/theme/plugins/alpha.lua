@@ -4,15 +4,15 @@ M.url = "https://github.com/goolord/alpha-nvim"
 
 ---@param palette theme.Palette
 ---@param opts theme.Options
+---@return table<string, vim.api.keyset.highlight|string>
 function M.get(palette, opts)
-  -- stylua: ignore
-  return {
-    AlphaShortcut    = { fg = palette.orange },
-    AlphaHeader      = { fg = palette.blue },
-    AlphaHeaderLabel = { fg = palette.orange },
-    AlphaFooter      = { fg = palette.blue },
-    AlphaButtons     = { fg = palette.cyan },
-  }
+	return {
+		AlphaHeader = { fg = palette.primary or palette.blue, bold = true },
+		AlphaHeaderLabel = { fg = palette.yellow or palette.orange },
+		AlphaButtons = { fg = palette.fg },
+		AlphaShortcut = { fg = palette.primary or palette.blue, bold = true },
+		AlphaFooter = { fg = palette.fg_muted or palette.comment, italic = true },
+	}
 end
 
 return M
