@@ -11,13 +11,13 @@ return {
 			return " " .. self.enc:upper() .. self.bomb .. " "
 		end,
 		hl = function(self)
-			return { fg = self.colors.gutter.fg }
+			return { fg = self.palette.fg_gutter }
 		end,
 	},
 	{
 		provider = "",
 		hl = function(self)
-			return { fg = self.colors.gutter.fg }
+			return { fg = self.palette.fg_gutter }
 		end,
 	},
 }

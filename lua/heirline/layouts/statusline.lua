@@ -7,21 +7,22 @@ end
 
 return {
 	init = function(self)
+		self.palette = require("theme").get_palette()
 		self.colors = Utils.color.get_colors()
 		self.mode_colors = {
-			n = self.colors.blue,
-			i = self.colors.green,
-			v = self.colors.magenta,
-			V = self.colors.magenta,
-			["\22"] = self.colors.magenta,
-			c = self.colors.red,
-			s = self.colors.yellow,
-			S = self.colors.yellow,
-			["\19"] = self.colors.yellow,
-			R = self.colors.teal,
-			r = self.colors.teal,
-			["!"] = self.colors.red,
-			t = self.colors.green,
+			n = self.palette.blue,
+			i = self.palette.green,
+			v = self.palette.pink,
+			V = self.palette.pink,
+			["\22"] = self.palette.pink,
+			c = self.palette.red,
+			s = self.palette.yellow,
+			S = self.palette.yellow,
+			["\19"] = self.palette.yellow,
+			R = self.palette.purple,
+			r = self.palette.purple,
+			["!"] = self.palette.red,
+			t = self.palette.green,
 		}
 		-- Mode
 		self.mode = vim.fn.mode(1)

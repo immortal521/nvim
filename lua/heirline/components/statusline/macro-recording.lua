@@ -12,7 +12,7 @@ return {
 		{
 			provider = " 󰻃 ",
 			hl = function(self)
-				return { fg = self.colors.magenta.fg }
+				return { fg = self.palette.pink }
 			end,
 		},
 		{
@@ -20,7 +20,7 @@ return {
 				return self.reg_recording
 			end,
 			hl = function(self)
-				return { fg = self.colors.magenta.fg, italic = false, bold = true }
+				return { fg = self.palette.bg_highlight, italic = false, bold = true }
 			end,
 		},
 	},

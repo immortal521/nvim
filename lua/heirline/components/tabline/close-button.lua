@@ -5,8 +5,8 @@ return {
 	end,
 	hl = function(self)
 		return {
-			fg = self.is_active and self.colors.blue.fg or self.colors.comment.fg,
-			bg = self.is_active and self.colors.normal.bg or self.colors.black.bg,
+			fg = self.is_active and self.palette.blue or self.palette.comment,
+			bg = self.is_active and self.palette.bg or self.palette.bg_dim,
 			bold = self.is_active or self.is_visible,
 			italic = self.is_active,
 		}

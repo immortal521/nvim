@@ -60,8 +60,7 @@ local BufferBlock = {
 	end,
 
 	hl = function(self)
-		return self.is_active and { bg = self.colors.normal.bg, bold = true }
-			or { bg = self.colors.black.bg, bold = false }
+		return self.is_active and { bg = self.palette.bg, bold = true } or { bg = self.palette.bg, bold = false }
 	end,
 
 	on_click = {
@@ -86,12 +85,12 @@ local BufferBlock = {
 local BufferLine = utils.make_buflist(BufferBlock, {
 	provider = " " .. icons.bufferline.trunc_left,
 	hl = function(self)
-		return { fg = self.colors.comment.fg }
+		return { fg = self.palette.comment }
 	end,
 }, {
 	provider = "%=" .. icons.bufferline.trunc_right .. " ",
 	hl = function(self)
-		return { fg = self.colors.comment.fg }
+		return { fg = self.palette.comment }
 	end,
 }, function()
 	return buflist_cache
@@ -120,6 +119,7 @@ local TabPages = {
 return {
 	init = function(self)
 		self.colors = Utils.color.get_colors()
+		self.palette = require("theme").get_palette()
 	end,
 	tabline.Offset,
 	BufferLine,

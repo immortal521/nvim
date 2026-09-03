@@ -24,7 +24,7 @@ return {
 	{
 		provider = "",
 		hl = function(self)
-			return { fg = self.mode_colors[self.mode_key].fg, bg = self.has_branch and self.colors.gutter.fg or nil }
+			return { fg = self.mode_colors[self.mode_key], bg = self.has_branch and self.palette.bg_highlight or nil }
 		end,
 	},
 	{
@@ -37,7 +37,7 @@ return {
 			return " " .. icons.branch .. " " .. truncate_tail(head, 10)
 		end,
 		hl = function(self)
-			return { fg = self.mode_colors[self.mode_key].fg, bg = self.colors.gutter.bg, bold = true }
+			return { fg = self.mode_colors[self.mode_key], bg = self.palette.bg_highlight, bold = true }
 		end,
 	},
 }

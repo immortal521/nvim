@@ -6,7 +6,7 @@ return {
 		end,
 	},
 	hl = function(self)
-		return { fg = self.colors.gutter.fg }
+		return { fg = self.palette.bg_highlight }
 	end,
 	{
 		init = function(self)
@@ -40,7 +40,7 @@ return {
 				return self.filename
 			end,
 			hl = function(self)
-				return { italic = true, fg = self.colors.comment.fg }
+				return { italic = true, fg = self.palette.comment }
 			end,
 		},
 	},

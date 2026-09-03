@@ -130,8 +130,8 @@ local dark = {
 	fg_dark = "#636da6",
 
 	-- UI Elements
-	border = "#2f334d",
-	border_highlight = "#5895fff0",
+	border = "#3b4261",
+	border_highlight = "#5895ff",
 	selection = "#363c66",
 	cursor_line = "#222538",
 

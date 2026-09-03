@@ -2,13 +2,13 @@ return {
 	{
 		provider = "%P %(%l:%c%) ",
 		hl = function(self)
-			return { bg = self.colors.gutter.bg, fg = self.mode_colors[self.mode_key].fg }
+			return { bg = self.palette.fg_gutter, fg = self.mode_colors[self.mode_key] }
 		end,
 	},
 	{
 		provider = "",
 		hl = function(self)
-			return { fg = self.mode_colors[self.mode_key].fg, bg = self.colors.gutter.bg }
+			return { fg = self.mode_colors[self.mode_key], bg = self.palette.fg_gutter }
 		end,
 	},
 }

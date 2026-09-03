@@ -15,12 +15,12 @@ return {
 	config = function(_, opts)
 		require("heirline").setup(opts)
 
-		vim.api.nvim_create_autocmd("ColorScheme", {
-			callback = function()
-				vim.schedule(function()
-					require("heirline.utils").on_colorscheme()
-				end)
-			end,
-		})
+		-- vim.api.nvim_create_autocmd("ColorScheme", {
+		-- 	callback = function()
+		-- 		vim.schedule(function()
+		-- 			require("heirline.utils").on_colorscheme()
+		-- 		end)
+		-- 	end,
+		-- })
 	end,
 }

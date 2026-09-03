@@ -16,6 +16,6 @@ return {
 		return string.rep(" ", vim.api.nvim_win_get_width(self.winid)) .. self.separator
 	end,
 	hl = function(self)
-		return { fg = self.colors.gutter.fg }
+		return { fg = self.palette.fg_gutter }
 	end,
 }
