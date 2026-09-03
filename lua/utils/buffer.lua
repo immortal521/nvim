@@ -31,4 +31,3 @@ M.get_buf_name = function(bufnr)
 end
 
 return M
-

@@ -78,7 +78,7 @@ M.get_project_root = function(opts)
 		root = detect_root_from_files(PROJECT_ROOT_MARKERS)
 	end
 
-	root = require("utils.fs").normalize_path(root)
+	root = require("utils.fs").normalize_path(root --[[@as string]])
 	M._cache.project_root[buf] = root
 	return root
 end

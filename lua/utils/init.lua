@@ -49,7 +49,7 @@ local key_cache = {} ---@type table<string, string>
 
 ---@param key string
 function M.normkey(key)
-	if key_cache[key] then
+	if key_cache[key] ~= nil then
 		return key_cache[key]
 	end
 	local function norm(v)
@@ -124,7 +124,7 @@ function M.wo(win, wo)
 			end
 			v = table.concat(parts, ",")
 		end
-		vim.api.nvim_set_option_value(k, v, { scope = "local", win = win })
+		vim.api.nvim_set_option_value(k --[[@as string]], v, { scope = "local", win = win })
 	end
 end
 
