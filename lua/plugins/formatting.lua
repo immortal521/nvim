@@ -119,6 +119,7 @@ return {
 			ft.lua = { "stylua" }
 			ft.sql = { "sqruff" }
 			ft.luau = { "stylua" }
+			ft.nix = { "nixfmt" }
 
 			return ft
 		end)(),

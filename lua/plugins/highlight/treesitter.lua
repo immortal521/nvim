@@ -16,7 +16,7 @@ local langs = {
 	"kotlin",
 	"latex", "lua", "luadoc", "luap",
 	"make", "markdown", "markdown_inline",
-	"nim", "ninja", "nu",
+	"nim", "ninja", "nu", "nix",
 	"ocaml",
 	"php", "proto", "python",
 	"query",

@@ -17,7 +17,7 @@ return {
 		name = "OpenRouter",
 		url = "https://openrouter.ai/api/v1/chat/completions",
 		-- model = "google/gemini-2.0-flash-exp:free",
-		model = "poolside/laguna-s-2.1:free",
+		model = "cohere/north-mini-code:free",
 		max_tokens = 8000,
 		api_type = "openai",
 		fetch_key = vim.env.OPENROUTER_TOKEN,

@@ -1,34 +1,12 @@
 ---@type vim.lsp.Config
 return {
-	cmd = { "luau-lsp", "lsp" },
-
-	filetypes = {
-		"luau",
+	cmd = {
+		"luau-lsp",
+		"lsp",
+		"--definitions:@noctalia=noctalia.d.luau",
 	},
 
-	root_markers = {
-		".git",
-	},
+	filetypes = { "luau" },
 
-	settings = {
-		["luau-lsp"] = {
-			platform = {
-				type = "standard",
-			},
-
-			sourcemap = {
-				enabled = false,
-			},
-
-			types = {
-				definitionFiles = {
-					noctalia = vim.fn.expand("~/Projects/external/mirror/official-plugins/noctalia.d.luau"),
-				},
-			},
-
-			ignoreGlobs = {
-				"**/*.d.luau",
-			},
-		},
-	},
+	root_markers = { ".git" },
 }

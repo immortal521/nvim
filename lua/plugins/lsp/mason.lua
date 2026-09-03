@@ -15,6 +15,7 @@ local ensure_install = {
 	"json-lsp",
 	"kotlin-language-server",
 	"pyright",
+	"rnix-lsp",
 	"rust-analyzer",
 	"tailwindcss-language-server",
 	"vtsls",

@@ -12,7 +12,7 @@ return {
 					return os.getenv("OPENROUTER_TOKEN")
 				end,
 				end_point = "https://openrouter.ai/api/v1/chat/completions",
-				model = "poolside/laguna-s-2.1:free",
+				model = "cohere/north-mini-code:free",
 				name = "Openrouter",
 				optional = {
 					max_tokens = 56,
