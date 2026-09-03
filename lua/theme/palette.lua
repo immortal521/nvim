@@ -1,40 +1,40 @@
 ---@class theme.GitColors
----@field add string # Git 新增颜色
----@field change string # Git 修改颜色
----@field delete string # Git 删除颜色
+---@field add string
+---@field change string
+---@field delete string
 
 ---@class theme.DiagnosticColors
----@field error string # 错误主色
----@field warn string # 警告主色
----@field info string # 信息主色
----@field hint string # 提示主色
----@field bg_error string # 错误混合背景
----@field bg_warn string # 警告混合背景
----@field bg_info string # 信息混合背景
----@field bg_hint string # 提示混合背景
+---@field error string
+---@field warn string
+---@field info string
+---@field hint string
+---@field bg_error string
+---@field bg_warn string
+---@field bg_info string
+---@field bg_hint string
 
 ---@class theme.DiffColors
----@field add string # Diff 新增高亮
----@field change string # Diff 修改高亮
----@field delete string # Diff 删除高亮
----@field text string # Diff 细粒度修改文字高亮
+---@field add string
+---@field change string
+---@field delete string
+---@field text string
 
 ---@class theme.Palette
----@field bg string # 编辑器主背景
----@field bg_dim string # 稍微偏暗的背景（如侧边栏、NVTree）
----@field bg_deep string # 深沉背景（如 Quickfix、底栏）
----@field bg_highlight string # 行高亮/选中态淡背景
----@field bg_search string # 搜索匹配项背景
----@field fg string # 标准前景色（代码/文本）
----@field fg_muted string # 次要前景色（参数、辅助文本）
----@field fg_gutter string # 行号栏前景色
----@field fg_dark string # 暗浅前景色（如状态栏非激活状态）
----@field border string # 标准边框色
----@field border_highlight string # 焦点/高亮边框色（如浮动窗口）
----@field selection string # 视觉模式选中背景色
----@field cursor_line string # 光标行背景色
----@field float { bg: string, fg: string, border: string } # 浮动窗口专用色
----@field statusline { bg: string, fg: string, active: string, inactive: string } # 状态栏专用色
+---@field bg string
+---@field bg_dim string
+---@field bg_deep string
+---@field bg_highlight string
+---@field bg_search string
+---@field fg string
+---@field fg_muted string
+---@field fg_gutter string
+---@field fg_dark string
+---@field border string
+---@field border_highlight string
+---@field selection string
+---@field cursor_line string
+---@field float { bg: string, fg: string, border: string }
+---@field statusline { bg: string, fg: string, active: string, inactive: string }
 ---@field blue string
 ---@field blue_dim string
 ---@field blue_bright string
@@ -47,7 +47,7 @@
 ---@field red_dim string
 ---@field purple string
 ---@field pink string
----@field comment string # 注释颜色（已校验对比度）
+---@field comment string
 ---@field terminal_black string
 ---@field git theme.GitColors
 ---@field diag theme.DiagnosticColors
@@ -57,7 +57,9 @@
 ---@field dark theme.Palette
 ---@field light theme.Palette
 
-local M = {}
+local hsluv = require("tokyonight.hsluv")
+
+local day_brightness = 0.3
 
 ---RGB 辅助转换
 ---@param color string
@@ -72,11 +74,12 @@ local function rgb(color)
 end
 
 ---RGB 色彩混合 (Alpha Blend)
----@param foreground string # 六位十六进制颜色值 (例如 "#ffffff")
----@param alpha number # 混合透明度 0.0 ~ 1.0
----@param background string # 六位十六进制背景色
+---@param foreground string
+---@param alpha number|string
+---@param background string
 ---@return string
 local function blend(foreground, alpha, background)
+	alpha = type(alpha) == "string" and (tonumber(alpha, 16) or 0 / 0xff) or alpha
 	local bg = rgb(background)
 	local fg = rgb(foreground)
 
@@ -88,7 +91,29 @@ local function blend(foreground, alpha, background)
 	return string.format("#%02x%02x%02x", channel(1), channel(2), channel(3))
 end
 
----【深邃极光】Dark 主题定义
+---Tokyonight 原生 Invert 逻辑
+---@param color any
+---@return any
+local function invert(color)
+	if type(color) == "table" then
+		local res = {}
+		for key, value in pairs(color) do
+			res[key] = invert(value)
+		end
+		return res
+	elseif type(color) == "string" then
+		if color ~= "NONE" and color:sub(1, 1) == "#" then
+			local hsl = hsluv.hex_to_hsluv(color)
+			hsl[3] = 100 - hsl[3]
+			if hsl[3] < 40 then
+				hsl[3] = hsl[3] + (100 - hsl[3]) * day_brightness
+			end
+			return hsluv.hsluv_to_hex(hsl)
+		end
+	end
+	return color
+end
+
 ---@type theme.Palette
 local dark = {
 	-- Backgrounds
@@ -154,7 +179,7 @@ local dark = {
 		delete = "#e26a75",
 	},
 
-	-- Diagnostics (带有自动混合的低饱和背景)
+	-- Diagnostics
 	diag = {
 		error = "#ff757f",
 		warn = "#ffc777",
@@ -175,108 +200,29 @@ local dark = {
 	},
 }
 
----根据 HSLuv 感知色彩空间生成具有高对比度与舒爽度的 Light 主题
+---根据 Tokyonight 官方 invert 算法生成 Light 调色盘
 ---@param base theme.Palette
 ---@return theme.Palette
 local function generate_light(base)
-	local hsluv = require("tokyonight.hsluv")
+	local colors = vim.deepcopy(base)
+	colors = invert(colors)
 
-	---调整 Hex 颜色的 HSLuv 属性
-	---@param hex string
-	---@param target_l number # 目标明度 (0 - 100)
-	---@param chroma_ratio? number # 饱和度缩放系数 (例如 0.8 表示降饱和)
-	---@return string
-	local function adapt(hex, target_l, chroma_ratio)
-		if not hex or hex:sub(1, 1) ~= "#" then
-			return hex
-		end
-		local hsl = hsluv.hex_to_hsluv(hex)
-		hsl[3] = target_l
-		if chroma_ratio then
-			hsl[2] = math.min(100, hsl[2] * chroma_ratio)
-		end
-		return hsluv.hsluv_to_hex(hsl)
-	end
+	-- 根据转置后的主背景与文本颜色重新计算特定叠加层，确保平滑
+	colors.bg_dim = blend(colors.bg, 0.9, colors.fg)
+	colors.bg_deep = blend(colors.bg_dim, 0.9, colors.fg)
 
-	-- 1. 基础背景与底色（羊膏纸/柔润白基调，非刺眼纯白）
-	local bg = "#e1e4ee"
-	local bg_dim = "#d5d8e6"
-	local bg_deep = "#c8ccde"
+	-- 重新混合带有透明度的背景（防止混合基底错位）
+	colors.diag.bg_error = blend(colors.diag.error, 0.15, colors.bg)
+	colors.diag.bg_warn = blend(colors.diag.warn, 0.15, colors.bg)
+	colors.diag.bg_info = blend(colors.diag.info, 0.15, colors.bg)
+	colors.diag.bg_hint = blend(colors.diag.hint, 0.15, colors.bg)
 
-	-- 2. 重置语法与强调色（针对白底，将明度压至 L*=32~42，保障 WCAG AA 对比度）
-	local light_palette = {
-		bg = bg,
-		bg_dim = bg_dim,
-		bg_deep = bg_deep,
-		bg_highlight = "#d0d4e6",
-		bg_search = "#a8b5e6",
+	colors.diff.add = blend(colors.git.add, 0.20, colors.bg)
+	colors.diff.change = blend(colors.git.change, 0.20, colors.bg)
+	colors.diff.delete = blend(colors.git.delete, 0.20, colors.bg)
+	colors.diff.text = blend(colors.git.change, 0.40, colors.bg)
 
-		fg = "#2e3352",
-		fg_muted = "#5c638a",
-		fg_gutter = "#9aa0c0",
-		fg_dark = "#787fcd",
-
-		border = "#b8be3b",
-		border_highlight = "#2b5ce6",
-		selection = "#b6c2f0",
-		cursor_line = "#d8dcfa",
-
-		float = {
-			bg = bg_dim,
-			fg = "#2e3352",
-			border = "#aab0d0",
-		},
-
-		statusline = {
-			bg = bg_dim,
-			fg = "#5c638a",
-			active = "#2e3352",
-			inactive = "#9aa0c0",
-		},
-
-		-- 语法高亮色调整（在 Light 模式下降低明度）
-		blue = adapt(base.blue, 38, 1.1),
-		blue_dim = adapt(base.blue_dim, 32),
-		blue_bright = adapt(base.blue_bright, 35),
-		cyan = adapt(base.cyan, 34, 1.2),
-		green = adapt(base.green, 32, 1.2),
-		green_bright = adapt(base.green_bright, 30),
-		yellow = adapt(base.yellow, 38, 1.4),
-		orange = adapt(base.orange, 36, 1.2),
-		red = adapt(base.red, 40),
-		red_dim = adapt(base.red_dim, 32),
-		purple = adapt(base.purple, 38),
-		pink = adapt(base.pink, 40),
-
-		comment = "#767c9d",
-		terminal_black = "#9aa0c0",
-
-		git = {
-			add = adapt(base.git.add, 32, 1.2),
-			change = adapt(base.git.change, 38),
-			delete = adapt(base.git.delete, 40),
-		},
-
-		diag = {
-			error = adapt(base.diag.error, 40),
-			warn = adapt(base.diag.warn, 38, 1.3),
-			info = adapt(base.diag.info, 36),
-			hint = adapt(base.diag.hint, 34),
-			bg_error = blend(adapt(base.diag.error, 40), 0.12, bg),
-			bg_warn = blend(adapt(base.diag.warn, 38), 0.12, bg),
-			bg_info = blend(adapt(base.diag.info, 36), 0.12, bg),
-			bg_hint = blend(adapt(base.diag.hint, 34), 0.12, bg),
-		},
-
-		diff = {
-			add = blend("#2e8b57", 0.15, bg),
-			change = blend("#2b5ce6", 0.15, bg),
-			delete = blend("#dc143c", 0.15, bg),
-			text = blend("#2b5ce6", 0.30, bg),
-		},
-	}
-
-	return light_palette
+	return colors
 end
 
 return {

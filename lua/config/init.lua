@@ -17,7 +17,7 @@ require("config.bootstrap")
 require("config.events").setup()
 require("config.lazy").setup()
 -- require("config.colorschemes").setup(colorschemes)
-require("theme").setup({ transparent = false, json = false })
+require("theme").setup({ transparent = true, json = false })
 
 local signal = vim.uv.new_signal()
 signal:start(
