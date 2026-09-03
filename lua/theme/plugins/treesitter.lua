@@ -9,16 +9,16 @@ function M.get(palette, opts)
 		-----------------------------------------------------------------------
 		-- Annotations & Attributes
 		-----------------------------------------------------------------------
-		["@annotation"] = "PreProc",
-		["@attribute"] = { fg = palette.purple },
+		["@annotation"] = { fg = palette.pink },
+		["@attribute"] = { fg = palette.yellow },
 
 		-----------------------------------------------------------------------
 		-- Booleans, Characters & Numbers
 		-----------------------------------------------------------------------
 		["@boolean"] = "Boolean",
 		["@character"] = "Character",
-		["@character.printf"] = "SpecialChar",
-		["@character.special"] = "SpecialChar",
+		["@character.printf"] = { fg = palette.teal },
+		["@character.special"] = { fg = palette.teal },
 		["@number"] = "Number",
 		["@number.float"] = "Float",
 
@@ -31,53 +31,53 @@ function M.get(palette, opts)
 		["@comment.info"] = { fg = palette.diag.info, bold = true },
 		["@comment.hint"] = { fg = palette.diag.hint, bold = true },
 		["@comment.todo"] = { fg = palette.bg, bg = palette.yellow, bold = true },
-		["@comment.note"] = { fg = palette.bg, bg = palette.cyan, bold = true },
+		["@comment.note"] = { fg = palette.bg, bg = palette.teal, bold = true },
 
 		-----------------------------------------------------------------------
 		-- Constants & Literals
 		-----------------------------------------------------------------------
 		["@constant"] = "Constant",
-		["@constant.builtin"] = { fg = palette.orange, bold = true },
-		["@constant.macro"] = { fg = palette.pink },
+		["@constant.builtin"] = { fg = palette.peach, bold = true },
+		["@constant.macro"] = { fg = palette.mauve },
 
 		-----------------------------------------------------------------------
 		-- Functions & Methods
 		-----------------------------------------------------------------------
-		["@constructor"] = { fg = palette.cyan },
+		["@constructor"] = { fg = palette.sapphire },
 		["@function"] = "Function",
-		["@function.builtin"] = { fg = palette.blue_bright },
+		["@function.builtin"] = { fg = palette.peach },
 		["@function.call"] = "@function",
-		["@function.macro"] = { fg = palette.pink },
+		["@function.macro"] = { fg = palette.mauve },
 		["@function.method"] = "Function",
 		["@function.method.call"] = "@function.method",
 
 		-----------------------------------------------------------------------
 		-- Keywords & Operators
 		-----------------------------------------------------------------------
-		["@keyword"] = { fg = palette.purple, italic = true },
+		["@keyword"] = { fg = palette.mauve, italic = true },
 		["@keyword.conditional"] = "Conditional",
-		["@keyword.coroutine"] = { fg = palette.purple, italic = true },
+		["@keyword.coroutine"] = { fg = palette.mauve, italic = true },
 		["@keyword.debug"] = "Debug",
 		["@keyword.directive"] = { fg = palette.pink },
 		["@keyword.directive.define"] = { fg = palette.pink },
-		["@keyword.exception"] = { fg = palette.red, italic = true },
-		["@keyword.function"] = { fg = palette.purple, italic = true },
+		["@keyword.exception"] = { fg = palette.maroon, italic = true },
+		["@keyword.function"] = { fg = palette.mauve, italic = true },
 		["@keyword.import"] = { fg = palette.pink, italic = true },
-		["@keyword.operator"] = { fg = palette.blue_dim },
+		["@keyword.operator"] = { fg = palette.sky },
 		["@keyword.repeat"] = "Repeat",
-		["@keyword.return"] = { fg = palette.purple, bold = true, italic = true },
+		["@keyword.return"] = { fg = palette.mauve, bold = true, italic = true },
 		["@keyword.storage"] = "StorageClass",
 
 		-----------------------------------------------------------------------
 		-- Labels & Operators
 		-----------------------------------------------------------------------
-		["@label"] = { fg = palette.blue },
-		["@operator"] = { fg = palette.blue_dim },
+		["@label"] = { fg = palette.sapphire },
+		["@operator"] = { fg = palette.sky },
 
 		-----------------------------------------------------------------------
 		-- Modules & Namespaces
 		-----------------------------------------------------------------------
-		["@module"] = { fg = palette.yellow },
+		["@module"] = { fg = palette.lavender },
 		["@module.builtin"] = { fg = palette.red },
 		["@namespace"] = "@module",
 		["@namespace.builtin"] = "@module.builtin",
@@ -85,14 +85,14 @@ function M.get(palette, opts)
 		-----------------------------------------------------------------------
 		-- Objects, Properties & Members
 		-----------------------------------------------------------------------
-		["@property"] = { fg = palette.cyan },
+		["@property"] = { fg = palette.teal },
 
 		-----------------------------------------------------------------------
 		-- Punctuation
 		-----------------------------------------------------------------------
 		["@punctuation.bracket"] = { fg = palette.fg_muted },
-		["@punctuation.delimiter"] = { fg = palette.fg_muted },
-		["@punctuation.special"] = { fg = palette.blue_bright },
+		["@punctuation.delimiter"] = { fg = palette.overlay2 or palette.fg_muted },
+		["@punctuation.special"] = { fg = palette.sky },
 
 		-----------------------------------------------------------------------
 		-- Strings & Escape Sequences
@@ -100,21 +100,21 @@ function M.get(palette, opts)
 		["@string"] = "String",
 		["@string.documentation"] = { fg = palette.yellow, italic = true },
 		["@string.escape"] = { fg = palette.pink },
-		["@string.regexp"] = { fg = palette.blue_bright },
+		["@string.regexp"] = { fg = palette.mauve },
 		["@string.special"] = "SpecialChar",
 
 		-----------------------------------------------------------------------
 		-- HTML / JSX Tags
 		-----------------------------------------------------------------------
-		["@tag"] = { fg = palette.purple },
-		["@tag.attribute"] = { fg = palette.yellow },
-		["@tag.delimiter"] = { fg = palette.fg_muted },
+		["@tag"] = { fg = palette.mauve },
+		["@tag.attribute"] = { fg = palette.teal },
+		["@tag.delimiter"] = { fg = palette.sky },
 
 		-----------------------------------------------------------------------
 		-- Types & Definitions
 		-----------------------------------------------------------------------
 		["@type"] = "Type",
-		["@type.builtin"] = { fg = palette.cyan, bold = true },
+		["@type.builtin"] = { fg = palette.yellow, bold = true },
 		["@type.definition"] = "Typedef",
 		["@type.qualifier"] = "@keyword",
 
@@ -123,8 +123,8 @@ function M.get(palette, opts)
 		-----------------------------------------------------------------------
 		["@variable"] = { fg = palette.fg },
 		["@variable.builtin"] = { fg = palette.red },
-		["@variable.member"] = { fg = palette.cyan },
-		["@variable.parameter"] = { fg = palette.fg_muted, italic = true },
+		["@variable.member"] = { fg = palette.teal },
+		["@variable.parameter"] = { fg = palette.peach, italic = true },
 		["@variable.parameter.builtin"] = { fg = palette.red, italic = true },
 
 		-----------------------------------------------------------------------
@@ -138,23 +138,25 @@ function M.get(palette, opts)
 		["@markup.underline"] = { underline = true },
 
 		["@markup.heading"] = { fg = palette.blue, bold = true },
-		["@markup.heading.1"] = { fg = palette.purple, bold = true },
-		["@markup.heading.2"] = { fg = palette.blue, bold = true },
-		["@markup.heading.3"] = { fg = palette.green, bold = true },
-		["@markup.heading.4"] = { fg = palette.yellow, bold = true },
+		["@markup.heading.1"] = { fg = palette.lavender, bold = true },
+		["@markup.heading.2"] = { fg = palette.mauve, bold = true },
+		["@markup.heading.3"] = { fg = palette.blue, bold = true },
+		["@markup.heading.4"] = { fg = palette.teal, bold = true },
+		["@markup.heading.5"] = { fg = palette.peach, bold = true },
+		["@markup.heading.6"] = { fg = palette.flamingo, bold = true },
 
-		["@markup.link"] = { fg = palette.cyan },
+		["@markup.link"] = { fg = palette.rosewater },
 		["@markup.link.label"] = { fg = palette.blue },
 		["@markup.link.url"] = { fg = palette.fg_muted, underline = true },
 
 		["@markup.list"] = { fg = palette.blue },
 		["@markup.list.checked"] = { fg = palette.green },
 		["@markup.list.unchecked"] = { fg = palette.fg_muted },
-		["@markup.list.markdown"] = { fg = palette.orange, bold = true },
+		["@markup.list.markdown"] = { fg = palette.peach, bold = true },
 
-		["@markup.math"] = { fg = palette.blue_bright },
+		["@markup.math"] = { fg = palette.sky },
 		["@markup.environment"] = { fg = palette.pink },
-		["@markup.environment.name"] = { fg = palette.cyan },
+		["@markup.environment.name"] = { fg = palette.sapphire },
 
 		["@markup.raw"] = { fg = palette.green },
 		["@markup.raw.markdown_inline"] = {

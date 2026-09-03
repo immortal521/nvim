@@ -34,19 +34,28 @@
 ---@field selection string
 ---@field cursor_line string
 ---@field float { bg: string, fg: string, border: string }
----@field statusline { bg: string, fg: string, active: string, inactive: string }
+---@field rosewater string
+---@field flamingo string
+---@field pink string
+---@field mauve string
+---@field purple string
+---@field red string
+---@field red_dim string
+---@field maroon string
+---@field peach string
+---@field orange string
+---@field yellow string
+---@field green string
+---@field green_dim string
+---@field green_bright string
+---@field teal string
+---@field sky string
+---@field sapphire string
 ---@field blue string
 ---@field blue_dim string
 ---@field blue_bright string
+---@field lavender string
 ---@field cyan string
----@field green string
----@field green_bright string
----@field yellow string
----@field orange string
----@field red string
----@field red_dim string
----@field purple string
----@field pink string
 ---@field comment string
 ---@field terminal_black string
 ---@field git theme.GitColors
@@ -116,14 +125,14 @@ end
 
 ---@type theme.Palette
 local dark = {
-	-- Backgrounds
+	-- Backgrounds & Surfaces (TokyoNight 深邃底色体系)
 	bg = "#1b1d2b",
 	bg_dim = "#141622",
 	bg_deep = "#10121a",
 	bg_highlight = "#282c44",
 	bg_search = "#3d4470",
 
-	-- Foregrounds
+	-- Foregrounds (Catppuccin 级文本层次)
 	fg = "#c8d3f5",
 	fg_muted = "#828bb8",
 	fg_gutter = "#444a73",
@@ -142,32 +151,31 @@ local dark = {
 		border = "#3b4261",
 	},
 
-	-- StatusLine
-	statusline = {
-		bg = "#141622",
-		fg = "#828bb8",
-		active = "#c8d3f5",
-		inactive = "#444a73",
-	},
-
-	-- Accent & Syntax Colors
-	blue = "#82aaff",
-	blue_dim = "#3e68d7",
-	blue_bright = "#65bcff",
-
-	cyan = "#86e1fc",
-
-	green = "#c3e88d",
-	green_bright = "#4fd6be",
-
-	yellow = "#ffc777",
-	orange = "#ff966c",
-
-	red = "#ff757f",
-	red_dim = "#c53b53",
-
-	purple = "#c099ff",
-	pink = "#fca7ea",
+	-- =========================================================================
+	-- Extended Catppuccin Syntax Accents (全色阶扩展)
+	-- =========================================================================
+	rosewater = "#f2d5cf", -- Winbar 高亮 / 特殊标点
+	flamingo = "#eebebe", -- 变量引用 / 弱强调标签
+	pink = "#fca7ea", -- 预处理指令 / 宏 / 装饰标签
+	mauve = "#ca9ee6", -- 特殊结构体 / 转义字符 / 正则
+	purple = "#c099ff", -- 逻辑关键字 (if/return)
+	red = "#ff757f", -- 错误 / 破坏性操作 / 声明
+	red_dim = "#c53b53", -- 暗红 / 弱化报错
+	maroon = "#ea999c", -- 异常捕获 / 强提示
+	peach = "#ef9f76", -- 函数参数 / 变量名
+	orange = "#ff966c", -- 数字 / 常量 / 布尔值
+	yellow = "#ffc777", -- 类名 / 构造函数
+	green = "#c3e88d", -- 字符串
+	green_dim = "#a6d189", -- 弱高亮绿 / 文档注解代码
+	green_bright = "#4fd6be", -- 高亮绿 / 格式化符号
+	teal = "#4fd6be", -- 结构体属性 / 成员访问
+	sky = "#99d1db", -- 路径 / 模块导入
+	sapphire = "#85c1dc", -- 内置类型 / 特殊函数
+	blue = "#82aaff", -- 普通函数 / 方法调用
+	blue_dim = "#3e68d7", -- 辅助深蓝 / UI装饰
+	blue_bright = "#65bcff", -- 超链接 / 强高亮蓝
+	lavender = "#babbf1", -- 接口 / 泛型 / 成员变量
+	cyan = "#86e1fc", -- 类型声明 / 运算符
 
 	comment = "#636da6",
 	terminal_black = "#444a73",
@@ -183,20 +191,20 @@ local dark = {
 	diag = {
 		error = "#ff757f",
 		warn = "#ffc777",
-		info = "#00bfff",
+		info = "#65bcff",
 		hint = "#4fd6be",
 		bg_error = blend("#ff757f", 0.15, "#1b1d2b"),
 		bg_warn = blend("#ffc777", 0.15, "#1b1d2b"),
-		bg_info = blend("#00bfff", 0.15, "#1b1d2b"),
+		bg_info = blend("#65bcff", 0.15, "#1b1d2b"),
 		bg_hint = blend("#4fd6be", 0.15, "#1b1d2b"),
 	},
 
 	-- Diff Controls
 	diff = {
-		add = blend("#b8db87", 0.20, "#1b1d2b"),
-		change = blend("#7ca1f2", 0.20, "#1b1d2b"),
-		delete = blend("#e26a75", 0.20, "#1b1d2b"),
-		text = blend("#7ca1f2", 0.40, "#1b1d2b"),
+		add = blend("#b8db87", 0.18, "#1b1d2b"),
+		change = blend("#7ca1f2", 0.18, "#1b1d2b"),
+		delete = blend("#e26a75", 0.18, "#1b1d2b"),
+		text = blend("#7ca1f2", 0.35, "#1b1d2b"),
 	},
 }
 
@@ -217,10 +225,10 @@ local function generate_light(base)
 	colors.diag.bg_info = blend(colors.diag.info, 0.15, colors.bg)
 	colors.diag.bg_hint = blend(colors.diag.hint, 0.15, colors.bg)
 
-	colors.diff.add = blend(colors.git.add, 0.20, colors.bg)
-	colors.diff.change = blend(colors.git.change, 0.20, colors.bg)
-	colors.diff.delete = blend(colors.git.delete, 0.20, colors.bg)
-	colors.diff.text = blend(colors.git.change, 0.40, colors.bg)
+	colors.diff.add = blend(colors.git.add, 0.18, colors.bg)
+	colors.diff.change = blend(colors.git.change, 0.18, colors.bg)
+	colors.diff.delete = blend(colors.git.delete, 0.18, colors.bg)
+	colors.diff.text = blend(colors.git.change, 0.35, colors.bg)
 
 	return colors
 end
