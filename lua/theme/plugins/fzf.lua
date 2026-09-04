@@ -9,33 +9,27 @@ function M.get(palette, opts)
 	opts = opts or {}
 	local float_bg = opts.transparent and "NONE" or (palette.float and palette.float.bg or palette.bg_dim)
 	local primary = palette.primary or palette.blue
-	local border_fg = palette.border_highlight or palette.fg_gutter
+	local primary_bright = palette.primary_bright or primary
+	local border_fg = palette.border_highlight or palette.border or palette.fg_gutter
 
 	return {
-		-- 基础窗口与边框
 		FzfLuaNormal = { fg = palette.fg, bg = float_bg },
 		FzfLuaBorder = { fg = border_fg, bg = float_bg },
-		FzfLuaTitle = { fg = primary, bg = float_bg, bold = true },
+		FzfLuaTitle = { fg = primary_bright, bg = float_bg, bold = true },
 		FzfLuaPreviewTitle = { fg = border_fg, bg = float_bg, bold = true },
-
-		-- 输入框与指针
+		FzfLuaBackdrop = { bg = palette.bg_deep or palette.bg },
 		FzfLuaCursor = "IncSearch",
-		FzfLuaFzfCursorLine = { bg = palette.bg_highlight, bold = true },
-		FzfLuaFzfPointer = { fg = primary, bold = true },
-		FzfLuaFzfSeparator = { fg = palette.orange or palette.yellow, bg = float_bg },
-
-		-- 路径与文件名文本分类
+		FzfLuaFzfCursorLine = { fg = primary_bright, bg = palette.selection or palette.bg_highlight, bold = true },
+		FzfLuaFzfPointer = { fg = primary_bright, bold = true },
+		FzfLuaFzfSeparator = { fg = palette.peach or palette.yellow, bg = float_bg },
 		FzfLuaFzfNormal = { fg = palette.fg },
-		FzfLuaFilePart = { fg = palette.fg },
+		FzfLuaFilePart = { fg = palette.fg, bold = true },
 		FzfLuaDirPart = { fg = palette.fg_muted or palette.comment },
-		FzfLuaPath = { fg = palette.fg_muted or palette.comment },
-
-		-- 搜索模糊匹配字符高亮 (Match)
-		FzfLuaFzfMatch = { fg = primary, bold = true },
-
-		-- 快捷键与 Header 提示
-		FzfLuaHeaderBind = { fg = palette.purple or primary, bold = true },
+		FzfLuaPath = "Directory",
+		FzfLuaFzfMatch = { fg = palette.red, bold = true },
+		FzfLuaHeaderBind = { fg = palette.purple or primary_bright, bold = true },
 		FzfLuaHeaderText = { fg = palette.fg_muted or palette.comment },
+		FzfLuaHelpNormal = { fg = palette.fg, bg = float_bg },
 	}
 end
 

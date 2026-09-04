@@ -48,10 +48,10 @@ function M.setup(palette, transparent)
 		VisualNOS = { bg = palette.selection },
 
 		Search = { fg = palette.fg, bg = palette.bg_search },
-		IncSearch = { fg = palette.bg, bg = palette.primary_bright, bold = true }, -- 搜索高亮联动主色亮色
+		IncSearch = { fg = palette.bg, bg = palette.primary_bright, bold = true },
 		CurSearch = { link = "IncSearch" },
 
-		MatchParen = { fg = palette.primary_bright, bg = palette.bg_highlight, bold = true }, -- 括号匹配强调主色
+		MatchParen = { fg = palette.primary_bright, bg = palette.bg_highlight, bold = true },
 		Directory = { fg = palette.primary, bold = true },
 		Title = { fg = palette.primary_bright, bold = true },
 		Question = { fg = palette.primary },
@@ -71,7 +71,7 @@ function M.setup(palette, transparent)
 		-- Popup Menu (Pmenu)
 		-----------------------------------------------------------------------
 		Pmenu = { fg = palette.fg, bg = bg_dim },
-		PmenuSel = { fg = palette.primary_bright, bg = palette.selection, bold = true }, -- 选中菜单项文字使用亮主色
+		PmenuSel = { fg = palette.primary_bright, bg = palette.selection, bold = true },
 		PmenuSbar = { bg = palette.bg_highlight },
 		PmenuThumb = { bg = palette.fg_muted },
 
@@ -103,19 +103,19 @@ function M.setup(palette, transparent)
 
 		Identifier = { fg = palette.primary }, -- 标识符作为核心联动主色
 		Function = { fg = palette.blue, bold = true },
-		Statement = { fg = palette.mauve },
-		Conditional = { fg = palette.mauve, italic = true },
-		Repeat = { fg = palette.mauve, italic = true },
+		Statement = { fg = palette.purple },
+		Conditional = { fg = palette.purple, italic = true, bold = true },
+		Repeat = { fg = palette.purple, italic = true, bold = true },
 		Label = { fg = palette.sapphire },
-		Operator = { fg = palette.sky },
-		Keyword = { fg = palette.mauve, italic = true },
+		Operator = { fg = palette.sapphire },
+		Keyword = { fg = palette.purple, italic = true },
 		Exception = { fg = palette.maroon, bold = true },
 
-		PreProc = { fg = palette.pink },
-		Include = { fg = palette.pink },
-		Define = { fg = palette.pink },
-		Macro = { fg = palette.pink },
-		PreCondit = { fg = palette.pink },
+		PreProc = { fg = palette.maroon },
+		Include = { fg = palette.maroon, italic = true },
+		Define = { fg = palette.maroon, bold = true },
+		Macro = { fg = palette.purple },
+		PreCondit = { fg = palette.maroon },
 
 		Type = { fg = palette.yellow, bold = true },
 		StorageClass = { fg = palette.yellow },
@@ -154,7 +154,7 @@ function M.setup(palette, transparent)
 		LspReferenceText = { bg = palette.bg_highlight },
 		LspReferenceRead = { bg = palette.bg_highlight },
 		LspReferenceWrite = { bg = palette.bg_highlight },
-		LspSignatureActiveParameter = { fg = palette.primary_bright, bg = palette.bg_highlight, bold = true }, -- 参数激活高亮联动主色
+		LspSignatureActiveParameter = { fg = palette.primary_bright, bg = palette.bg_highlight, bold = true },
 		LspCodeLens = { fg = palette.comment },
 		LspInlayHint = { fg = palette.fg_gutter, bg = transparent and "NONE" or palette.bg_deep },
 

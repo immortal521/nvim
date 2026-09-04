@@ -3,9 +3,9 @@ local M = {}
 M.url = "https://github.com/stevearc/aerial.nvim"
 
 ---@param palette theme.Palette
----@param opts theme.Options
+---@param _ theme.Options
 ---@return table<string, vim.api.keyset.highlight|string>
-function M.get(palette, opts)
+function M.get(palette, _)
 	local ret = {
 		AerialNormal = { fg = palette.fg },
 		AerialGuide = { fg = palette.fg_gutter },

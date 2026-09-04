@@ -2,14 +2,14 @@
 local M = {}
 
 ---@param palette theme.Palette
----@param opts? table
+---@param _? theme.Options
 ---@return table<string, vim.api.keyset.highlight|string>
-function M.get(palette, opts)
+function M.get(palette, _)
 	local ret = {
 		-----------------------------------------------------------------------
 		-- Annotations & Attributes
 		-----------------------------------------------------------------------
-		["@annotation"] = { fg = palette.pink, bold = true },
+		["@annotation"] = { fg = palette.maroon, bold = true },
 		["@attribute"] = { fg = palette.yellow },
 
 		-----------------------------------------------------------------------
@@ -38,7 +38,7 @@ function M.get(palette, opts)
 		-----------------------------------------------------------------------
 		["@constant"] = "Constant",
 		["@constant.builtin"] = { fg = palette.peach, bold = true },
-		["@constant.macro"] = { fg = palette.mauve, bold = true },
+		["@constant.macro"] = { fg = palette.purple, bold = true },
 
 		-----------------------------------------------------------------------
 		-- Functions & Methods
@@ -47,24 +47,24 @@ function M.get(palette, opts)
 		["@function"] = { fg = palette.blue, bold = true },
 		["@function.builtin"] = { fg = palette.peach, bold = true },
 		["@function.call"] = { fg = palette.blue },
-		["@function.macro"] = { fg = palette.mauve },
+		["@function.macro"] = { fg = palette.purple },
 		["@function.method"] = { fg = palette.blue },
 		["@function.method.call"] = { fg = palette.blue },
 
 		-----------------------------------------------------------------------
 		-- Keywords & Operators
 		-----------------------------------------------------------------------
-		["@keyword"] = { fg = palette.mauve, italic = true },
-		["@keyword.conditional"] = { fg = palette.mauve, italic = true, bold = true },
-		["@keyword.coroutine"] = { fg = palette.mauve, italic = true },
+		["@keyword"] = { fg = palette.purple, italic = true },
+		["@keyword.conditional"] = { fg = palette.purple, italic = true, bold = true },
+		["@keyword.coroutine"] = { fg = palette.purple, italic = true },
 		["@keyword.debug"] = "Debug",
-		["@keyword.directive"] = { fg = palette.pink },
-		["@keyword.directive.define"] = { fg = palette.pink, bold = true },
+		["@keyword.directive"] = { fg = palette.maroon },
+		["@keyword.directive.define"] = { fg = palette.maroon, bold = true },
 		["@keyword.exception"] = { fg = palette.maroon, bold = true, italic = true },
-		["@keyword.function"] = { fg = palette.mauve, italic = true },
-		["@keyword.import"] = { fg = palette.pink, italic = true },
-		["@keyword.operator"] = { fg = palette.sky, bold = true },
-		["@keyword.repeat"] = { fg = palette.mauve, italic = true, bold = true },
+		["@keyword.function"] = { fg = palette.purple, italic = true },
+		["@keyword.import"] = { fg = palette.maroon, italic = true },
+		["@keyword.operator"] = { fg = palette.sapphire, bold = true },
+		["@keyword.repeat"] = { fg = palette.purple, italic = true, bold = true },
 		["@keyword.return"] = { fg = palette.primary_bright, bold = true, italic = true },
 		["@keyword.storage"] = "StorageClass",
 
@@ -72,7 +72,7 @@ function M.get(palette, opts)
 		-- Labels & Operators
 		-----------------------------------------------------------------------
 		["@label"] = { fg = palette.sapphire },
-		["@operator"] = { fg = palette.sky },
+		["@operator"] = { fg = palette.sapphire },
 
 		-----------------------------------------------------------------------
 		-- Modules & Namespaces
@@ -92,15 +92,15 @@ function M.get(palette, opts)
 		-----------------------------------------------------------------------
 		["@punctuation.bracket"] = { fg = palette.fg_muted },
 		["@punctuation.delimiter"] = { fg = palette.fg_muted },
-		["@punctuation.special"] = { fg = palette.sky, bold = true },
+		["@punctuation.special"] = { fg = palette.sapphire, bold = true },
 
 		-----------------------------------------------------------------------
 		-- Strings & Escape Sequences
 		-----------------------------------------------------------------------
 		["@string"] = "String",
 		["@string.documentation"] = { fg = palette.yellow, italic = true },
-		["@string.escape"] = { fg = palette.pink, bold = true },
-		["@string.regexp"] = { fg = palette.mauve },
+		["@string.escape"] = { fg = palette.maroon, bold = true },
+		["@string.regexp"] = { fg = palette.purple },
 		["@string.special"] = "SpecialChar",
 
 		-----------------------------------------------------------------------
@@ -154,8 +154,8 @@ function M.get(palette, opts)
 		["@markup.list.unchecked"] = { fg = palette.fg_muted },
 		["@markup.list.markdown"] = { fg = palette.peach, bold = true },
 
-		["@markup.math"] = { fg = palette.sky },
-		["@markup.environment"] = { fg = palette.pink },
+		["@markup.math"] = { fg = palette.sapphire },
+		["@markup.environment"] = { fg = palette.maroon },
 		["@markup.environment.name"] = { fg = palette.sapphire },
 
 		["@markup.raw"] = { fg = palette.green },
