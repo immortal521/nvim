@@ -11,7 +11,7 @@ return {
 		end
 		local win = wins[1]
 		self.winid = win
-		local config = vim.api.nvim_win_get_config(win)
+		local config = vim.api.nvim_win_get_config(win or 0)
 		return config.zindex ~= nil and not vim.api.nvim_win_is_valid(vim.api.nvim_get_current_win())
 	end,
 	provider = function(self)

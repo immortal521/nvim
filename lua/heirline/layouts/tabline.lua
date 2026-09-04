@@ -55,7 +55,7 @@ local BufferBlock = {
 
 		-- Padding
 		local current_width = 4 + #self.filename
-		local padding_needed = math.max(0, self.buffer_min_width - current_width)
+		local padding_needed = math.max(0, self.buffer_min_width - current_width) --[[@as integer]]
 		self.buffer_padding = math.floor(padding_needed / 2)
 	end,
 
