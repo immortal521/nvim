@@ -8,9 +8,10 @@ M.url = "https://github.com/goolord/alpha-nvim"
 function M.get(palette, opts)
 	return {
 		AlphaHeader = { fg = palette.primary or palette.blue, bold = true },
-		AlphaHeaderLabel = { fg = palette.yellow or palette.orange },
+		AlphaHeaderLabel = { fg = palette.peach or palette.orange },
 		AlphaButtons = { fg = palette.fg },
 		AlphaShortcut = { fg = palette.primary or palette.blue, bold = true },
+		AlphaButton = { fg = palette.fg },
 		AlphaFooter = { fg = palette.fg_muted or palette.comment, italic = true },
 	}
 end

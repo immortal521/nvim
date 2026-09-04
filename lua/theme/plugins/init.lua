@@ -21,7 +21,7 @@ M.plugins = {
   ["nvim-treesitter-context"]       = "treesitter-context",
   ["nvim-treesitter"] = "treesitter",
   ["which-key.nvim"]                = "which-key",
-  -- ["yanky.nvim"]                    = "yanky"
+  ["yanky.nvim"]                    = "yanky"
 }
 
 function M.get_group(name)

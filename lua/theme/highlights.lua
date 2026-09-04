@@ -20,18 +20,18 @@ function M.setup(palette, transparent)
 		NormalNC = { fg = palette.fg, bg = bg },
 		NormalFloat = { fg = palette.float.fg, bg = float_bg },
 		FloatBorder = { fg = float_border, bg = float_bg },
-		FloatTitle = { fg = palette.primary, bg = float_bg, bold = true }, -- 使用 primary 突出浮窗标题
+		FloatTitle = { fg = palette.primary_bright, bg = float_bg, bold = true },
 		FloatFooter = { fg = palette.fg_muted, bg = float_bg },
 
-		EndOfBuffer = { fg = palette.bg, bg = bg }, -- 隐藏 ~ 符号
+		EndOfBuffer = { fg = palette.bg, bg = bg },
 		SignColumn = { fg = palette.fg_gutter, bg = bg },
-		Cursor = { fg = palette.bg, bg = palette.primary_bright }, -- 使用 primary_bright 光标
+		Cursor = { fg = palette.bg, bg = palette.primary_bright },
 		TermCursor = { fg = palette.bg, bg = palette.primary_bright },
 		CursorLine = { bg = palette.cursor_line },
 		CursorColumn = { bg = palette.cursor_line },
 
 		LineNr = { fg = palette.fg_gutter, bg = bg },
-		CursorLineNr = { fg = palette.primary_bright, bg = bg, bold = true }, -- 核心焦点行号使用 primary
+		CursorLineNr = { fg = palette.primary_bright, bg = bg, bold = true },
 		LineNrAbove = { fg = palette.fg_gutter },
 		LineNrBelow = { fg = palette.fg_gutter },
 
@@ -48,16 +48,16 @@ function M.setup(palette, transparent)
 		VisualNOS = { bg = palette.selection },
 
 		Search = { fg = palette.fg, bg = palette.bg_search },
-		IncSearch = { fg = palette.bg, bg = palette.peach, bold = true },
+		IncSearch = { fg = palette.bg, bg = palette.primary_bright, bold = true }, -- 搜索高亮联动主色亮色
 		CurSearch = { link = "IncSearch" },
 
-		MatchParen = { fg = palette.peach, bg = palette.bg_highlight, bold = true },
-		Directory = { fg = palette.primary }, -- 目录树改用 primary
-		Title = { fg = palette.primary, bold = true }, -- UI 主标题改用 primary
+		MatchParen = { fg = palette.primary_bright, bg = palette.bg_highlight, bold = true }, -- 括号匹配强调主色
+		Directory = { fg = palette.primary, bold = true },
+		Title = { fg = palette.primary_bright, bold = true },
 		Question = { fg = palette.primary },
 		MoreMsg = { fg = palette.primary },
-		ModeMsg = { fg = palette.fg, bold = true },
-		WarningMsg = { fg = palette.diag.warn },
+		ModeMsg = { fg = palette.primary_bright, bold = true },
+		WarningMsg = { fg = palette.diag.warn, bold = true },
 		ErrorMsg = { fg = palette.diag.error, bold = true },
 
 		SpecialKey = { fg = palette.fg_gutter },
@@ -71,7 +71,7 @@ function M.setup(palette, transparent)
 		-- Popup Menu (Pmenu)
 		-----------------------------------------------------------------------
 		Pmenu = { fg = palette.fg, bg = bg_dim },
-		PmenuSel = { fg = palette.fg, bg = palette.selection, bold = true },
+		PmenuSel = { fg = palette.primary_bright, bg = palette.selection, bold = true }, -- 选中菜单项文字使用亮主色
 		PmenuSbar = { bg = palette.bg_highlight },
 		PmenuThumb = { bg = palette.fg_muted },
 
@@ -82,13 +82,13 @@ function M.setup(palette, transparent)
 		StatusLineNC = { fg = palette.fg_muted, bg = bg_deep },
 		TabLine = { fg = palette.fg_muted, bg = bg_dim },
 		TabLineFill = { bg = bg_deep },
-		TabLineSel = { fg = palette.primary_bright, bg = bg_highlight, bold = true }, -- 选中 Label 联动 primary
+		TabLineSel = { fg = palette.primary_bright, bg = bg_highlight, bold = true },
 
 		WinBar = { fg = palette.rosewater, bg = bg },
 		WinBarNC = { fg = palette.fg_muted, bg = bg },
 
 		-----------------------------------------------------------------------
-		-- Syntax Highlighting (Standard Vim)
+		-- Syntax Highlighting (Standard Vim Fallback)
 		-----------------------------------------------------------------------
 		Bold = { fg = palette.fg, bold = true },
 		Italic = { fg = palette.fg, italic = true },
@@ -97,19 +97,19 @@ function M.setup(palette, transparent)
 		Constant = { fg = palette.peach },
 		String = { fg = palette.green },
 		Character = { fg = palette.teal },
-		Number = { fg = palette.orange },
-		Boolean = { fg = palette.orange },
-		Float = { fg = palette.orange },
+		Number = { fg = palette.peach },
+		Boolean = { fg = palette.peach, bold = true },
+		Float = { fg = palette.peach },
 
-		Identifier = { fg = palette.flamingo },
-		Function = { fg = palette.blue }, -- 恢复真正的 Syntax 蓝色
+		Identifier = { fg = palette.primary }, -- 标识符作为核心联动主色
+		Function = { fg = palette.blue, bold = true },
 		Statement = { fg = palette.mauve },
-		Conditional = { fg = palette.purple },
-		Repeat = { fg = palette.purple },
+		Conditional = { fg = palette.mauve, italic = true },
+		Repeat = { fg = palette.mauve, italic = true },
 		Label = { fg = palette.sapphire },
 		Operator = { fg = palette.sky },
-		Keyword = { fg = palette.purple, italic = true },
-		Exception = { fg = palette.maroon },
+		Keyword = { fg = palette.mauve, italic = true },
+		Exception = { fg = palette.maroon, bold = true },
 
 		PreProc = { fg = palette.pink },
 		Include = { fg = palette.pink },
@@ -117,12 +117,12 @@ function M.setup(palette, transparent)
 		Macro = { fg = palette.pink },
 		PreCondit = { fg = palette.pink },
 
-		Type = { fg = palette.yellow },
+		Type = { fg = palette.yellow, bold = true },
 		StorageClass = { fg = palette.yellow },
 		Structure = { fg = palette.yellow },
-		Typedef = { fg = palette.yellow },
+		Typedef = { fg = palette.yellow, bold = true },
 
-		Special = { fg = palette.blue_bright },
+		Special = { fg = palette.primary_bright },
 		SpecialComment = { fg = palette.comment },
 		Delimiter = { fg = palette.fg_muted },
 
@@ -154,7 +154,7 @@ function M.setup(palette, transparent)
 		LspReferenceText = { bg = palette.bg_highlight },
 		LspReferenceRead = { bg = palette.bg_highlight },
 		LspReferenceWrite = { bg = palette.bg_highlight },
-		LspSignatureActiveParameter = { fg = palette.peach, bg = palette.bg_highlight, bold = true },
+		LspSignatureActiveParameter = { fg = palette.primary_bright, bg = palette.bg_highlight, bold = true }, -- 参数激活高亮联动主色
 		LspCodeLens = { fg = palette.comment },
 		LspInlayHint = { fg = palette.fg_gutter, bg = transparent and "NONE" or palette.bg_deep },
 
@@ -173,7 +173,7 @@ function M.setup(palette, transparent)
 		-----------------------------------------------------------------------
 		-- Misc & Health
 		-----------------------------------------------------------------------
-		helpCommand = { fg = palette.primary, bg = palette.terminal_black },
+		helpCommand = { fg = palette.primary_bright, bg = palette.terminal_black },
 		helpExample = { fg = palette.comment },
 		qfFileName = { fg = palette.primary },
 		qfLineNr = { fg = palette.fg_gutter },
@@ -184,7 +184,6 @@ function M.setup(palette, transparent)
 		debugBreakpoint = { fg = palette.red, bg = palette.bg_highlight },
 	}
 
-	-- 循环批量应用所有的 Highlight Group
 	for name, opts in pairs(groups) do
 		vim.api.nvim_set_hl(0, name, opts)
 	end

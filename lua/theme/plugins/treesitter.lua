@@ -9,18 +9,18 @@ function M.get(palette, opts)
 		-----------------------------------------------------------------------
 		-- Annotations & Attributes
 		-----------------------------------------------------------------------
-		["@annotation"] = { fg = palette.pink },
+		["@annotation"] = { fg = palette.pink, bold = true },
 		["@attribute"] = { fg = palette.yellow },
 
 		-----------------------------------------------------------------------
 		-- Booleans, Characters & Numbers
 		-----------------------------------------------------------------------
-		["@boolean"] = "Boolean",
+		["@boolean"] = { fg = palette.peach, bold = true },
 		["@character"] = "Character",
-		["@character.printf"] = { fg = palette.teal },
-		["@character.special"] = { fg = palette.teal },
-		["@number"] = "Number",
-		["@number.float"] = "Float",
+		["@character.printf"] = { fg = palette.teal, bold = true },
+		["@character.special"] = { fg = palette.teal, bold = true },
+		["@number"] = { fg = palette.peach },
+		["@number.float"] = { fg = palette.peach },
 
 		-----------------------------------------------------------------------
 		-- Comments & Todo Keywords
@@ -38,34 +38,34 @@ function M.get(palette, opts)
 		-----------------------------------------------------------------------
 		["@constant"] = "Constant",
 		["@constant.builtin"] = { fg = palette.peach, bold = true },
-		["@constant.macro"] = { fg = palette.mauve },
+		["@constant.macro"] = { fg = palette.mauve, bold = true },
 
 		-----------------------------------------------------------------------
 		-- Functions & Methods
 		-----------------------------------------------------------------------
-		["@constructor"] = { fg = palette.sapphire },
-		["@function"] = "Function",
-		["@function.builtin"] = { fg = palette.peach },
-		["@function.call"] = "@function",
+		["@constructor"] = { fg = palette.primary_bright, bold = true },
+		["@function"] = { fg = palette.blue, bold = true },
+		["@function.builtin"] = { fg = palette.peach, bold = true },
+		["@function.call"] = { fg = palette.blue },
 		["@function.macro"] = { fg = palette.mauve },
-		["@function.method"] = "Function",
-		["@function.method.call"] = "@function.method",
+		["@function.method"] = { fg = palette.blue },
+		["@function.method.call"] = { fg = palette.blue },
 
 		-----------------------------------------------------------------------
 		-- Keywords & Operators
 		-----------------------------------------------------------------------
 		["@keyword"] = { fg = palette.mauve, italic = true },
-		["@keyword.conditional"] = "Conditional",
+		["@keyword.conditional"] = { fg = palette.mauve, italic = true, bold = true },
 		["@keyword.coroutine"] = { fg = palette.mauve, italic = true },
 		["@keyword.debug"] = "Debug",
 		["@keyword.directive"] = { fg = palette.pink },
-		["@keyword.directive.define"] = { fg = palette.pink },
-		["@keyword.exception"] = { fg = palette.maroon, italic = true },
+		["@keyword.directive.define"] = { fg = palette.pink, bold = true },
+		["@keyword.exception"] = { fg = palette.maroon, bold = true, italic = true },
 		["@keyword.function"] = { fg = palette.mauve, italic = true },
 		["@keyword.import"] = { fg = palette.pink, italic = true },
-		["@keyword.operator"] = { fg = palette.sky },
-		["@keyword.repeat"] = "Repeat",
-		["@keyword.return"] = { fg = palette.mauve, bold = true, italic = true },
+		["@keyword.operator"] = { fg = palette.sky, bold = true },
+		["@keyword.repeat"] = { fg = palette.mauve, italic = true, bold = true },
+		["@keyword.return"] = { fg = palette.primary_bright, bold = true, italic = true },
 		["@keyword.storage"] = "StorageClass",
 
 		-----------------------------------------------------------------------
@@ -77,8 +77,8 @@ function M.get(palette, opts)
 		-----------------------------------------------------------------------
 		-- Modules & Namespaces
 		-----------------------------------------------------------------------
-		["@module"] = { fg = palette.lavender },
-		["@module.builtin"] = { fg = palette.red },
+		["@module"] = { fg = palette.primary, italic = true }, -- 模块定义联动主色
+		["@module.builtin"] = { fg = palette.red, italic = true },
 		["@namespace"] = "@module",
 		["@namespace.builtin"] = "@module.builtin",
 
@@ -91,38 +91,38 @@ function M.get(palette, opts)
 		-- Punctuation
 		-----------------------------------------------------------------------
 		["@punctuation.bracket"] = { fg = palette.fg_muted },
-		["@punctuation.delimiter"] = { fg = palette.fg_muted }, -- 修正：移除不存在的 overlay2
-		["@punctuation.special"] = { fg = palette.sky },
+		["@punctuation.delimiter"] = { fg = palette.fg_muted },
+		["@punctuation.special"] = { fg = palette.sky, bold = true },
 
 		-----------------------------------------------------------------------
 		-- Strings & Escape Sequences
 		-----------------------------------------------------------------------
 		["@string"] = "String",
 		["@string.documentation"] = { fg = palette.yellow, italic = true },
-		["@string.escape"] = { fg = palette.pink },
+		["@string.escape"] = { fg = palette.pink, bold = true },
 		["@string.regexp"] = { fg = palette.mauve },
 		["@string.special"] = "SpecialChar",
 
 		-----------------------------------------------------------------------
 		-- HTML / JSX Tags
 		-----------------------------------------------------------------------
-		["@tag"] = { fg = palette.mauve },
-		["@tag.attribute"] = { fg = palette.teal },
-		["@tag.delimiter"] = { fg = palette.sky },
+		["@tag"] = { fg = palette.primary, bold = true }, -- JSX/HTML 标签使用主色
+		["@tag.attribute"] = { fg = palette.teal, italic = true },
+		["@tag.delimiter"] = { fg = palette.fg_muted },
 
 		-----------------------------------------------------------------------
 		-- Types & Definitions
 		-----------------------------------------------------------------------
-		["@type"] = "Type",
-		["@type.builtin"] = { fg = palette.yellow, bold = true },
-		["@type.definition"] = "Typedef",
+		["@type"] = { fg = palette.yellow, bold = true }, -- 结构类型加粗，增加高饱和识别度
+		["@type.builtin"] = { fg = palette.yellow, bold = true, italic = true },
+		["@type.definition"] = { fg = palette.yellow, bold = true },
 		["@type.qualifier"] = "@keyword",
 
 		-----------------------------------------------------------------------
 		-- Variables & Parameters
 		-----------------------------------------------------------------------
 		["@variable"] = { fg = palette.fg },
-		["@variable.builtin"] = { fg = palette.red },
+		["@variable.builtin"] = { fg = palette.red, bold = true },
 		["@variable.member"] = { fg = palette.teal },
 		["@variable.parameter"] = { fg = palette.peach, italic = true },
 		["@variable.parameter.builtin"] = { fg = palette.red, italic = true },
@@ -137,7 +137,7 @@ function M.get(palette, opts)
 		["@markup.strikethrough"] = { strikethrough = true },
 		["@markup.underline"] = { underline = true },
 
-		["@markup.heading"] = { fg = palette.primary, bold = true }, -- 主阶标题与主基调对齐
+		["@markup.heading"] = { fg = palette.primary, bold = true },
 		["@markup.heading.1"] = { fg = palette.primary_bright, bold = true },
 		["@markup.heading.2"] = { fg = palette.primary, bold = true },
 		["@markup.heading.3"] = { fg = palette.primary_dim, bold = true },
@@ -146,7 +146,7 @@ function M.get(palette, opts)
 		["@markup.heading.6"] = { fg = palette.flamingo, bold = true },
 
 		["@markup.link"] = { fg = palette.rosewater },
-		["@markup.link.label"] = { fg = palette.primary }, -- 超链接文本采用 primary
+		["@markup.link.label"] = { fg = palette.primary },
 		["@markup.link.url"] = { fg = palette.fg_muted, underline = true },
 
 		["@markup.list"] = { fg = palette.primary },
