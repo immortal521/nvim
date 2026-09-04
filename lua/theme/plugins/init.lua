@@ -19,9 +19,10 @@ M.plugins = {
   ["noice.nvim"]                    = "noice",
   ["nvim-notify"]                   = "notify",
   ["nvim-treesitter-context"]       = "treesitter-context",
-  ["nvim-treesitter"] = "treesitter",
+  ["nvim-treesitter"]               = "treesitter",
   ["which-key.nvim"]                = "which-key",
-  ["yanky.nvim"]                    = "yanky"
+  ["yanky.nvim"]                    = "yanky",
+  ["extra"]                         = "extra"
 }
 
 function M.get_group(name)

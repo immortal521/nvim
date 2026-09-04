@@ -48,7 +48,7 @@ function M.setup(palette, transparent)
 		VisualNOS = { bg = palette.selection },
 
 		Search = { fg = palette.fg, bg = palette.bg_search },
-		IncSearch = { fg = palette.bg, bg = palette.primary_bright, bold = true },
+		IncSearch = { fg = palette.bg, bg = palette.primary, bold = true },
 		CurSearch = { link = "IncSearch" },
 
 		MatchParen = { fg = palette.primary_bright, bg = palette.bg_highlight, bold = true },

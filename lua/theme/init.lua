@@ -9,7 +9,7 @@ local palette_path = config_path .. "/palette.json"
 ---@field variant theme.Variant
 ---@field transparent boolean
 ---@field json boolean
-M.options = {
+M.opts = {
 	json = false,
 	variant = "auto",
 	transparent = false,
@@ -17,15 +17,15 @@ M.options = {
 
 ---@return "dark" | "light"
 function M.get_variant()
-	if M.options.variant == "auto" then
+	if M.opts.variant == "auto" then
 		return vim.o.background
 	end
-	return M.options.variant
+	return M.opts.variant
 end
 
 ---@return theme.Palettes|theme.Palette|nil
 local function read_json()
-	if not M.options.json then
+	if not M.opts.json then
 		return nil
 	end
 	local file = io.open(palette_path, "r")
@@ -77,29 +77,58 @@ function M.get_palette()
 	return load_palette()
 end
 
+local function transparent_path()
+	return vim.fn.stdpath("data") .. "/transparent"
+end
+
+local function is_transparent()
+	return vim.uv.fs_stat(transparent_path()) ~= nil
+end
+function M.setup(options)
+	M.opts = vim.tbl_deep_extend("force", M.opts, options or {})
+	M.opts.transparent = is_transparent()
+
+	M.apply()
+end
+
+function M.toggle_transparent()
+	local path = transparent_path()
+
+	M.opts.transparent = not M.opts.transparent
+
+	if M.opts.transparent then
+		local file = io.open(path, "w")
+		if file then
+			file:close()
+		end
+	else
+		os.remove(path)
+	end
+
+	M.apply()
+end
+
 function M.apply()
 	local palette = load_palette()
-	require("theme.highlights").setup(palette, M.options.transparent)
-	local groups = require("theme.plugins").setup(palette, M.options)
+	require("theme.highlights").setup(palette, M.opts.transparent)
+	local groups = require("theme.plugins").setup(palette, M.opts)
 
 	for name, opts in pairs(groups) do
 		vim.api.nvim_set_hl(0, name, opts)
 	end
 end
 
-function M.setup(options)
-	M.options = vim.tbl_deep_extend("force", M.options, options or {})
-
-	M.apply()
-end
-
 vim.api.nvim_create_autocmd("OptionSet", {
 	pattern = "background",
 	callback = function()
-		if M.options.variant == "auto" then
+		if M.opts.variant == "auto" then
 			M.apply()
 		end
 	end,
+})
+
+vim.api.nvim_create_user_command("TransparentToggle", M.toggle_transparent, {
+	desc = "Toggle transparent background",
 })
 
 return M

@@ -1,6 +1,7 @@
 ---@type LazyPluginSpec
 return {
 	"xiyaowong/transparent.nvim",
+	enabled = false,
 	cond = not vim.g.neovide,
 	event = "VimEnter",
 	config = function()
