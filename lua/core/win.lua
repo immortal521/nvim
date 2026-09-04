@@ -205,6 +205,7 @@ local borders = {
 Utils.hlgroup.set_hl({
 	Backdrop = { bg = "#000000" },
 	Footer = "FloatFooter",
+	ActiveBorder = "ActiveBorder",
 	FooterDesc = "DiagnosticInfo",
 	FooterKey = "DiagnosticVirtualTextInfo",
 	Normal = "NormalFloat",
@@ -218,7 +219,7 @@ Utils.hlgroup.set_hl({
 	WinSeparator = "WinSeparator",
 }, { prefix = "Core", default = true })
 
---@private
+---@private
 ---@param ...? core.win.Config|string|{}
 ---@return core.win.Config
 function M.resolve(...)
@@ -245,6 +246,7 @@ function M.resolve(...)
 	end
 	local ret = #merge == 0 and {} or #merge == 1 and merge[1] or vim.tbl_deep_extend("force", {}, unpack(merge))
 	ret.style = nil
+	---@cast ret core.win.Config
 	return ret
 end
 
@@ -776,6 +778,7 @@ function M:open_win()
 				end
 			end
 		end
+		---@diagnostic disable-next-line: need-check-nil
 		local cmd = split_commands[relative][position]
 		local size = vertical and opts.width or opts.height
 		local resize = ("%sresize %s"):format(vertical and "vertical " or "", size)
@@ -894,6 +897,7 @@ function M:show()
 		vim.w[self.win][k] = v
 	end
 	if Utils.hlgroup.is_transparent() then
+		---@diagnostic disable-next-line: need-check-nil
 		self.opts.wo.winblend = 0
 	end
 	---@cast self.win integer
@@ -1108,9 +1112,11 @@ function M:drop()
 
 	if not backdrop.transparent then
 		if Utils.hlgroup.is_transparent() then
+			---@diagnostic disable-next-line: assign-type-mismatch
 			bg = nil
 		else
-			bg = Utils.hlgroup.blend(Utils.hlgroup.color("Normal", "bg"), bg, winblend / 100)
+			---@diagnostic disable-next-line: param-type-mismatch
+			bg = Utils.hlgroup.blend(Utils.hlgroup.color("Normal", "bg"), bg, winblend or 0 / 100)
 		end
 		winblend = 0
 	end
@@ -1160,6 +1166,7 @@ end
 
 ---@return { height: integer, width: integer }
 function M:parent_size()
+	---@diagnostic disable-next-line: unnecessary-if
 	---@cast self.opts.win integer
 	if self.opts.relative == "win" and vim.api.nvim_win_is_valid(self.opts.win) then
 		return {
@@ -1340,6 +1347,7 @@ function M:dim(parent)
 	---@param ps integer parent size
 	local function pos(p, s, ps, border_from, border_to)
 		p = type(p) == "function" and p(self) or p
+		---@diagnostic disable-next-line: unnecessary-if
 		---@cast p number?
 		if self.opts.relative == "cursor" then
 			return p or 0

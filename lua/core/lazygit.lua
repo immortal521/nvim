@@ -54,7 +54,7 @@ local defaults = {
     searchingActiveBorderColor = { fg = "MatchParen", bold = true },
     selectedLineBgColor        = { bg = "Visual" }, -- set to `default` to have no background colour
     unstagedChangesColor       = { fg = "DiagnosticError" },
-  },
+  } --[[@as core.lazygit.Theme]],
 	win = {
 		style = "lazygit",
 	},
@@ -84,6 +84,7 @@ local function env(opts)
 
 			---@type string[]
 			local config_files = vim.tbl_filter(function(v)
+				---@diagnostic disable-next-line: return-type-mismatch
 				return v:match("%S")
 			end, vim.split(vim.env.LG_CONFIG_FILE or "", ",", { plain = true }))
 
@@ -109,6 +110,7 @@ local function env(opts)
 				"# Error:",
 				vim.trim(out),
 			}
+			---@diagnostic disable-next-line: param-type-mismatch
 			Utils.log.error(msg, { title = "lazygit" })
 		end
 	end
@@ -125,10 +127,13 @@ local function get_color(v)
 			local hl = vim.api.nvim_get_hl(0, { name = name, link = false })
 			local hl_color ---@type number?
 			if c == "fg" then
+				---@diagnostic disable-next-line: undefined-field
 				hl_color = hl and hl.fg or hl.foreground
 			else
+				---@diagnostic disable-next-line: undefined-field
 				hl_color = hl and hl.bg or hl.background
 			end
+			---@diagnostic disable-next-line: unnecessary-if
 			if hl_color then
 				table.insert(color, string.format("#%06x", hl_color))
 			end
@@ -163,9 +168,11 @@ local function update_config(opts)
 	---@type table<string, string[]>
 	local theme = {}
 
+	---@diagnostic disable-next-line: param-type-mismatch
 	for k, v in pairs(opts.theme) do
 		if type(k) == "number" then
 			local color = get_color(v)
+			---@diagnostic disable-next-line: unnecessary-if
 			-- LazyGit uses color 241 a lot, so also set it to a nice color
 			-- pcall, since some terminals don't like this
 			if vim.api.nvim_ui_send then -- 0.12+: routed to the TUI host terminal, no-op for GUIs
@@ -193,7 +200,7 @@ local function update_config(opts)
 		for k, v in pairs(tbl) do
 			table.insert(lines, string.rep(" ", indent) .. k .. (type(v) == "table" and ":" or ": " .. yaml_val(v)))
 			if type(v) == "table" then
-				if (vim.islist or vim.tbl_islist)(v) then
+				if vim.islist(v) then
 					for _, item in ipairs(v) do
 						table.insert(lines, string.rep(" ", indent + 2) .. "- " .. yaml_val(item))
 					end
@@ -212,12 +219,14 @@ end
 -- and integrate with the current neovim instance
 ---@param opts? core.lazygit.Config
 function M.open(opts)
+	---@diagnostic disable-next-line: generic-constraint-mismatch
 	---@type core.lazygit.Config
 	opts = Core.config.get("lazygit", defaults, opts)
 
 	local cmd = { "lazygit" }
 	vim.list_extend(cmd, opts.args or {})
 
+	---@diagnostic disable-next-line: unnecessary-if
 	if opts.configure then
 		if dirty then
 			update_config(opts)
@@ -231,8 +240,10 @@ end
 -- Opens lazygit with the log view
 ---@param opts? core.lazygit.Config
 function M.log(opts)
+	---@diagnostic disable-next-line: assign-type-mismatch
 	opts = opts or {}
 	opts.args = opts.args or { "log" }
+	---@diagnostic disable-next-line: param-type-mismatch
 	return M.open(opts)
 end
 
@@ -243,6 +254,7 @@ function M.log_file(opts)
 	opts = opts or {}
 	opts.args = vim.list_extend(opts.args or {}, { "-f", file })
 	opts.cwd = vim.fn.fnamemodify(file, ":h")
+	---@diagnostic disable-next-line: param-type-mismatch
 	return M.open(opts)
 end
 

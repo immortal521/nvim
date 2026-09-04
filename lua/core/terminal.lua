@@ -16,8 +16,14 @@ M.meta = {
 ---@field win? core.win.Config|{}
 ---@field shell? string|string[] The shell to use. Defaults to `vim.o.shell`
 ---@field override? fun(cmd?: string|string[], opts?: core.terminal.Opts) Use this to use a different terminal implementation
+---@type core.terminal.Opts
 local defaults = {
-	win = { style = "terminal" },
+	win = {
+		style = "terminal",
+		wo = {
+			winhighlight = "FloatBorder:CoreActiveBorder",
+		},
+	},
 }
 
 ---@class core.terminal.Opts: core.terminal.Config
@@ -56,12 +62,12 @@ Core.config.style("terminal", {
 		term_normal = {
 			"<esc>",
 			function(self)
-				self.esc_timer = self.esc_timer or vim.uv.new_timer()
-				if self.esc_timer:is_active() then
-					self.esc_timer:stop()
+				self.meta.esc_timer = self.meta.esc_timer or vim.uv.new_timer()
+				if self.meta.esc_timer:is_active() then
+					self.meta.esc_timer:stop()
 					vim.cmd("stopinsert")
 				else
-					self.esc_timer:start(200, 0, function() end)
+					self.meta.esc_timer:start(200, 0, function() end)
 					return "<esc>"
 				end
 			end,
@@ -86,7 +92,8 @@ end
 ---@param cmd? string | string[]
 ---@param opts? core.terminal.Opts
 function M.open(cmd, opts)
-	opts = Core.config.get("terminal", defaults --[[@as core.terminal.Opts]], opts)
+	opts = opts or {}
+	opts = Core.config.get("terminal", defaults, opts)
 	local id = opts.count or vim.v.count1
 	opts.win = Core.win.resolve("terminal", {
 		position = cmd and "float" or "bottom",
@@ -197,9 +204,12 @@ function M.get(cmd, opts)
 	local created = false
 	if not (terminals[id] and terminals[id]:buf_valid()) and (opts.create ~= false) then
 		local ret = M.open(cmd, opts)
-		ret:on("BufWipeout", function()
-			terminals[id] = nil
-		end, { buf = true })
+		if ret then
+			ret:on("BufWipeout", function()
+				terminals[id] = nil
+			end, { buf = true })
+		end
+		---@diagnostic disable-next-line: unnecessary-assert, call-non-callable
 		assert(terminals[id], "Terminal was not created")
 		created = true
 	end
@@ -209,7 +219,7 @@ end
 ---@return core.win[]
 function M.list()
 	return vim.tbl_filter(function(t)
-		return t:buf_valid()
+		return t:buf_valid() or false
 	end, terminals)
 end
 
@@ -219,6 +229,7 @@ end
 ---@param opts? core.terminal.Opts
 function M.toggle(cmd, opts)
 	local terminal, created = M.get(cmd, opts)
+	---@diagnostic disable-next-line: call-non-callable
 	return created and terminal or assert(terminal):toggle()
 end
 
@@ -232,6 +243,7 @@ function M.focus(cmd, opts)
 		terminal:hide()
 		return terminal, created
 	end
+	---@diagnostic disable-next-line: call-non-callable
 	return created and terminal or assert(terminal):show():focus()
 end
 
@@ -307,17 +319,17 @@ function M.colorize()
 	vim.api.nvim_create_autocmd("TermEnter", { buffer = buf, command = "stopinsert" })
 end
 
----@private
-function M.health()
-	local opts = Core.config.get("terminal", defaults --[[@as core.terminal.Opts]])
-	local cmd = M.parse(opts.shell or vim.o.shell)
-	local ok = cmd[1] and (vim.fn.executable(cmd[1]) == 1)
-	local msg = ("shell %s\n- `vim.o.shell`: %s\n- `parsed`: %s"):format(
-		ok and "configured" or "not found",
-		vim.o.shell,
-		vim.inspect(cmd)
-	)
-	-- Core.health[ok and "ok" or "error"](msg)
-end
+-- -- @private
+-- function M.health()
+-- 	local opts = Core.config.get("terminal", defaults --[[@as core.terminal.Opts]])
+-- 	local cmd = M.parse(opts.shell or vim.o.shell)
+-- 	local ok = cmd[1] and (vim.fn.executable(cmd[1]) == 1)
+-- 	local msg = ("shell %s\n- `vim.o.shell`: %s\n- `parsed`: %s"):format(
+-- 		ok and "configured" or "not found",
+-- 		vim.o.shell,
+-- 		vim.inspect(cmd)
+-- 	)
+-- 	Core.health[ok and "ok" or "error"](msg)
+-- end
 
 return M

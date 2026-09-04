@@ -12,6 +12,7 @@ local M = {}
 function M.delete(opts)
 	opts = opts or {}
 	opts = type(opts) == "number" and { buf = opts } or opts
+	---@diagnostic disable-next-line: assign-type-mismatch
 	opts = type(opts) == "function" and { filter = opts } or opts
 	---@cast opts core.buf.Opts
 
@@ -74,6 +75,7 @@ function M.delete(opts)
 	if vim.api.nvim_buf_is_valid(buf) then
 		local ei = vim.o.eventignore
 		vim.o.eventignore = "DiagnosticChanged"
+		---@diagnostic disable-next-line: param-type-mismatch
 		pcall(vim.cmd, (opts.wipe and "bwipeout! " or "bdelete! ") .. buf)
 		vim.o.eventignore = ei
 	end

@@ -69,20 +69,30 @@ end
 ---@generic T: table
 ---@param snack string
 ---@param defaults T
----@param ... T[]
+---@param ... (T|table)?
 ---@return T
 function M.config.get(snack, defaults, ...)
-	local merge, todo = {}, { defaults, config[snack] or {}, ... }
-	for i = 1, select("#", ...) + 2 do
-		local v = todo[i]
+	local merge = { vim.deepcopy(defaults) }
+
+	if type(config[snack]) == "table" then
+		table.insert(merge, vim.deepcopy(config[snack]))
+	end
+
+	local vararg_count = select("#", ...)
+	for i = 1, vararg_count do
+		local v = select(i, ...)
 		if type(v) == "table" then
 			table.insert(merge, vim.deepcopy(v))
 		end
 	end
-	local ret = M.config.merge(unpack(merge))
+
+	local unpack_fn = table.unpack or unpack
+	local ret = M.config.merge(unpack_fn(merge))
+
 	if type(ret.config) == "function" then
 		ret.config(ret, defaults)
 	end
+
 	return ret
 end
 
