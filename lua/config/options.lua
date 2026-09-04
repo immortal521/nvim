@@ -74,6 +74,13 @@ opt.winminwidth = 5 -- 窗口最小宽度
 opt.pumheight = 10 -- 补全菜单最大高度
 opt.pumblend = 10 -- 补全菜单透明度
 
+opt.guicursor = {
+	"n-v-c-sm:block-Cursor",
+	"i-ci-ve:ver25-Cursor",
+	"r-cr-o:hor20-Cursor",
+	"t:block-blinkon500-blinkoff500-TermCursor",
+}
+
 -- 布局方案
 opt.splitbelow = true -- 水平分割窗口在下方
 opt.splitright = true -- 垂直分割窗口在右方
