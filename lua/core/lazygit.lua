@@ -73,6 +73,13 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 	end,
 })
 
+vim.api.nvim_create_autocmd("User", {
+	pattern = "ThemeApply",
+	callback = function()
+		dirty = true
+	end,
+})
+
 ---@param opts core.lazygit.Config
 local function env(opts)
 	if not config_dir then

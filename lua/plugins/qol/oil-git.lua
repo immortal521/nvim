@@ -8,18 +8,18 @@ return {
 		show_ignored_files = true,
 
 		highlights = {
-			OilGitAdded = { fg = "#2ea043" },
+			OilGitAdded = { link = "ExtraGreen" },
 
-			OilGitModifiedStaged = { link = "UtilsYellowFg" },
-			OilGitModifiedUnstaged = { link = "UtilsOrangeFg" },
+			OilGitModifiedStaged = { link = "ExtraYellow" },
+			OilGitModifiedUnstaged = { link = "ExtraOrange" },
 
-			OilGitRenamed = { link = "UtilsPurpleFg" },
-			OilGitDeleted = { link = "UtilsRedFg" },
-			OilGitCopied = { link = "UtilsPurpleFg" },
+			OilGitRenamed = { link = "ExtraPurple" },
+			OilGitDeleted = { link = "ExtraRed" },
+			OilGitCopied = { link = "ExtraPurple" },
 
-			OilGitConflict = { link = "UtilsOrangeFg" },
-			OilGitUntracked = { link = "UtilsPinkFg" },
-			OilGitIgnored = { link = "UtilsCommentFg" },
+			OilGitConflict = { link = "ExtraOrange" },
+			OilGitUntracked = { link = "ExtraPink" },
+			OilGitIgnored = { link = "Comment" },
 		},
 	},
 }

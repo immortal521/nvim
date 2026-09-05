@@ -116,6 +116,10 @@ function M.apply()
 	for name, opts in pairs(groups) do
 		vim.api.nvim_set_hl(0, name, opts)
 	end
+
+	vim.api.nvim_exec_autocmds("User", {
+		pattern = "ThemeApply",
+	})
 end
 
 vim.api.nvim_create_autocmd("OptionSet", {
