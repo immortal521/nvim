@@ -8,6 +8,8 @@ _G.Config = {}
 
 -- local colorschemes = "tokyonight"
 
+require("theme").setup({ transparent = not vim.g.neovide, json = true })
+
 require("core").setup({})
 require("config.options")
 require("config.autocmds")
@@ -17,7 +19,6 @@ require("config.bootstrap")
 require("config.events").setup()
 require("config.lazy").setup()
 -- require("config.colorschemes").setup(colorschemes)
-require("theme").setup({ transparent = not vim.g.neovide, json = true })
 
 local signal, _ = vim.uv.new_signal()
 if signal then
