@@ -1,6 +1,5 @@
 ---@class utils
 ---@field keymap utils.keymap
----@field color utils.color
 ---@field lsp utils.lsp
 ---@field terminal utils.terminal
 ---@field fs utils.fs
