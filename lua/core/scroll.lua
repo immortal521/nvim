@@ -299,7 +299,7 @@ function M.check(win)
 		---@diagnostic disable-next-line: param-type-mismatch
 		---@diagnostic disable-next-line: generic-constraint-mismatch
 		vim.deepcopy(is_repeat and config.animate_repeat or config.animate),
-		{ id = ("scroll%s%d"):format(is_repeat and "_repeat_" or "_", win) }
+		{ int = true, id = ("scroll%s%d"):format(is_repeat and "_repeat_" or "_", win) }
 	)
 
 	local scrolls = 0

@@ -1,8 +1,8 @@
 ---@class core.animate
 ---@overload fun(from: number, to: number, callback: core.animate.callback, opts?: core.animate.Opts): core.animate.Animation
 local M = setmetatable({}, {
-	__call = function(M, ...)
-		return M.add(...)
+	__call = function(t, ...)
+		return t.add(...)
 	end,
 })
 
@@ -31,11 +31,14 @@ end
 
 ---@class core.animate.Ctx
 ---@field done boolean
+---@field animation core.animate.Animation
+---@field prev number
 
 ---@alias core.animate.callback fun(value: number, ctx: core.animate.Ctx)
 
 ---@class core.animate.Opts: core.animate.Config
 ---@field buf? number
+---@field int? boolean 将值平整为整数
 ---@field id? number|string
 
 ---@type table<number|string, core.animate.Animation>
@@ -63,8 +66,8 @@ function Animation.new(opts)
 	local self = setmetatable({}, Animation)
 	self.id = id
 
-	self.opts = vim.tbl_deep_extend("force", defaults, opts)
-	local easing = "linear"
+	self.opts = Core.config.get("animate", defaults, opts --[[@as core.animate.Config]])
+	local easing = self.opts.easing or "linear"
 
 	easing = type(easing) == "string" and require("core.animate.easing")[easing] or easing
 	self.easing = easing
@@ -79,7 +82,7 @@ end
 function Animation:start(from, to, callback)
 	self:stop()
 	if from == to then
-		callback(from, { done = true })
+		callback(from, { animation = self, prev = from, done = true })
 		return self
 	end
 
@@ -99,7 +102,7 @@ function Animation:start(from, to, callback)
 	local step_count = math.max(math.floor(duration / step_duration + 0.5), 10)
 
 	local delta = 0 --[[@as number]]
-	if (self.opts.easing or "linear") == "linear" then
+	if (self.opts.easing or "linear") == "linear" and self.opts.int then
 		local one_step = math.max(1, math.floor(math.abs(to - from) / step_count + 0.5))
 		step_count = math.floor(math.abs(to - from) / one_step + 0.5)
 		delta = math.abs(to - from) - one_step * step_count
@@ -113,6 +116,9 @@ function Animation:start(from, to, callback)
 			value = to
 		else
 			value = self.easing(i, from, to - from - delta, step_count)
+		end
+		if self.opts.int then
+			value = math.floor(value + 0.5)
 		end
 		table.insert(self.steps, value)
 	end
@@ -150,7 +156,8 @@ function Animation:step(callback)
 	self._step = self._step + 1
 	local value = self.steps[self._step] --[[@as number]]
 	local done = self._step >= #self.steps
-	callback(value, { done = done })
+	local prev = self.steps[self._step - 1] or value
+	callback(value, { animation = self, prev = prev, done = done })
 end
 
 ---@param from number
