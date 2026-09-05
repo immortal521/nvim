@@ -4,16 +4,13 @@
 ---@field terminal core.terminal
 ---@field buf core.buf
 ---@field animate core.animate
+---@field scroll core.scroll
 local M = {}
 
 setmetatable(M, {
 	__index = function(t, k)
-		local ok, module = pcall(require, "core." .. k)
-		if ok then
-			t[k] = module
-			return module
-		end
-		error("Core module '" .. k .. "' not found")
+		t[k] = require("core." .. k)
+		return rawget(t, k)
 	end,
 })
 
@@ -24,10 +21,8 @@ _G.Core = M
 ---@field lazygit? core.lazygit.Config|{}
 ---@field terminal? core.terminal.Config|{}
 ---@field win? core.win.Config|{}
+---@field scroll? core.scroll.Config|{}
 local config = {}
-
--- window styles default config
-config.styles = {}
 
 ---@class core.Config
 M.config = setmetatable({}, {
@@ -43,6 +38,7 @@ M.config = setmetatable({}, {
 local is_dict_like = function(v) -- has string and number keys
 	return type(v) == "table" and (vim.tbl_isempty(v) or not vim.islist(v))
 end
+
 local is_dict = function(v) -- has only string keys
 	return type(v) == "table" and (vim.tbl_isempty(v) or not v[1])
 end
@@ -97,22 +93,46 @@ function M.config.get(snack, defaults, ...)
 	return ret
 end
 
---- Register a new window style config.
----@param name string
----@param defaults core.win.Config|{}
----@return string
-function M.config.style(name, defaults)
-	config.styles[name] = vim.tbl_deep_extend("force", vim.deepcopy(defaults), config.styles[name] or {})
-	return name
-end
-
 function M.setup(opts)
 	opts = opts or {}
 	for k in pairs(opts) do
 		opts[k].enabled = opts[k].enabled == nil or opts[k].enabled
 	end
 	config = vim.tbl_deep_extend("force", config, opts or {})
-	require("core.scroll").enable()
+
+	local events = {
+		UIEnter = { "scroll" },
+	}
+
+	---@param event string
+	---@param ev? vim.api.keyset.create_autocmd.callback_args
+	local function load(event, ev)
+		local todo = events[event] or {}
+		events[event] = nil
+		for _, module in ipairs(todo) do
+			if M.config[module] and M.config[module].enabled then
+				if M[module].setup then
+					M[module].setup(ev)
+				elseif M[module].enable then
+					M[module].enable()
+				end
+			end
+		end
+	end
+
+	if vim.v.vim_did_enter == 1 then
+		load("UIEnter")
+	end
+
+	local group = vim.api.nvim_create_augroup("core", { clear = true })
+	vim.api.nvim_create_autocmd(vim.tbl_keys(events --[[@as table]]), {
+		group = group,
+		once = true,
+		nested = true,
+		callback = function(ev)
+			load(ev.event, ev)
+		end,
+	})
 end
 
 return M

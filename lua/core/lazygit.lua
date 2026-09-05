@@ -60,7 +60,7 @@ local defaults = {
 	},
 }
 
-Core.config.style("lazygit", {})
+Core.win.style.add("lazygit", {})
 
 -- re-create config file on startup
 local dirty = true

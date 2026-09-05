@@ -35,7 +35,7 @@ local defaults = {
 ---@field auto_close? boolean close the terminal buffer when the process exits
 ---@field interactive? boolean shortcut for `start_insert`, `auto_close` and `auto_insert` (default: true)
 
-Core.config.style("terminal", {
+Core.win.style.add("terminal", {
 	bo = {
 		filetype = "core_terminal",
 	},

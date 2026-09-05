@@ -22,6 +22,8 @@ M.meta = {
 	desc = "Create and manage floating windows or splits",
 }
 
+M.style = require("core.win.style")
+
 local id = 0
 local event_stack = {} ---@type string[]
 
@@ -61,8 +63,8 @@ local SCROLL_DOWN = Utils.keycode("<c-e>")
 ---@field style? string
 ---@field show? boolean Show the window immediately (default: true)
 ---@field footer_keys? boolean|string[] Show keys footer. When string[], only show those keys with lhs (default: false)
----@field height? integer|fun(self:core.win):integer Height of the window. Use <1 for relative height. 0 means full height. (default: 0.9)
----@field width? integer|fun(self:core.win):integer Width of the window. Use <1 for relative width. 0 means full width. (default: 0.9)
+---@field height? number|fun(self:core.win):number Height of the window. Use <1 for relative height. 0 means full height. (default: 0.9)
+---@field width? number|fun(self:core.win):number Width of the window. Use <1 for relative width. 0 means full width. (default: 0.9)
 ---@field min_height? integer Minimum height of the window
 ---@field max_height? integer Maximum height of the window
 ---@field min_width? integer Minimum width of the window
@@ -109,7 +111,7 @@ local defaults = {
 	footer_keys = false,
 }
 
-Core.config.style("float", {
+M.style.add("float", {
 	position = "float",
 	backdrop = 60,
 	height = 0.9,
@@ -117,7 +119,7 @@ Core.config.style("float", {
 	zindex = 50,
 })
 
-Core.config.style("help", {
+M.style.add("help", {
 	position = "float",
 	backdrop = false,
 	border = "top",
@@ -126,13 +128,13 @@ Core.config.style("help", {
 	height = 0.3,
 })
 
-Core.config.style("split", {
+M.style.add("split", {
 	position = "bottom",
 	height = 0.4,
 	width = 0.4,
 })
 
-Core.config.style("minimal", {
+M.style.add("minimal", {
 	wo = {
 		cursorcolumn = false,
 		cursorline = false,
@@ -219,7 +221,6 @@ Utils.hlgroup.set_hl({
 	WinSeparator = "WinSeparator",
 }, { prefix = "Core", default = true })
 
----@private
 ---@param ...? core.win.Config|string|{}
 ---@return core.win.Config
 function M.resolve(...)
@@ -234,7 +235,7 @@ function M.resolve(...)
 	end
 	while #stack > 0 do
 		local next = table.remove(stack)
-		next = type(next) == "string" and Core.config.styles[next] or next
+		next = type(next) == "string" and M.style(next) or next
 		---@cast next core.win.Config?
 		if next and type(next) == "table" then
 			table.insert(merge, 1, next)

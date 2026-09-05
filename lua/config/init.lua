@@ -10,7 +10,9 @@ _G.Config = {}
 
 require("theme").setup({ transparent = not vim.g.neovide, json = true })
 
-require("core").setup({})
+require("core").setup({
+	scroll = { enabled = true },
+})
 require("config.options")
 require("config.autocmds")
 require("config.keymaps")
