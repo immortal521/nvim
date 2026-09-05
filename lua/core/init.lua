@@ -3,6 +3,7 @@
 ---@field lazygit core.lazygit
 ---@field terminal core.terminal
 ---@field buf core.buf
+---@field animate core.animate
 local M = {}
 
 setmetatable(M, {
@@ -111,6 +112,7 @@ function M.setup(opts)
 		opts[k].enabled = opts[k].enabled == nil or opts[k].enabled
 	end
 	config = vim.tbl_deep_extend("force", config, opts or {})
+	require("core.scroll").enable()
 end
 
 return M
