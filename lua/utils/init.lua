@@ -29,7 +29,8 @@ M.is_win = function()
 	return vim.uv.os_uname().sysname:find("Windows") ~= nil
 end
 
---- 异步执行函数
+--- 异步执行函数。
+---@deprecated 当前配置没有调用方；新代码应直接使用 `vim.defer_fn`，以明确回调参数和生命周期。
 ---@param callback function 回调函数
 ---@param delay? integer 延迟时间（毫秒），默认 1000
 M.async_function = function(callback, delay)

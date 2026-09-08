@@ -18,6 +18,7 @@ M.levels = {
 M.current_level = M.levels.INFO
 
 --- 设置日志级别
+---@deprecated 当前配置没有调用方；日志级别目前由 `current_level` 直接控制。
 ---@param level number
 function M.set_level(level)
 	M.current_level = level
@@ -25,6 +26,7 @@ end
 
 ---@class LogOpts
 ---@field time? boolean 是否显示时间（默认 true）
+---@field title? string 通知标题
 
 --- 日志输出
 ---@param msg string
@@ -58,10 +60,11 @@ function M.log(msg, level, opts)
 		or level == M.levels.WARN and vim.log.levels.WARN
 		or vim.log.levels.INFO
 
-	vim.notify(formatted_msg, vim_level)
+	vim.notify(formatted_msg, vim_level, opts.title and { title = opts.title } or nil)
 end
 
 --- 调试日志
+---@deprecated 当前配置没有调用方；保留兼容 API，但新代码请避免增加 DEBUG 日志噪音。
 ---@param msg string
 ---@param opts? LogOpts
 function M.debug(msg, opts)

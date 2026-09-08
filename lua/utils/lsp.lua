@@ -152,7 +152,7 @@ M.root_markers_with_field = function(root_files, new_names, field, fname)
 		-- Match the given `field`.
 		local file = assert(io.open(f, "r"))
 		for line in file:lines() do
-			if line:find(field) then
+			if line:find(field, 1, true) then
 				root_files[#root_files + 1] = vim.fs.basename(f)
 				break
 			end

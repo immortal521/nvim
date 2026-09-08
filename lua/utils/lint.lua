@@ -1,0 +1,1 @@
+---@deprecated 当前模块为空，Lint 配置直接由 `plugin/linting.lua` 负责。

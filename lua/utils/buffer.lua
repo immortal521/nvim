@@ -9,20 +9,23 @@ M.get_bufs = function()
 	end, vim.api.nvim_list_bufs())
 end
 
---- 获取当前缓冲区
+--- 获取当前缓冲区。
+---@deprecated 当前配置直接使用 `vim.api.nvim_get_current_buf()`。
 ---@return number 当前缓冲区编号
 M.get_current_buf = function()
 	return vim.api.nvim_get_current_buf()
 end
 
---- 检查缓冲区是否存在
+--- 检查缓冲区是否存在。
+---@deprecated 当前配置没有调用方；请直接使用 `vim.api.nvim_buf_is_valid()`。
 ---@param bufnr integer 缓冲区编号
 ---@return boolean 是否存在
 M.buf_exists = function(bufnr)
 	return vim.api.nvim_buf_is_valid(bufnr)
 end
 
---- 获取缓冲区名称
+--- 获取缓冲区名称。
+---@deprecated 当前配置没有调用方；请直接使用 `vim.api.nvim_buf_get_name()`。
 ---@param bufnr? integer 缓冲区编号，默认为当前缓冲区
 ---@return string 缓冲区名称
 M.get_buf_name = function(bufnr)

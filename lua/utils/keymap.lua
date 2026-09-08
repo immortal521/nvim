@@ -2,7 +2,7 @@
 ---@field [1] string
 ---@field [2] string|fun()
 ---@field desc? string|fun():string
----@field mode? string|string[]
+---@field mode? string|string[] Mapping mode(s); this wrapper moves it to `vim.keymap.set`'s first argument.
 
 ---@class utils.keymap
 local M = setmetatable({}, {
@@ -10,6 +10,10 @@ local M = setmetatable({}, {
 		return m.map(...)
 	end,
 })
+
+-- Keep the official API available for mappings that do not use the tuple shorthand.
+M.set = vim.keymap.set
+M.del = vim.keymap.del
 
 ---过滤出有效的 vim.keymap.set.Opts 配置项
 ---@param config utils.keymap.config

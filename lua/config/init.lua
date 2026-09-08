@@ -13,13 +13,15 @@ require("theme").setup({ transparent = not vim.g.neovide, json = true })
 require("core").setup({
 	scroll = { enabled = true },
 })
+
+
 require("config.options")
 require("config.autocmds")
 require("config.keymaps")
 require("config.lsp")
-require("config.bootstrap")
+-- require("config.bootstrap")
 require("config.events").setup()
-require("config.lazy").setup()
+-- require("config.lazy").setup()
 -- require("config.colorschemes").setup(colorschemes)
 
 local signal, _ = vim.uv.new_signal()
