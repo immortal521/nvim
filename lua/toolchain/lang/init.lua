@@ -1,15 +1,22 @@
----@class LangDefinition
+---@class LanguageSpec
 ---@field filetypes string[] 文件类型
 ---@field formatters? string[] 格式化器名称
 ---@field linters? string[] lint 名称
 ---@field lint_filetypes? string[] 实际启用 lint 的文件类型
 ---@field lsp? string[] LSP 配置名称
 ---@field treesitter? string[] Treesitter 语言名称
----@field file string 语言规格文件
+
+---@class LanguageSourceItem
+---@field name string 语言规格文件名
+---@field file string 语言规格文件路径
+---@field filetypes string 用于展示的文件类型
+---@field formatters string 用于展示的 formatter
+---@field linters string 用于展示的 linter
+---@field lsp string 用于展示的 LSP
 
 local M = {}
 local specs_dir = vim.fs.joinpath(vim.fn.stdpath("config"), "lua", "toolchain", "lang", "specs")
-local languages = {} ---@type table<string, LangDefinition>
+local languages = {} ---@type table<string, LanguageSpec>
 local lsp_enabled = {} ---@type table<string, boolean>
 local spec_names = {}
 
@@ -23,14 +30,13 @@ table.sort(spec_names)
 for _, language in ipairs(spec_names) do
 	local ok, definition = pcall(require, "toolchain.lang.specs." .. language)
 	if ok and type(definition) == "table" and vim.islist(definition.filetypes) and #definition.filetypes > 0 then
-		definition.file = vim.fs.joinpath(specs_dir, language .. ".lua")
 		languages[language] = definition
 	else
 		vim.notify(("Invalid language specification: %s.lua"):format(language), vim.log.levels.WARN)
 	end
 end
 
----@return table<string, LangDefinition>
+---@return table<string, LanguageSpec>
 function M.get()
 	return vim.deepcopy(languages)
 end
@@ -122,7 +128,7 @@ function M.setup()
 end
 
 ---@param filetype string
----@return LangDefinition?
+---@return LanguageSpec?
 function M.get_by_filetype(filetype)
 	local result
 	for _, definition in pairs(languages) do
@@ -144,13 +150,13 @@ function M.get_by_filetype(filetype)
 	return result
 end
 
----@return table[]
+---@return LanguageSourceItem[]
 function M.source_items()
 	local items = {}
 	for name, definition in pairs(languages) do
 		items[#items + 1] = {
 			name = name,
-			file = definition.file,
+			file = vim.fs.joinpath(specs_dir, name .. ".lua"),
 			filetypes = table.concat(definition.filetypes, ", "),
 			formatters = table.concat(definition.formatters or {}, ", "),
 			linters = table.concat(definition.linters or {}, ", "),

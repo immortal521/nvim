@@ -1,2 +1,9 @@
----@type LangDefinition
-return { filetypes = { "nu" }, lsp = { "nushell" } }
+---@type LanguageSpec
+return {
+	filetypes = {
+		"nu",
+	},
+	lsp = {
+		"nushell",
+	},
+}

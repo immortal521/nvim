@@ -10,7 +10,7 @@ local configs = {
 	"prettier.config.mjs",
 }
 
----@type ToolDefinition
+---@type ToolSpec
 return {
 	formatter = {
 		condition = function(_, ctx)

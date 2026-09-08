@@ -38,7 +38,7 @@ lua/toolchain/
 例如 `lua/toolchain/lang/specs/zig.lua`：
 
 ```lua
----@type LangDefinition
+---@type LanguageSpec
 return {
 	filetypes = { "zig" },
 	formatters = { "zigfmt" },
@@ -97,7 +97,7 @@ local configs = {
 	"prettier.config.js",
 }
 
----@type ToolDefinition
+---@type ToolSpec
 return {
 	formatter = {
 		condition = function(_, ctx)

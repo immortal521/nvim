@@ -1,4 +1,4 @@
----@type LangDefinition
+---@type LanguageSpec
 return {
 	filetypes = { "typescript", "typescriptreact" },
 	formatters = { "prettier", "biome", "oxfmt" },

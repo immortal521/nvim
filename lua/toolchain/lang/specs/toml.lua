@@ -1,2 +1,2 @@
----@type LangDefinition
+---@type LanguageSpec
 return { filetypes = { "toml" }, formatters = { "taplo" }, lsp = { "tombi" }, treesitter = { "toml" } }

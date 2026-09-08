@@ -51,15 +51,11 @@ local function build_preview_lines(item)
 	return lines
 end
 
----获取格式化后的 Notification 历史列表数据
+---获取格式化后的通知和 messages 历史列表数据
 ---@return table[]
 function M.source()
 	---@diagnostic disable-next-line: undefined-field
 	local history = Builtin.notify.history()
-
-	if vim.tbl_isempty(history) then
-		return {}
-	end
 
 	-- 按 ID 倒序（最新的在前）
 	table.sort(history, function(a, b)
@@ -67,6 +63,7 @@ function M.source()
 	end)
 
 	local items = {}
+	local seen_messages = {}
 	for _, item in ipairs(history) do
 		local lvl_info = LEVEL_CONFIG[item.level] or { ansi = "\27[90m [" .. tostring(item.level) .. "]\27[0m" }
 		local title = item.title and item.title[1] or "Notify"
@@ -83,6 +80,27 @@ function M.source()
 			title = title,
 			display = display,
 		}
+		seen_messages[msg_str] = true
+	end
+
+	-- bus 启动前产生的 :messages 不会经过 msg_show 订阅，补入尚未记录的行。
+	local ok, messages = pcall(vim.fn.execute, "messages")
+	if ok and type(messages) == "string" then
+		for _, line in ipairs(vim.split(messages, "\n", { plain = true, trimempty = true })) do
+			if line ~= "" and not seen_messages[line] then
+				items[#items + 1] = {
+					raw = {
+						id = -#items,
+						level = "INFO",
+						backend = "messages",
+						title = { "Messages", "" },
+						message = line,
+					},
+					title = "Messages",
+					display = string.format("%s  %-15s %s", LEVEL_CONFIG.INFO.ansi, "Messages", line),
+				}
+			end
+		end
 	end
 
 	return items

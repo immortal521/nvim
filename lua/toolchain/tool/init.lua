@@ -1,9 +1,9 @@
----@class ToolDefinition
----@field formatter? table Formatter override passed to Conform.
+---@class ToolSpec
+---@field formatter? conform.FormatterConfigOverride Formatter override passed to Conform.
 
 local M = {}
 local specs_dir = vim.fs.joinpath(vim.fn.stdpath("config"), "lua", "toolchain", "tool", "specs")
-local tools = {} ---@type table<string, ToolDefinition>
+local tools = {} ---@type table<string, ToolSpec>
 
 for name, kind in vim.fs.dir(specs_dir) do
 	if kind == "file" and name:sub(-4) == ".lua" then
@@ -17,7 +17,7 @@ for name, kind in vim.fs.dir(specs_dir) do
 	end
 end
 
----@return table<string, table>
+---@return table<string, conform.FormatterConfigOverride>
 function M.get_formatter_configs()
 	local result = {}
 	for name, definition in pairs(tools) do

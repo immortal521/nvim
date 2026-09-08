@@ -1,6 +1,6 @@
 local configs = { "biome.json", "biome.jsonc" }
 
----@type ToolDefinition
+---@type ToolSpec
 return {
 	formatter = {
 		condition = function(_, ctx)

@@ -577,12 +577,8 @@ local function setup_notify_backend(backend_opts)
 		exact = {
 			"notify",
 			"msg.clear",
-			"msg.show.emsg",
-			"msg.show.wmsg",
-			"msg.show.echoerr",
-			"msg.show.lua_error",
-			"msg.show.rpc_error",
 		},
+		prefix = { "msg.show." },
 		min_level = levels.TRACE,
 		handler = function(message)
 			if message.tag == "msg.clear" then

@@ -1,4 +1,4 @@
----@type LangDefinition
+---@type LanguageSpec
 return {
 	filetypes = { "javascript", "javascriptreact" },
 	formatters = { "prettier", "biome", "oxfmt" },

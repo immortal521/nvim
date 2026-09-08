@@ -1,4 +1,4 @@
----@type LangDefinition
+---@type LanguageSpec
 return {
 	filetypes = { "lua" },
 	formatters = { "stylua" },

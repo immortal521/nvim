@@ -1,4 +1,4 @@
----@type LangDefinition
+---@type LanguageSpec
 return {
 	filetypes = { "markdown", "markdown.mdx" },
 	formatters = { "prettier", "biome", "oxfmt" },

@@ -43,6 +43,35 @@ for _, filetype in ipairs(language_treesitter.filetypes) do
 	end
 end
 
+local function start_treesitter(buf)
+	if not vim.api.nvim_buf_is_valid(buf) or vim.bo[buf].filetype == "" then
+		return true
+	end
+
+	local ok = pcall(vim.treesitter.start, buf)
+	if not ok then
+		return false
+	end
+
+	vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+	for _, win in ipairs(vim.fn.win_findbuf(buf)) do
+		if vim.api.nvim_win_is_valid(win) then
+			vim.api.nvim_set_option_value("foldexpr", "v:lua.vim.treesitter.foldexpr()", { win = win })
+			vim.api.nvim_set_option_value("foldmethod", "expr", { win = win })
+		end
+	end
+	return true
+end
+
+local function start_when_ready(buf, attempts)
+	if start_treesitter(buf) or attempts >= 300 then
+		return
+	end
+	vim.defer_fn(function()
+		start_when_ready(buf, attempts + 1)
+	end, 100)
+end
+
 ---@type LazyPluginSpec
 return {
 	"nvim-treesitter/nvim-treesitter",
@@ -54,11 +83,8 @@ return {
 	init = function()
 		vim.api.nvim_create_autocmd({ "FileType" }, {
 			pattern = filetypes,
-			callback = function()
-				vim.treesitter.start()
-				vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-				vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
-				vim.wo[0][0].foldmethod = "expr"
+			callback = function(event)
+				start_when_ready(event.buf, 0)
 			end,
 		})
 	end,
