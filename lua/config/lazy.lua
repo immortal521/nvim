@@ -15,6 +15,9 @@ function M.setup(extra_plugins)
 
 	---@type LazyConfig
 	local opts = {
+		defaults = {
+			version = false,
+		},
 		spec = vim.list_extend(plugin_spec, extra_plugins or {}),
 		dev = {
 			path = function(plugin)

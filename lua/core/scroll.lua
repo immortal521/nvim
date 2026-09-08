@@ -3,43 +3,6 @@ local M = {}
 
 ---@alias core.scroll.View {topline:number, lnum:number}
 
----@class core.scroll.Config
----@field animate? core.animate.Config|{}
----@field animate_repeat? core.animate.Config|{}|{delay:number}
----@field filter? fun(buf:integer): boolean
-local defaults = {
-	animate = {
-		duration = { step = 10, total = 200 },
-		easing = "linear",
-	},
-	animate_repeat = {
-		delay = 100,
-		duration = { step = 5, total = 50 },
-		easing = "linear",
-	},
-	filter = function(buf)
-		return vim.g.snacks_scroll ~= false and vim.b[buf].snacks_scroll ~= false and vim.bo[buf].buftype ~= "terminal"
-	end,
-}
-
----@type boolean
-M.enabled = false
-local config = Core.config.get("scroll", defaults)
-
-local function is_enabled(buf)
-	return M.enabled
-		and buf
-		and not vim.o.paste
-		and vim.fn.reg_executing() == ""
-		and vim.fn.reg_recorded() == ""
-		and (config.filter and config.filter(buf))
-end
-
-local stats = { targets = 0, animating = 0, reset = 0, skipped = 0, scrolls = 0, mousescroll = 0 }
-local uv = vim.uv
-local SCROLL_UP, SCROLL_DOWN = Utils.keycode("<c-y>"), Utils.keycode("<c-e>")
-local mouse_scrolling = false
-
 ---@class core.scroll.State
 ---@field animation? core.animate.Animation
 ---@field win integer
@@ -54,19 +17,57 @@ local mouse_scrolling = false
 local State = {}
 State.__index = State
 
+---@class core.scroll.Config
+---@field animate? core.animate.Config|{}
+---@field animate_repeat? core.animate.Config|{}|{delay:number}
+---@field filter? fun(buf:integer): boolean
+---@field debug? boolean
+local defaults = {
+	animate = {
+		duration = { step = 10, total = 200 },
+		easing = "linear",
+	},
+	animate_repeat = {
+		delay = 100,
+		duration = { step = 5, total = 50 },
+		easing = "linear",
+	},
+	filter = function(buf)
+		return vim.g.core_scroll ~= false and vim.b[buf].core_scroll ~= false and vim.bo[buf].buftype ~= "terminal"
+	end,
+	debug = false,
+}
+
+local mouse_scrolling = false
+local SCROLL_UP, SCROLL_DOWN = Utils.keycode("<c-y>"), Utils.keycode("<c-e>")
+
+---@type boolean
+M.enabled = false
+local uv = vim.uv
+local stats = { targets = 0, animating = 0, reset = 0, skipped = 0, scrolls = 0, mousescroll = 0 }
+local config = Core.config.get("scroll", defaults)
+
 ---@type table<integer, core.scroll.State>
 local states = {}
+
+local function is_enabled(buf)
+	return M.enabled
+		and buf
+		and not vim.o.paste
+		and vim.fn.reg_executing() == ""
+		and vim.fn.reg_recorded() == ""
+		and (config.filter and config.filter(buf))
+		and Core.animate.enabled({ buf = buf, name = "scroll" })
+end
 
 ---@param win integer
 function State.get(win)
 	local buf = vim.api.nvim_win_is_valid(win) and vim.api.nvim_win_get_buf(win)
-	if not buf then
-		return nil
-	end
-	if not buf and not is_enabled(buf) then
+	if not buf or not is_enabled(buf) then
 		states[win] = nil
 		return nil
 	end
+	---@cast buf integer
 
 	---@type vim.fn.winsaveview.ret
 	local view = vim.api.nvim_win_call(win, vim.fn.winsaveview)
@@ -147,11 +148,24 @@ function M.enable()
 	end
 	M.enabled = true
 	states = {}
+
+	if config.debug then
+		M.debug()
+	end
+
 	for _, win in ipairs(vim.api.nvim_list_wins()) do
 		State.get(win)
 	end
 
 	local group = vim.api.nvim_create_augroup("core_scroll", { clear = true })
+
+	Utils.on_key("<ScrollWheelDown>", function()
+		mouse_scrolling = true
+	end)
+
+	Utils.on_key("<ScrollWheelUp>", function()
+		mouse_scrolling = true
+	end)
 
 	vim.api.nvim_create_autocmd("BufWinEnter", {
 		group = group,
@@ -161,14 +175,6 @@ function M.enable()
 			end
 		end),
 	})
-
-	Utils.on_key("<ScrollWheelDown>", function()
-		mouse_scrolling = true
-	end)
-
-	Utils.on_key("<ScrollWheelUp>", function()
-		mouse_scrolling = true
-	end)
 
 	vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged", "TextChangedI" }, {
 		group = group,
@@ -293,13 +299,18 @@ function M.check(win)
 	local repeat_delta = (now - state.last) / 1e6
 	state.last = now
 
-	local is_repeat = config.animate_repeat and repeat_delta <= config.animate_repeat.delay or false
+	---@diagnostic disable-next-line: need-check-nil
+	local is_repeat = repeat_delta <= config.animate_repeat.delay
 	local opts = vim.tbl_deep_extend(
 		"force",
 		---@diagnostic disable-next-line: param-type-mismatch
 		---@diagnostic disable-next-line: generic-constraint-mismatch
 		vim.deepcopy(is_repeat and config.animate_repeat or config.animate),
-		{ int = true, id = ("scroll%s%d"):format(is_repeat and "_repeat_" or "_", win) }
+		{
+			int = true,
+			id = ("scroll%s%d"):format(is_repeat and "_repeat_" or "_", win),
+			buf = state.buf,
+		}
 	)
 
 	local scrolls = 0
@@ -310,9 +321,9 @@ function M.check(win)
 		vim.fn.winrestview(state.current)
 		move_from = vim.fn.winline()
 		state:update()
-		scrolls = scroll_lines(win, state.current, state.target)
+		scrolls = scroll_lines(state.win, state.current, state.target)
 		col_from = vim.fn.virtcol({ state.current.lnum, state.current.col }) --[[@as integer]]
-		col_to = vim.fn.virtcol({ state.current.lnum, state.target.col }) --[[@as integer]]
+		col_to = vim.fn.virtcol({ state.target.lnum, state.target.col }) --[[@as integer]]
 	end)
 
 	local down = state.target.topline > state.current.topline
@@ -345,7 +356,7 @@ function M.check(win)
 
 			local move = math.floor(value * math.abs(move_to - move_from) / scrolls)
 			local move_target = move_from + ((move_to < move_from) and -1 or 1) * move
-			commands[#commands + 1] = ("%dH"):format(move_target + 1)
+			commands[#commands + 1] = ("%dH"):format(move_target)
 
 			local virtcol = math.floor(col_from + (col_to - col_from) * value / scrolls)
 			commands[#commands + 1] = ("%d|"):format(virtcol + 1)
@@ -364,28 +375,23 @@ function M.check(win)
 	end, opts)
 end
 
--- local debug_timer = uv.new_timer()
+local debug_timer = uv.new_timer()
 
--- @private
--- function M.debug()
--- 	if debug_timer == nil then
--- 		return
--- 	end
---
--- 	if debug_timer:is_active() then
--- 		return debug_timer:stop()
--- 	end
--- 	local last = {}
---
--- 	debug_timer:start(50, 50, function()
--- 		local data = vim.tbl_deep_extend("force", { stats = stats }, states)
--- 		for key, value in pairs(data) do
--- 			if not vim.deep_equal(last[key], value) then
--- 				Utils.log.debug(vim.inspect(value))
--- 			end
--- 		end
--- 		last = vim.deepcopy(data)
--- 	end)
--- end
+---@private
+function M.debug()
+	if debug_timer:is_active() then
+		return debug_timer:stop()
+	end
+	local last = {}
+	debug_timer:start(50, 50, function()
+		local data = vim.tbl_extend("force", { stats = stats }, states)
+		for key, value in pairs(data) do
+			if not vim.deep_equal(last[key], value) then
+				vim.notify(vim.inspect(value))
+			end
+		end
+		last = vim.deepcopy(data)
+	end)
+end
 
 return M

@@ -129,7 +129,7 @@ function Animation:start(from, to, callback)
 	if self.timer == nil then
 		return
 	end
-	self.timer:start(0, step_count, function()
+	self.timer:start(0, step_duration --[[@as integer]], function()
 		vim.schedule(function()
 			self:step(callback)
 		end)
@@ -158,6 +158,22 @@ function Animation:step(callback)
 	local done = self._step >= #self.steps
 	local prev = self.steps[self._step - 1] or value
 	callback(value, { animation = self, prev = prev, done = done })
+end
+
+function M.enabled(opts)
+	opts = opts or {}
+	if opts.name and not M.enabled({ buf = opts.buf }) then
+		return false
+	end
+	local key = "core_animate" .. (opts.name and ("_" .. opts.name) or "")
+	return Utils.var(opts.buf, key, true)
+end
+
+function M.del(id)
+	if active[id] then
+		active[id]:stop()
+		active[id] = nil
+	end
 end
 
 ---@param from number

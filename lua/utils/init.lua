@@ -153,4 +153,24 @@ function M.bo(buf, bo)
 	end
 end
 
+--- Get a buffer or global variable.
+---@generic T
+---@param buf? number
+---@param name string
+---@param default? T
+---@return T
+function M.var(buf, name, default)
+	local ok, ret = pcall(function()
+		return vim.b[buf or 0][name]
+	end)
+	if ok and ret ~= nil then
+		return ret
+	end
+	ret = vim.g[name]
+	if ret ~= nil then
+		return ret
+	end
+	return default
+end
+
 return M

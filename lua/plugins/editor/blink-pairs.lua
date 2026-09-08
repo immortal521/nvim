@@ -15,6 +15,15 @@ return {
 			cmdline = true,
 			disabled_filetypes = {},
 			pairs = {},
+			wrap = {
+				-- move closing pair via motion
+				["<C-b>"] = "motion",
+				-- move opening pair via motion
+				["<C-S-b>"] = "motion_reverse",
+				-- set to 'treesitter' or 'treesitter_reverse' to use treesitter instead of motions
+				-- set to nil, '' or false to disable the mapping
+				-- normal_mode = {} <- for normal mode mappings, only supports 'motion' and 'motion_reverse'
+			},
 		},
 		highlights = {
 			enabled = true,
