@@ -30,6 +30,7 @@ M.is_win = function()
 end
 
 --- 异步执行函数
+---@deprecated Use vim.defer_fn directly.
 ---@param callback function 回调函数
 ---@param delay? integer 延迟时间（毫秒），默认 1000
 M.async_function = function(callback, delay)

@@ -2,27 +2,26 @@
 local M = {}
 
 --- 获取当前文件完整路径
+---@deprecated Use vim.api.nvim_buf_get_name(0) directly.
 ---@return string 文件路径
 M.get_current_file_path = function()
 	return vim.fn.expand("%:p") --[[@as string]]
 end
 
 --- 检查文件是否存在
+---@deprecated Use vim.uv.fs_stat directly.
 ---@param file_path string 文件路径
 ---@return boolean 是否存在
 M.file_exists = function(file_path)
-	local f = io.open(file_path, "r")
-	if f then
-		io.close(f)
-		return true
-	end
-	return false
+	local stat = vim.uv.fs_stat(file_path)
+	return stat ~= nil and stat.type == "file"
 end
 
 --- 创建目录（如果不存在）
+---@deprecated Use vim.fn.mkdir or vim.uv.fs_mkdir directly.
 ---@param dir_path string 目录路径
 M.create_dir = function(dir_path)
-	if not M.file_exists(dir_path) then
+	if not vim.uv.fs_stat(dir_path) then
 		vim.fn.mkdir(dir_path, "p")
 	end
 end

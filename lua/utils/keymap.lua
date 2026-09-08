@@ -11,6 +11,9 @@ local M = setmetatable({}, {
 	end,
 })
 
+M.set = vim.keymap.set
+M.del = vim.keymap.del
+
 ---过滤出有效的 vim.keymap.set.Opts 配置项
 ---@param config utils.keymap.config
 ---@return vim.keymap.set.Opts 过滤后的配置

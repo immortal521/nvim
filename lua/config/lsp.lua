@@ -58,7 +58,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		if client:supports_method("textDocument/signatureHelp") then
       -- stylua: ignore
 			---@diagnostic disable-next-line: call-non-callable
-			Utils.keymap({"gK", function() return vim.lsp.buf.signature_help() end, buffer = bufnr, desc = "Signature Help",})
+	Utils.keymap({"gK", function() return vim.lsp.buf.signature_help() end, buf = bufnr, desc = "Signature Help",})
 		end
 
 		-- [inlay hint]

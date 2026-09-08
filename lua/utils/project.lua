@@ -21,21 +21,18 @@ M._cache = {
 
 --- 从文件列表检测项目根目录
 ---@param files string[] 文件列表
+---@param buf? integer 缓冲区编号
 ---@return string 根目录路径
-local function detect_root_from_files(files)
-	local buf_name = vim.api.nvim_buf_get_name(0)
+local function detect_root_from_files(files, buf)
+	local buf_name = vim.api.nvim_buf_get_name(buf or 0)
 
 	if buf_name == "" then
 		return vim.uv.cwd() or vim.fn.getcwd()
 	end
 
-	if not vim.uv.fs_stat(buf_name) then
-		return vim.uv.cwd() or vim.fn.getcwd()
-	end
-
 	local root = vim.fs.find(files, {
 		upward = true,
-		path = buf_name,
+		path = vim.fs.dirname(buf_name),
 	})[1]
 
 	if root then
@@ -75,7 +72,7 @@ M.get_project_root = function(opts)
 
 	-- 如果没有 LSP 根目录，从文件检测
 	if not root then
-		root = detect_root_from_files(PROJECT_ROOT_MARKERS)
+		root = detect_root_from_files(PROJECT_ROOT_MARKERS, buf)
 	end
 
 	root = require("utils.fs").normalize_path(root --[[@as string]])
@@ -84,6 +81,7 @@ M.get_project_root = function(opts)
 end
 
 --- 获取 Git 根目录
+---@deprecated Use get_project_root when a Git-specific root is not required.
 ---@param opts? GetProjectRootOpts 配置选项
 ---@return string Git 根目录路径
 M.get_git_root = function(opts)
