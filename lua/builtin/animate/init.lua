@@ -1,20 +1,20 @@
----@class core.animate
----@overload fun(from: number, to: number, callback: core.animate.callback, opts?: core.animate.Opts): core.animate.Animation
+---@class builtin.animate
+---@overload fun(from: number, to: number, callback: builtin.animate.callback, opts?: builtin.animate.Opts): builtin.animate.Animation
 local M = setmetatable({}, {
 	__call = function(t, ...)
 		return t.add(...)
 	end,
 })
 
----@alias core.animate.easing.Fn fun(time: number, begin: number, change: number, duration: number): number
+---@alias builtin.animate.easing.Fn fun(time: number, begin: number, change: number, duration: number): number
 
----@class core.animate.Duration
+---@class builtin.animate.Duration
 ---@field step? number duration step in ms
 ---@field total? number total duration in ms
 
----@class core.animate.Config
----@field duration core.animate.Duration|number
----@field easing? core.animate.easing|core.animate.easing.Fn
+---@class builtin.animate.Config
+---@field duration builtin.animate.Duration|number
+---@field easing? builtin.animate.easing|builtin.animate.easing.Fn
 local defaults = {
 	duration = 20,
 	easing = "linear",
@@ -29,32 +29,32 @@ local function next_id()
 	return _id
 end
 
----@class core.animate.Ctx
+---@class builtin.animate.Ctx
 ---@field done boolean
----@field animation core.animate.Animation
+---@field animation builtin.animate.Animation
 ---@field prev number
 
----@alias core.animate.callback fun(value: number, ctx: core.animate.Ctx)
+---@alias builtin.animate.callback fun(value: number, ctx: builtin.animate.Ctx)
 
----@class core.animate.Opts: core.animate.Config
+---@class builtin.animate.Opts: builtin.animate.Config
 ---@field buf? number
 ---@field int? boolean 将值平整为整数
 ---@field id? number|string
 
----@type table<number|string, core.animate.Animation>
+---@type table<number|string, builtin.animate.Animation>
 local active = setmetatable({}, { __mode = "v" })
 
----@class core.animate.Animation
+---@class builtin.animate.Animation
 ---@field id number|string
----@field easing core.animate.easing.Fn
----@field opts core.animate.Opts
+---@field easing builtin.animate.easing.Fn
+---@field opts builtin.animate.Opts
 ---@field timer? uv.uv_timer_t
 ---@field steps? number[]
 ---@field _step? number
 local Animation = {}
 Animation.__index = Animation
 
----@param opts? core.animate.Opts
+---@param opts? builtin.animate.Opts
 function Animation.new(opts)
 	local id = opts and opts.id or next_id()
 
@@ -66,10 +66,10 @@ function Animation.new(opts)
 	local self = setmetatable({}, Animation)
 	self.id = id
 
-	self.opts = Core.config.get("animate", defaults, opts --[[@as core.animate.Config]])
+	self.opts = Builtin.config.get("animate", defaults, opts --[[@as builtin.animate.Config]])
 	local easing = self.opts.easing or "linear"
 
-	easing = type(easing) == "string" and require("core.animate.easing")[easing] or easing
+	easing = type(easing) == "string" and require("builtin.animate.easing")[easing] or easing
 	self.easing = easing
 	active[id] = self
 
@@ -78,7 +78,7 @@ end
 
 ---@param from number
 ---@param to number
----@param callback core.animate.callback
+---@param callback builtin.animate.callback
 function Animation:start(from, to, callback)
 	self:stop()
 	if from == to then
@@ -148,7 +148,7 @@ function Animation:stop()
 	self.steps, self._step = nil, nil
 end
 
----@param callback core.animate.callback
+---@param callback builtin.animate.callback
 function Animation:step(callback)
 	if not self.steps or not self._step or self._step >= #self.steps then
 		return self:stop()
@@ -178,8 +178,8 @@ end
 
 ---@param from number
 ---@param to number
----@param callback core.animate.callback
----@param opts? core.animate.Opts
+---@param callback builtin.animate.callback
+---@param opts? builtin.animate.Opts
 function M.add(from, to, callback, opts)
 	return Animation.new(opts):start(from, to, callback)
 end

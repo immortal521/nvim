@@ -1,7 +1,7 @@
----@class core.terminal: core.win
+---@class builtin.terminal: builtin.win
 ---@field cmd? string | string[]
----@field opts core.terminal.Opts
----@overload fun(cmd?: string|string[], opts?: core.terminal.Opts): core.terminal
+---@field opts builtin.terminal.Opts
+---@overload fun(cmd?: string|string[], opts?: builtin.terminal.Opts): builtin.terminal
 local M = setmetatable({}, {
 	__call = function(t, ...)
 		return t.toggle(...)
@@ -12,11 +12,11 @@ M.meta = {
 	desc = "Create and toggle floating/split terminals",
 }
 
----@class core.terminal.Config
----@field win? core.win.Config|{}
+---@class builtin.terminal.Config
+---@field win? builtin.win.Config|{}
 ---@field shell? string|string[] The shell to use. Defaults to `vim.o.shell`
----@field override? fun(cmd?: string|string[], opts?: core.terminal.Opts) Use this to use a different terminal implementation
----@type core.terminal.Opts
+---@field override? fun(cmd?: string|string[], opts?: builtin.terminal.Opts) Use this to use a different terminal implementation
+---@type builtin.terminal.Opts
 local defaults = {
 	win = {
 		style = "terminal",
@@ -26,7 +26,7 @@ local defaults = {
 	},
 }
 
----@class core.terminal.Opts: core.terminal.Config
+---@class builtin.terminal.Opts: builtin.terminal.Config
 ---@field cwd? string
 ---@field count? integer
 ---@field env? table<string, string>
@@ -35,7 +35,7 @@ local defaults = {
 ---@field auto_close? boolean close the terminal buffer when the process exits
 ---@field interactive? boolean shortcut for `start_insert`, `auto_close` and `auto_insert` (default: true)
 
-Core.win.style.add("terminal", {
+Builtin.win.style.add("terminal", {
 	bo = {
 		filetype = "core_terminal",
 	},
@@ -78,7 +78,7 @@ Core.win.style.add("terminal", {
 	},
 })
 
----@type table<string, core.win>
+---@type table<string, builtin.win>
 local terminals = setmetatable({}, {
 	__mode = "v",
 })
@@ -90,12 +90,12 @@ end
 
 --- Open a new terminal window.
 ---@param cmd? string | string[]
----@param opts? core.terminal.Opts
+---@param opts? builtin.terminal.Opts
 function M.open(cmd, opts)
 	opts = opts or {}
-	opts = Core.config.get("terminal", defaults, opts)
+	opts = Builtin.config.get("terminal", defaults, opts)
 	local id = opts.count or vim.v.count1
-	opts.win = Core.win.resolve("terminal", {
+	opts.win = Builtin.win.resolve("terminal", {
 		position = cmd and "float" or "bottom",
 	}, opts.win, { show = false })
 	opts = vim.deepcopy(opts)
@@ -113,7 +113,7 @@ function M.open(cmd, opts)
 	local auto_close = opts.auto_close or (opts.auto_close == nil and interactive)
 
 	local on_buf = opts.win and opts.win.on_buf
-	---@param self core.terminal
+	---@param self builtin.terminal
 	opts.win.on_buf = function(self)
 		self.cmd = cmd
 		vim.b[self.buf].core_terminal = { cmd = cmd, id = id, cwd = opts.cwd, env = opts.env }
@@ -123,7 +123,7 @@ function M.open(cmd, opts)
 	end
 
 	local on_win = opts.win and opts.win.on_win
-	---@param self core.terminal
+	---@param self builtin.terminal
 	opts.win.on_win = function(self)
 		if start_insert and vim.api.nvim_get_current_buf() == self.buf then
 			vim.cmd.startinsert()
@@ -133,7 +133,7 @@ function M.open(cmd, opts)
 		end
 	end
 
-	local terminal = Core.win(opts.win)
+	local terminal = Builtin.win(opts.win)
 	local tid = M.tid(cmd, opts)
 	terminals[tid] = terminal
 
@@ -181,7 +181,7 @@ end
 
 --- Get a terminal id based on the `cmd`, `cwd`, `env` and `vim.v.count1` options.
 ---@param cmd? string | string[]
----@param opts? core.terminal.Opts
+---@param opts? builtin.terminal.Opts
 function M.tid(cmd, opts)
 	opts = opts or {}
 	return vim.inspect({
@@ -196,8 +196,8 @@ end
 --- The terminal id is based on the `cmd`, `cwd`, `env` and `vim.v.count1` options.
 --- `opts.create` defaults to `true`.
 ---@param cmd? string | string[]
----@param opts? core.terminal.Opts| {create?: boolean}
----@return core.win? terminal, boolean? created
+---@param opts? builtin.terminal.Opts| {create?: boolean}
+---@return builtin.win? terminal, boolean? created
 function M.get(cmd, opts)
 	opts = opts or {}
 	local id = M.tid(cmd, opts)
@@ -216,7 +216,7 @@ function M.get(cmd, opts)
 	return terminals[id], created
 end
 
----@return core.win[]
+---@return builtin.win[]
 function M.list()
 	return vim.tbl_filter(function(t)
 		return t:buf_valid() or false
@@ -226,7 +226,7 @@ end
 --- Toggle a terminal window.
 --- The terminal id is based on the `cmd`, `cwd`, `env` and `vim.v.count1` options.
 ---@param cmd? string | string[]
----@param opts? core.terminal.Opts
+---@param opts? builtin.terminal.Opts
 function M.toggle(cmd, opts)
 	local terminal, created = M.get(cmd, opts)
 	---@diagnostic disable-next-line: call-non-callable
@@ -236,7 +236,7 @@ end
 --- Focus a terminal window. If already focused, hide it.
 --- The terminal id is based on the `cmd`, `cwd`, `env` and `vim.v.count1` options.
 ---@param cmd? string | string[]
----@param opts? core.terminal.Opts
+---@param opts? builtin.terminal.Opts
 function M.focus(cmd, opts)
 	local terminal, created = M.get(cmd, opts)
 	if terminal and not created and vim.api.nvim_get_current_buf() == terminal.buf then
@@ -321,7 +321,7 @@ end
 
 -- -- @private
 -- function M.health()
--- 	local opts = Core.config.get("terminal", defaults --[[@as core.terminal.Opts]])
+-- 	local opts = Builtin.config.get("terminal", defaults --[[@as builtin.terminal.Opts]])
 -- 	local cmd = M.parse(opts.shell or vim.o.shell)
 -- 	local ok = cmd[1] and (vim.fn.executable(cmd[1]) == 1)
 -- 	local msg = ("shell %s\n- `vim.o.shell`: %s\n- `parsed`: %s"):format(
@@ -329,7 +329,7 @@ end
 -- 		vim.o.shell,
 -- 		vim.inspect(cmd)
 -- 	)
--- 	Core.health[ok and "ok" or "error"](msg)
+-- 	Builtin.health[ok and "ok" or "error"](msg)
 -- end
 
 return M

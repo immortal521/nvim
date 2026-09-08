@@ -1,5 +1,5 @@
----@class core.win.Style
----@overload fun(name: string): core.win.Config
+---@class builtin.win.Style
+---@overload fun(name: string): builtin.win.Config
 local M = setmetatable({}, {
 	__call = function(t, ...)
 		return t.get(...)
@@ -8,11 +8,11 @@ local M = setmetatable({}, {
 
 M.__index = M
 
----@class table<string, core.win.Config>
+---@class table<string, builtin.win.Config>
 local styles = {}
 
 ---@param name string
----@param defaults core.win.Config|{}
+---@param defaults builtin.win.Config|{}
 ---@return string
 function M.add(name, defaults)
 	styles[name] = vim.tbl_deep_extend("force", vim.deepcopy(defaults), styles[name] or {})
@@ -20,7 +20,7 @@ function M.add(name, defaults)
 end
 
 ---@param name string
----@return core.win.Config
+---@return builtin.win.Config
 function M.get(name)
 	return styles[name]
 end

@@ -1,30 +1,30 @@
----@class core
----@field win core.win
----@field lazygit core.lazygit
----@field terminal core.terminal
----@field buf core.buf
----@field animate core.animate
----@field scroll core.scroll
+---@class builtin
+---@field win builtin.win
+---@field lazygit builtin.lazygit
+---@field terminal builtin.terminal
+---@field buf builtin.buf
+---@field animate builtin.animate
+---@field scroll builtin.scroll
 local M = {}
 
 setmetatable(M, {
 	__index = function(t, k)
-		t[k] = require("core." .. k)
+		t[k] = require("builtin." .. k)
 		return rawget(t, k)
 	end,
 })
 
----@type core
-_G.Core = M
+---@type builtin
+_G.Builtin = M
 
----@class core.Config
----@field lazygit? core.lazygit.Config|{}
----@field terminal? core.terminal.Config|{}
----@field win? core.win.Config|{}
----@field scroll? core.scroll.Config|{}
+---@class builtin.Config
+---@field lazygit? builtin.lazygit.Config|{}
+---@field terminal? builtin.terminal.Config|{}
+---@field win? builtin.win.Config|{}
+---@field scroll? builtin.scroll.Config|{}
 local config = {}
 
----@class core.Config
+---@class builtin.Config
 M.config = setmetatable({}, {
 	__index = function(_, k)
 		config[k] = config[k] or {}
@@ -124,7 +124,7 @@ function M.setup(opts)
 		load("UIEnter")
 	end
 
-	local group = vim.api.nvim_create_augroup("core", { clear = true })
+	local group = vim.api.nvim_create_augroup("builtin", { clear = true })
 	vim.api.nvim_create_autocmd(vim.tbl_keys(events --[[@as table]]), {
 		group = group,
 		once = true,

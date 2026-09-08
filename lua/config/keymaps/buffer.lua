@@ -10,14 +10,14 @@ local keys = {
 	{
 		"<leader>bd",
 		function()
-			Core.buf.delete()
+			Builtin.buf.delete()
 		end,
 		desc = "Delete Buffer",
 	},
 	{
 		"<leader>bo",
 		function()
-			Core.buf.other()
+			Builtin.buf.other()
 		end,
 		desc = "Delete Other Buffers",
 	},

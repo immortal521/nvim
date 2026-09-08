@@ -1,10 +1,10 @@
----@class core.scroll
+---@class builtin.scroll
 local M = {}
 
----@alias core.scroll.View {topline:number, lnum:number}
+---@alias builtin.scroll.View {topline:number, lnum:number}
 
----@class core.scroll.State
----@field animation? core.animate.Animation
+---@class builtin.scroll.State
+---@field animation? builtin.animate.Animation
 ---@field win integer
 ---@field buf integer
 ---@field view vim.fn.winsaveview.ret
@@ -17,9 +17,9 @@ local M = {}
 local State = {}
 State.__index = State
 
----@class core.scroll.Config
----@field animate? core.animate.Config|{}
----@field animate_repeat? core.animate.Config|{}|{delay:number}
+---@class builtin.scroll.Config
+---@field animate? builtin.animate.Config|{}
+---@field animate_repeat? builtin.animate.Config|{}|{delay:number}
 ---@field filter? fun(buf:integer): boolean
 ---@field debug? boolean
 local defaults = {
@@ -45,9 +45,9 @@ local SCROLL_UP, SCROLL_DOWN = Utils.keycode("<c-y>"), Utils.keycode("<c-e>")
 M.enabled = false
 local uv = vim.uv
 local stats = { targets = 0, animating = 0, reset = 0, skipped = 0, scrolls = 0, mousescroll = 0 }
-local config = Core.config.get("scroll", defaults)
+local config = Builtin.config.get("scroll", defaults)
 
----@type table<integer, core.scroll.State>
+---@type table<integer, builtin.scroll.State>
 local states = {}
 
 local function is_enabled(buf)
@@ -57,7 +57,7 @@ local function is_enabled(buf)
 		and vim.fn.reg_executing() == ""
 		and vim.fn.reg_recorded() == ""
 		and (config.filter and config.filter(buf))
-		and Core.animate.enabled({ buf = buf, name = "scroll" })
+		and Builtin.animate.enabled({ buf = buf, name = "scroll" })
 end
 
 ---@param win integer
@@ -331,7 +331,7 @@ function M.check(win)
 
 	local scrolled = 0
 
-	state.animation = Core.animate(0, scrolls, function(value, ctx)
+	state.animation = Builtin.animate(0, scrolls, function(value, ctx)
 		if not state:valid() then
 			state:stop()
 			return

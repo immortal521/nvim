@@ -1,5 +1,5 @@
----@class core.lazygit
----@overload fun(opts?: core.lazygit.Config): core.win
+---@class builtin.lazygit
+---@overload fun(opts?: builtin.lazygit.Config): builtin.win
 local M = setmetatable({}, {
 	__call = function(t, ...)
 		return t.open(...)
@@ -10,22 +10,22 @@ M.meta = {
 	desc = "Open LazyGit in a float, auto-configure colorscheme and integration with Neovim",
 }
 
----@alias core.lazygit.Color {fg?:string, bg?:string, bold?:boolean}
+---@alias builtin.lazygit.Color {fg?:string, bg?:string, bold?:boolean}
 
----@class core.lazygit.Theme: table<number, core.lazygit.Color>
----@field activeBorderColor core.lazygit.Color
----@field cherryPickedCommitBgColor core.lazygit.Color
----@field cherryPickedCommitFgColor core.lazygit.Color
----@field defaultFgColor core.lazygit.Color
----@field inactiveBorderColor core.lazygit.Color
----@field optionsTextColor core.lazygit.Color
----@field searchingActiveBorderColor core.lazygit.Color
----@field selectedLineBgColor core.lazygit.Color
----@field unstagedChangesColor core.lazygit.Color
+---@class builtin.lazygit.Theme: table<number, builtin.lazygit.Color>
+---@field activeBorderColor builtin.lazygit.Color
+---@field cherryPickedCommitBgColor builtin.lazygit.Color
+---@field cherryPickedCommitFgColor builtin.lazygit.Color
+---@field defaultFgColor builtin.lazygit.Color
+---@field inactiveBorderColor builtin.lazygit.Color
+---@field optionsTextColor builtin.lazygit.Color
+---@field searchingActiveBorderColor builtin.lazygit.Color
+---@field selectedLineBgColor builtin.lazygit.Color
+---@field unstagedChangesColor builtin.lazygit.Color
 
----@class core.lazygit.Config: core.terminal.Opts
+---@class builtin.lazygit.Config: builtin.terminal.Opts
 ---@field args? string[]
----@field theme? core.lazygit.Theme
+---@field theme? builtin.lazygit.Theme
 local defaults = {
 	-- automatically configure lazygit to use the current colorscheme
 	-- and integrate edit with the current neovim instance
@@ -54,13 +54,13 @@ local defaults = {
     searchingActiveBorderColor = { fg = "MatchParen", bold = true },
     selectedLineBgColor        = { bg = "Visual" }, -- set to `default` to have no background colour
     unstagedChangesColor       = { fg = "DiagnosticError" },
-  } --[[@as core.lazygit.Theme]],
+  } --[[@as builtin.lazygit.Theme]],
 	win = {
 		style = "lazygit",
 	},
 }
 
-Core.win.style.add("lazygit", {})
+Builtin.win.style.add("lazygit", {})
 
 -- re-create config file on startup
 local dirty = true
@@ -80,7 +80,7 @@ vim.api.nvim_create_autocmd("User", {
 	end,
 })
 
----@param opts core.lazygit.Config
+---@param opts builtin.lazygit.Config
 local function env(opts)
 	if not config_dir then
 		local out = vim.fn.system({ "lazygit", "-cd" })
@@ -123,7 +123,7 @@ local function env(opts)
 	end
 end
 
----@param v core.lazygit.Color
+---@param v builtin.lazygit.Color
 ---@return string[]
 local function get_color(v)
 	---@type string[]
@@ -170,7 +170,7 @@ local function tui_attached()
 	return false
 end
 
----@param opts core.lazygit.Config
+---@param opts builtin.lazygit.Config
 local function update_config(opts)
 	---@type table<string, string[]>
 	local theme = {}
@@ -224,11 +224,11 @@ end
 
 -- Opens lazygit, properly configured to use the current colorscheme
 -- and integrate with the current neovim instance
----@param opts? core.lazygit.Config
+---@param opts? builtin.lazygit.Config
 function M.open(opts)
 	---@diagnostic disable-next-line: generic-constraint-mismatch
-	---@type core.lazygit.Config
-	opts = Core.config.get("lazygit", defaults, opts)
+	---@type builtin.lazygit.Config
+	opts = Builtin.config.get("lazygit", defaults, opts)
 
 	local cmd = { "lazygit" }
 	vim.list_extend(cmd, opts.args or {})
@@ -241,11 +241,11 @@ function M.open(opts)
 		env(opts)
 	end
 
-	return Core.terminal(cmd, opts)
+	return Builtin.terminal(cmd, opts)
 end
 
 -- Opens lazygit with the log view
----@param opts? core.lazygit.Config
+---@param opts? builtin.lazygit.Config
 function M.log(opts)
 	---@diagnostic disable-next-line: assign-type-mismatch
 	opts = opts or {}
@@ -255,7 +255,7 @@ function M.log(opts)
 end
 
 -- Opens lazygit with the log of the current file
----@param opts? core.lazygit.Config|{}
+---@param opts? builtin.lazygit.Config|{}
 function M.log_file(opts)
 	local file = vim.trim(vim.api.nvim_buf_get_name(0))
 	opts = opts or {}

@@ -1,20 +1,20 @@
----@class core.buf
+---@class builtin.buf
 local M = {}
 
----@class core.buf.Opts
+---@class builtin.buf.Opts
 ---@field buf? integer Buffer to delete. Defaults to the current buffer
 ---@field file? string Delete buffer by file name. If provided, `buf` is ignored
 ---@field force? boolean Delete the buffer even if it is modified
 ---@field filter? fun(buf: integer): boolean Filter buffers to delete
 ---@field wipe? boolean Wipe the buffer instead of deleting it (see `:h :bwipeout`)
 
----@param opts? integer|core.buf.Opts
+---@param opts? integer|builtin.buf.Opts
 function M.delete(opts)
 	opts = opts or {}
 	opts = type(opts) == "number" and { buf = opts } or opts
 	---@diagnostic disable-next-line: assign-type-mismatch
 	opts = type(opts) == "function" and { filter = opts } or opts
-	---@cast opts core.buf.Opts
+	---@cast opts builtin.buf.Opts
 
 	if type(opts.filter) == "function" then
 		for _, b in ipairs(vim.tbl_filter(opts.filter, vim.api.nvim_list_bufs())) do
@@ -82,7 +82,7 @@ function M.delete(opts)
 end
 
 --- Delete all buffers
----@param opts? core.buf.Opts
+---@param opts? builtin.buf.Opts
 function M.all(opts)
 	return M.delete(vim.tbl_extend("force", {}, opts or {}, {
 		filter = function()
@@ -92,7 +92,7 @@ function M.all(opts)
 end
 
 --- Delete all buffers except the current one
----@param opts? core.buf.Opts
+---@param opts? builtin.buf.Opts
 function M.other(opts)
 	return M.delete(vim.tbl_extend("force", {}, opts or {}, {
 		filter = function(b)
@@ -102,7 +102,7 @@ function M.other(opts)
 end
 
 --- Delete all invisible buffers
----@param opts? core.buf.Opts
+---@param opts? builtin.buf.Opts
 function M.invisible(opts)
 	return M.delete(vim.tbl_extend("force", {}, opts or {}, {
 		filter = function(b)

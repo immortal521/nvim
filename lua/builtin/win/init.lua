@@ -1,16 +1,16 @@
----@class core.win
+---@class builtin.win
 ---@field id integer
 ---@field buf? integer
 ---@field scratch_buf? integer
 ---@field win? integer
----@field opts core.win.Config
+---@field opts builtin.win.Config
 ---@field augroup? integer
----@field backdrop? core.win
----@field keys core.win.Keys[]
----@field events (core.win.Event|{event:string|string[]})[]
+---@field backdrop? builtin.win
+---@field keys builtin.win.Keys[]
+---@field events (builtin.win.Event|{event:string|string[]})[]
 ---@field meta table<string, any>
 ---@field closed? boolean
----@overload fun(opts? :core.win.Config|{}): core.win
+---@overload fun(opts? :builtin.win.Config|{}): builtin.win
 local M = setmetatable({}, {
 	__call = function(t, ...)
 		return t.new(...)
@@ -22,7 +22,7 @@ M.meta = {
 	desc = "Create and manage floating windows or splits",
 }
 
-M.style = require("core.win.style")
+M.style = require("builtin.win.style")
 
 local id = 0
 local event_stack = {} ---@type string[]
@@ -30,67 +30,67 @@ local event_stack = {} ---@type string[]
 local SCROLL_UP = Utils.keycode("<c-y>")
 local SCROLL_DOWN = Utils.keycode("<c-e>")
 
----@class core.win.Keys: vim.api.keyset.keymap
+---@class builtin.win.Keys: vim.api.keyset.keymap
 ---@field [1]? string
----@field [2]? string|string[]|fun(self: core.win): string?
+---@field [2]? string|string[]|fun(self: builtin.win): string?
 ---@field mode? string|string[]
 
----@class core.win.Event: vim.api.keyset.create_autocmd
+---@class builtin.win.Event: vim.api.keyset.create_autocmd
 ---@field buf? true
 ---@field win? true
----@field callback? fun(self: core.win, ev:vim.api.keyset.create_autocmd.callback_args):boolean?
+---@field callback? fun(self: builtin.win, ev:vim.api.keyset.create_autocmd.callback_args):boolean?
 
----@class core.win.Backdrop
+---@class builtin.win.Backdrop
 ---@field bg? string
 ---@field blend? integer
 ---@field transparent? boolean defaults to true
----@field win? core.win.Config overrides the backdrop window config
+---@field win? builtin.win.Config overrides the backdrop window config
 
----@class core.win.Dim
+---@class builtin.win.Dim
 ---@field width integer width of the window, without borders
 ---@field height integer height of the window, without borders
 ---@field row integer row of the window (0-indexed)
 ---@field col integer column of the window (0-indexed)
 ---@field border? boolean whether the window has a border
 
----@alias core.win.Action.fn fun(self: core.win):(boolean|string?)
----@alias core.win.Action.spec core.win.Action|core.win.Action.fn
----@class core.win.Action
----@field action core.win.Action.fn
+---@alias builtin.win.Action.fn fun(self: builtin.win):(boolean|string?)
+---@alias builtin.win.Action.spec builtin.win.Action|builtin.win.Action.fn
+---@class builtin.win.Action
+---@field action builtin.win.Action.fn
 ---@field desc? string
 
----@class core.win.Config: vim.api.keyset.win_config
+---@class builtin.win.Config: vim.api.keyset.win_config
 ---@field style? string
 ---@field show? boolean Show the window immediately (default: true)
 ---@field footer_keys? boolean|string[] Show keys footer. When string[], only show those keys with lhs (default: false)
----@field height? number|fun(self:core.win):number Height of the window. Use <1 for relative height. 0 means full height. (default: 0.9)
----@field width? number|fun(self:core.win):number Width of the window. Use <1 for relative width. 0 means full width. (default: 0.9)
+---@field height? number|fun(self:builtin.win):number Height of the window. Use <1 for relative height. 0 means full height. (default: 0.9)
+---@field width? number|fun(self:builtin.win):number Width of the window. Use <1 for relative width. 0 means full width. (default: 0.9)
 ---@field min_height? integer Minimum height of the window
 ---@field max_height? integer Maximum height of the window
 ---@field min_width? integer Minimum width of the window
 ---@field max_width? integer Maximum width of the window
----@field col? integer|fun(self:core.win):integer Column of the window. Use <1 for relative column. (default: center)
----@field row? integer|fun(self:core.win):integer Row of the window. Use <1 for relative row. (default: center)
+---@field col? integer|fun(self:builtin.win):integer Column of the window. Use <1 for relative column. (default: center)
+---@field row? integer|fun(self:builtin.win):integer Row of the window. Use <1 for relative row. (default: center)
 ---@field minimal? boolean Disable a bunch of options to make the window minimal (default: true)
 ---@field position? "float"|"bottom"|"top"|"left"|"right"|"current"
 ---@field border? "none"|"top"|"right"|"bottom"|"left"|"top_bottom"|"hpad"|"vpad"|"rounded"|"single"|"double"|"solid"|"shadow"|"bold"|string[]|false|true
 ---@field buf? integer If set, use this buffer instead of creating a new one
 ---@field file? string If set, use this file instead of creating a new buffer
 ---@field enter? boolean Enter the window after opening (default: false)
----@field backdrop? integer|false|core.win.Backdrop Opacity of the backdrop (default: 60)
+---@field backdrop? integer|false|builtin.win.Backdrop Opacity of the backdrop (default: 60)
 ---@field wo? vim.wo|{} window options
 ---@field bo? vim.bo|{} buffer options
 ---@field b? table<string, any> buffer local variables
 ---@field w? table<string, any> window local variables
 ---@field ft? string filetype to use for treesitter/syntax highlighting. Won't override existing filetype
 ---@field scratch_ft? string filetype to use for scratch buffers
----@field keys? table<string, false|string|fun(self: core.win)|core.win.Keys> Key mappings
----@field on_buf? fun(self: core.win) Callback after opening the buffer
----@field on_win? fun(self: core.win) Callback after opening the window
----@field on_close? fun(self: core.win) Callback after closing the window
+---@field keys? table<string, false|string|fun(self: builtin.win)|builtin.win.Keys> Key mappings
+---@field on_buf? fun(self: builtin.win) Callback after opening the buffer
+---@field on_win? fun(self: builtin.win) Callback after opening the window
+---@field on_close? fun(self: builtin.win) Callback after closing the window
 ---@field fixbuf? boolean don't allow other buffers to be opened in this window
 ---@field text? string|string[]|fun():(string[]|string) Initial lines to set in the buffer
----@field actions? table<string,  core.win.Action.spec> Actions that can be used in key mappings
+---@field actions? table<string,  builtin.win.Action.spec> Actions that can be used in key mappings
 ---@field resize? boolean Automatically resize the window when the editor is resized
 ---@field stack? boolean When enabled, multiple split windows with the same position will be stacked together (useful for terminals)
 local defaults = {
@@ -219,16 +219,16 @@ Utils.hlgroup.set_hl({
 	WinKeySep = "NonText",
 	WinKeyDesc = "Function",
 	WinSeparator = "WinSeparator",
-}, { prefix = "Core", default = true })
+}, { prefix = "Builtin", default = true })
 
----@param ...? core.win.Config|string|{}
----@return core.win.Config
+---@param ...? builtin.win.Config|string|{}
+---@return builtin.win.Config
 function M.resolve(...)
 	local done = {} ---@type table<string, boolean>
-	local merge = {} ---@type core.win.Config[]
+	local merge = {} ---@type builtin.win.Config[]
 	local stack = {}
 	for i = 1, select("#", ...) do
-		local next = select(i, ...) ---@type core.win.Config|string?
+		local next = select(i, ...) ---@type builtin.win.Config|string?
 		if next then
 			table.insert(stack, next)
 		end
@@ -236,7 +236,7 @@ function M.resolve(...)
 	while #stack > 0 do
 		local next = table.remove(stack)
 		next = type(next) == "string" and M.style(next) or next
-		---@cast next core.win.Config?
+		---@cast next builtin.win.Config?
 		if next and type(next) == "table" then
 			table.insert(merge, 1, next)
 			if next.style and not done[next.style] then
@@ -247,18 +247,18 @@ function M.resolve(...)
 	end
 	local ret = #merge == 0 and {} or #merge == 1 and merge[1] or vim.tbl_deep_extend("force", {}, unpack(merge))
 	ret.style = nil
-	---@cast ret core.win.Config
+	---@cast ret builtin.win.Config
 	return ret
 end
 
----@param opts? core.win.Config|{}
----@return core.win
+---@param opts? builtin.win.Config|{}
+---@return builtin.win
 function M.new(opts)
 	local self = setmetatable({}, M)
 	id = id + 1
 	self.id = id
 	self.meta = {}
-	opts = M.resolve(Core.config.get("win", defaults), opts)
+	opts = M.resolve(Builtin.config.get("win", defaults), opts)
 	if opts.minimal then
 		opts = M.resolve("minimal", opts)
 	end
@@ -278,7 +278,7 @@ function M.new(opts)
 
 	self.keys = {}
 	self.events = {}
-	local done = {} ---@type table<string, core.win.Keys?>
+	local done = {} ---@type table<string, builtin.win.Keys?>
 	opts.keys = opts.keys or {}
 	for key, spec in pairs(opts.keys) do
 		if spec then
@@ -290,7 +290,7 @@ function M.new(opts)
 				spec = vim.deepcopy(spec) -- deepcopy just in case
 				spec[1], spec[2] = key, spec[1]
 			end
-			---@cast spec core.win.Keys
+			---@cast spec builtin.win.Keys
 			local lhs = Utils.normkey(spec[1] or "")
 			local mode = type(spec.mode) == "table" and spec.mode or { spec.mode or "n" }
 			---@cast mode string[]
@@ -329,7 +329,7 @@ function M.new(opts)
 	-- update window size when resizing
 	self:on("VimResized", self.on_resize)
 
-	---@cast opts core.win.Config
+	---@cast opts builtin.win.Config
 	self.opts = opts
 	if opts.show ~= false then
 		self:show()
@@ -381,7 +381,7 @@ function M:action(actions)
 		table.concat(desc, ", ")
 end
 
----@param opts? {col_width?: integer, key_width?: integer, win?: core.win.Config}
+---@param opts? {col_width?: integer, key_width?: integer, win?: builtin.win.Config}
 function M:toggle_help(opts)
 	opts = opts or {}
 	local col_width, key_width = opts.col_width or 30, opts.key_width or 10
@@ -392,7 +392,7 @@ function M:toggle_help(opts)
 			return
 		end
 	end
-	local ns = vim.api.nvim_create_namespace("core.win.help")
+	local ns = vim.api.nvim_create_namespace("builtin.win.help")
 	local win = M.new(M.resolve({ style = "help" }, opts.win or {}, {
 		show = false,
 		focusable = false,
@@ -471,8 +471,8 @@ function M:toggle_help(opts)
 end
 
 ---@param event string|string[]
----@param cb fun(self: core.win, ev:vim.api.keyset.create_autocmd.callback_args):boolean?
----@param opts? core.win.Event
+---@param cb fun(self: builtin.win, ev:vim.api.keyset.create_autocmd.callback_args):boolean?
+---@param opts? builtin.win.Event
 function M:on(event, cb, opts)
 	opts = opts or {}
 	opts.callback = cb
@@ -483,7 +483,7 @@ function M:on(event, cb, opts)
 end
 
 ---@param event string|string[]
----@param opts core.win.Event
+---@param opts builtin.win.Event
 function M:_on(event, opts)
 	local event_opts = {} ---@type vim.api.keyset.create_autocmd
 	local skip = { "buf", "win", "event" }
@@ -1038,7 +1038,7 @@ function M:map()
 		end
 		spec.desc = spec.desc or opts.desc
 		---@diagnostic disable-next-line: param-type-mismatch
-		---@cast spec core.win.Keys
+		---@cast spec builtin.win.Keys
 		vim.keymap.set(spec.mode or "n", spec[1], rhs, opts)
 	end
 end
@@ -1098,7 +1098,7 @@ function M:drop()
 	backdrop = backdrop == true and {} or backdrop
 	---@diagnostic disable-next-line: param-type-mismatch
 	backdrop = vim.tbl_extend("force", { bg = "#000000", blend = 60, transparent = true }, backdrop)
-	---@cast backdrop core.win.Backdrop
+	---@cast backdrop builtin.win.Backdrop
 
 	if
 		(Utils.hlgroup.is_transparent() and backdrop.transparent)
@@ -1317,11 +1317,11 @@ function M:valid()
 	return self:win_valid() and self:buf_valid() and vim.api.nvim_win_get_buf(self.win) == self.buf
 end
 
----@param parent? core.win.Dim
+---@param parent? builtin.win.Dim
 function M:dim(parent)
 	---@diagnostic disable-next-line: assign-type-mismatch
 	parent = parent or self:parent_size()
-	---@type core.win.Dim
+	---@type builtin.win.Dim
 	local ret = {
 		height = 0,
 		width = 0,
@@ -1330,7 +1330,7 @@ function M:dim(parent)
 		border = self:has_border(),
 	}
 
-	---@param s? number|fun(win: core.win):number? size
+	---@param s? number|fun(win: builtin.win):number? size
 	---@param ps number parent size
 	local function size(s, ps, border_offset)
 		s = type(s) == "function" and s(self) or s or 0
@@ -1343,7 +1343,7 @@ function M:dim(parent)
 		return s
 	end
 
-	---@param p? integer|fun(win:core.win):integer? pos
+	---@param p? integer|fun(win:builtin.win):integer? pos
 	---@param s integer size
 	---@param ps integer parent size
 	local function pos(p, s, ps, border_from, border_to)

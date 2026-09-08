@@ -11,7 +11,7 @@ local function linear(time, begin, change, duration)
 	return change * time / duration + begin
 end
 
----@enum (key) core.animate.easing
+---@enum (key) builtin.animate.easing
 local M = {
 	linear = linear,
 }
