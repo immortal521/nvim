@@ -319,13 +319,17 @@ local function animate_out(entry, opts, callback)
 	end
 end
 
-local function reflow(anchor)
+local function reflow(anchor, entering)
 	local stack = stacks[anchor]
 	local cursor = anchor == "NE" and 1 or vim.o.lines - 1
 	local direction = anchor == "NE" and 1 or -1
 	for _, entry in ipairs(stack) do
 		if entry.win:valid() then
-			if #stack > 1 then
+			if entry == entering then
+				set_position(entry, cursor)
+			elseif entering then
+				animate_row(entry, cursor)
+			elseif #stack > 1 then
 				set_position(entry, cursor)
 			else
 				animate_row(entry, cursor)
@@ -485,7 +489,7 @@ local function render(entry, message, level, opts)
 	end
 	local height = math.max(1, math.min(#rendered_lines, math.floor(vim.o.lines * 0.4)))
 	entry.height = height
-	entry.stack_gap = opts.border and 1 or 0
+	entry.stack_gap = 0
 	entry.win.opts.height = height
 	entry.win.opts.width = window_width
 	entry.win.opts.ft = opts.markdown == false and "builtin_notify" or "markdown"
@@ -571,7 +575,7 @@ function M.notify(message, level, opts)
 		height = 1,
 		generation = 0,
 		message = "",
-		stack_gap = opts.border and 1 or 0,
+		stack_gap = 0,
 	}
 	local initial_level = (level_names[level] or "Info"):lower()
 	entry.border_hl = opts.border_hl[initial_level] or opts.border_hl.info or "FloatBorder"
@@ -606,12 +610,12 @@ function M.notify(message, level, opts)
 	})
 	entry.win:show()
 	render(entry, message, level, opts)
-	fade_in(entry, opts)
-	slide_in(entry, opts)
 	table.insert(stacks[anchor], 1, entry)
 	rebuild_ids(anchor)
 	arm_timer(entry, opts.timeout)
-	reflow(anchor)
+	reflow(anchor, entry)
+	fade_in(entry, opts)
+	slide_in(entry, opts)
 	return entry.win
 end
 

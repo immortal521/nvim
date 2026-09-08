@@ -362,6 +362,7 @@ function M.check(win)
 
 			vim.cmd(("keepjumps normal! %s"):format(table.concat(commands, "")))
 
+			---@diagnostic disable-next-line: preferred-local-alias
 			if vim.v.count ~= count then
 				local cursor = vim.api.nvim_win_get_cursor(win)
 				vim.cmd(("keepjumps normal! %dzh"):format(count))

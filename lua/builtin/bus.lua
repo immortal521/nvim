@@ -137,7 +137,11 @@ function M.emit(tag, level, content, data)
 			local ok, err = pcall(spec.handler, message)
 			if not ok then
 				vim.schedule(function()
-					vim.api.nvim_err_writeln(("Builtin bus subscriber failed: %s"):format(err))
+					vim.api.nvim_echo(
+						{ { ("Builtin bus subscriber failed: %s"):format(err), "ErrorMsg" } },
+						true,
+						{ err = true }
+					)
 				end)
 			end
 		end
