@@ -5,6 +5,8 @@
 ---@field buf builtin.buf
 ---@field animate builtin.animate
 ---@field scroll builtin.scroll
+---@field notify builtin.notify
+---@field bus builtin.bus
 local M = {}
 
 setmetatable(M, {
@@ -22,6 +24,9 @@ _G.Builtin = M
 ---@field terminal? builtin.terminal.Config|{}
 ---@field win? builtin.win.Config|{}
 ---@field scroll? builtin.scroll.Config|{}
+---@field notify? builtin.notify.Options|{}
+---@field animate? builtin.animate.Config|{}
+---@field bus? table
 local config = {}
 
 ---@class builtin.Config
@@ -95,13 +100,20 @@ end
 
 function M.setup(opts)
 	opts = opts or {}
-	for k in pairs(opts) do
-		opts[k].enabled = opts[k].enabled == nil or opts[k].enabled
+	local defaults = {
+		bus = { enabled = true },
+		notify = { enabled = true },
+		scroll = { enabled = false },
+	}
+	config = vim.tbl_deep_extend("force", defaults, config, opts)
+	for _, module_config in pairs(config) do
+		if type(module_config) == "table" and module_config.enabled == nil then
+			module_config.enabled = true
+		end
 	end
-	config = vim.tbl_deep_extend("force", config, opts or {})
 
 	local events = {
-		UIEnter = { "scroll" },
+		UIEnter = { "bus", "notify", "scroll" },
 	}
 
 	---@param event string
@@ -110,11 +122,13 @@ function M.setup(opts)
 		local todo = events[event] or {}
 		events[event] = nil
 		for _, module in ipairs(todo) do
-			if M.config[module] and M.config[module].enabled then
-				if M[module].setup then
-					M[module].setup(ev)
-				elseif M[module].enable then
-					M[module].enable()
+			local module_config = M.config[module]
+			if module_config and module_config.enabled then
+				local implementation = M[module]
+				if implementation.setup then
+					implementation.setup(module_config, ev)
+				elseif implementation.enable then
+					implementation.enable(module_config, ev)
 				end
 			end
 		end
@@ -124,15 +138,17 @@ function M.setup(opts)
 		load("UIEnter")
 	end
 
-	local group = vim.api.nvim_create_augroup("builtin", { clear = true })
-	vim.api.nvim_create_autocmd(vim.tbl_keys(events --[[@as table]]), {
-		group = group,
-		once = true,
-		nested = true,
-		callback = function(ev)
-			load(ev.event, ev)
-		end,
-	})
+	if next(events) then
+		local group = vim.api.nvim_create_augroup("builtin", { clear = true })
+		vim.api.nvim_create_autocmd(vim.tbl_keys(events --[[@as table]]), {
+			group = group,
+			once = true,
+			nested = true,
+			callback = function(ev)
+				load(ev.event, ev)
+			end,
+		})
+	end
 end
 
 return M

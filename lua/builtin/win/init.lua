@@ -100,7 +100,7 @@ local defaults = {
 	position = "float",
 	minimal = true,
 	wo = {
-		winhighlight = "Normal:CoreNormal,NormalNC:CoreNormalNC,WinBar:CoreWinBar,WinBarNC:CoreWinBarNC,FloatTitle:CoreTitle,FloatFooter:CoreFooter,WinSeparator:CoreWinSeparator",
+		winhighlight = "Normal:BuiltinNormal,NormalNC:BuiltinNormalNC,WinBar:BuiltinWinBar,WinBarNC:BuiltinWinBarNC,FloatTitle:BuiltinTitle,FloatFooter:BuiltinFooter,WinSeparator:BuiltinWinSeparator",
 	},
 	bo = {},
 	title_pos = "center",
@@ -214,7 +214,7 @@ Utils.hlgroup.set_hl({
 	NormalNC = "NormalFloat",
 	Title = "FloatTitle",
 	WinBar = "Title",
-	WinBarNC = "CoreWinBar",
+	WinBarNC = "BuiltinWinBarNC",
 	WinKey = "Keyword",
 	WinKeySep = "NonText",
 	WinKeyDesc = "Function",
@@ -452,11 +452,11 @@ function M:toggle_help(opts)
 		end
 		help[row] = help[row] or {}
 		vim.list_extend(help[row], {
-			{ trunc(key, key_width, "right"), "CoreWinKey" },
+			{ trunc(key, key_width, "right"), "BuiltinWinKey" },
 			{ " " },
-			{ "➜", "CoreWinKeySep" },
+			{ "➜", "BuiltinWinKeySep" },
 			{ " " },
-			{ trunc(keymap.desc or "", col_width - key_width - 3), "CoreWinKeyDesc" },
+			{ trunc(keymap.desc or "", col_width - key_width - 3), "BuiltinWinKeyDesc" },
 		})
 	end
 	win:show()
@@ -883,12 +883,12 @@ function M:show()
 		for _, key in ipairs(self.keys) do
 			local keymap = Utils.normkey(key[1] or "")
 			if want == nil or vim.tbl_contains(want, keymap) then
-				table.insert(self.opts.footer, { " ", "CoreFooter" })
-				table.insert(self.opts.footer, { " " .. keymap .. " ", "CoreFooterKey" })
-				table.insert(self.opts.footer, { " " .. (key.desc or keymap) .. " ", "CoreFooterDesc" })
+				table.insert(self.opts.footer, { " ", "BuiltinFooter" })
+				table.insert(self.opts.footer, { " " .. keymap .. " ", "BuiltinFooterKey" })
+				table.insert(self.opts.footer, { " " .. (key.desc or keymap) .. " ", "BuiltinFooterDesc" })
 			end
 		end
-		table.insert(self.opts.footer, { " ", "CoreFooter" })
+		table.insert(self.opts.footer, { " ", "BuiltinFooter" })
 	end
 
 	self:open_win()
@@ -1122,7 +1122,7 @@ function M:drop()
 		winblend = 0
 	end
 
-	local group = ("CoreBackdrop_%s"):format(bg and bg:sub(2) or "T")
+	local group = ("BuiltinBackdrop_%s"):format(bg and bg:sub(2) or "T")
 	vim.api.nvim_set_hl(0, group, { bg = bg })
 
 	self.backdrop = M.new(M.resolve({

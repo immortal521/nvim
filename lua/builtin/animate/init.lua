@@ -69,7 +69,9 @@ function Animation.new(opts)
 	self.opts = Builtin.config.get("animate", defaults, opts --[[@as builtin.animate.Config]])
 	local easing = self.opts.easing or "linear"
 
-	easing = type(easing) == "string" and require("builtin.animate.easing")[easing] or easing
+	easing = type(easing) == "string"
+		and (require("builtin.animate.easing")[easing] or require("builtin.animate.easing").linear)
+	assert(type(easing) == "function", "Builtin.animate: easing must be a function or a known easing name")
 	self.easing = easing
 	active[id] = self
 

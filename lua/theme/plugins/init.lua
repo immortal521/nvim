@@ -2,7 +2,8 @@ local M = {}
 
 -- stylua: ignore
 M.plugins = {
-  ["aerial.nvim"]                   = "aerial",
+	["builtin"]                     = "builtin",
+	["aerial.nvim"]                   = "aerial",
   ["alpha-nvim"]                    = "alpha",
   ["blink.cmp"]                     = "blink",
   ["flash.nvim"]                    = "flash",

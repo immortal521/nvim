@@ -6,6 +6,10 @@ return {
 
 	---@type NoiceConfig
 	opts = {
+		-- 通知由 builtin.notify 接管，避免 Noice 与其重复覆盖 vim.notify。
+		notify = {
+			enabled = false,
+		},
 		lsp = {
 			signature = { enabled = false },
 			override = {

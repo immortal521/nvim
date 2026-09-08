@@ -21,7 +21,7 @@ local defaults = {
 	win = {
 		style = "terminal",
 		wo = {
-			winhighlight = "FloatBorder:CoreActiveBorder",
+			winhighlight = "FloatBorder:BuiltinActiveBorder",
 		},
 	},
 }

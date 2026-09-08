@@ -4,7 +4,7 @@ return {
 	lazy = true,
 	opts = {
 		system_clipboard = {
-			sync_with_ring = not vim.env.SSH_CIBBECTION,
+			sync_with_ring = not vim.env.SSH_CONNECTION,
 		},
 		highlight = { timer = 150 },
 	},
