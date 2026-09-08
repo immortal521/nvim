@@ -1,10 +1,9 @@
 ---@type LazyPluginSpec
 return {
 	"saghen/blink.indent",
+	event = "BufEdit",
 	--- @module 'blink.indent'
 	--- @type blink.indent.Config
-	-- enabled = false,
-	event = "BufEdit",
 	opts = {
 		static = {
 			enabled = true,

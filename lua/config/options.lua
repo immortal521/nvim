@@ -6,10 +6,8 @@ local g = vim.g
 -------------------------------------------------------------------------------
 -- 根据操作系统设置默认 Shell
 if Utils.is_win() then
-	---@diagnostic disable-next-line: call-non-callable
 	Utils.terminal("nu")
 else
-	---@diagnostic disable-next-line: call-non-callable
 	Utils.terminal("zsh")
 end
 

@@ -166,7 +166,6 @@ function M.open(cmd, opts)
 	end, { buf = true })
 
 	terminal:show()
-	---@cast terminal.buf integer
 	vim.api.nvim_buf_call(terminal.buf, function()
 		jobstart(cmd or M.parse(opts.shell or vim.o.shell), {
 			cwd = opts.cwd,
@@ -209,7 +208,6 @@ function M.get(cmd, opts)
 				terminals[id] = nil
 			end, { buf = true })
 		end
-		---@diagnostic disable-next-line: unnecessary-assert, call-non-callable
 		assert(terminals[id], "Terminal was not created")
 		created = true
 	end
@@ -229,7 +227,6 @@ end
 ---@param opts? builtin.terminal.Opts
 function M.toggle(cmd, opts)
 	local terminal, created = M.get(cmd, opts)
-	---@diagnostic disable-next-line: call-non-callable
 	return created and terminal or assert(terminal):toggle()
 end
 
@@ -243,7 +240,6 @@ function M.focus(cmd, opts)
 		terminal:hide()
 		return terminal, created
 	end
-	---@diagnostic disable-next-line: call-non-callable
 	return created and terminal or assert(terminal):show():focus()
 end
 

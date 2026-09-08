@@ -271,7 +271,6 @@ function M.new(opts)
 		opts.wo.winfixheight = not vertical
 		opts.wo.winfixwidth = vertical
 	end
-	---@diagnostic disable-next-line: unnecessary-if
 	if opts.relative == "win" then
 		opts.win = opts.win or vim.api.nvim_get_current_win()
 	end
@@ -410,7 +409,6 @@ function M:toggle_help(opts)
 	-- NOTE: we use the actual buffer keymaps instead of self.keys,
 	-- since we want to show all keymaps, not just the ones we've defined on the window
 	local keys = {} ---@type vim.api.keyset.get_keymap[]
-	---@cast self.buf integer
 	vim.list_extend(keys, vim.api.nvim_buf_get_keymap(self.buf, "n"))
 	vim.list_extend(keys, vim.api.nvim_buf_get_keymap(self.buf, "i"))
 	table.sort(keys, function(a, b)
@@ -461,7 +459,6 @@ function M:toggle_help(opts)
 	end
 	win:show()
 	for l, line in ipairs(help) do
-		---@cast win.buf integer
 		vim.api.nvim_buf_set_lines(win.buf, l - 1, l, false, { "" })
 		vim.api.nvim_buf_set_extmark(win.buf, ns, l - 1, 0, {
 			virt_text = line,
@@ -515,13 +512,11 @@ end
 
 function M:focus()
 	if self:valid() then
-		---@cast self.win integer
 		vim.api.nvim_set_current_win(self.win)
 	end
 end
 
 function M:redraw()
-	---@diagnostic disable-next-line: unnecessary-if
 	if vim.api.nvim__redraw then
 		vim.api.nvim__redraw({ win = self.win, valid = false, flush = true, cursor = false })
 	else
@@ -530,7 +525,6 @@ function M:redraw()
 end
 
 function M:hscroll(left)
-	---@cast self.win integer
 	vim.api.nvim_win_call(self.win, function()
 		vim.cmd(("normal! %s"):format(left and "zh" or "zl"))
 	end)
@@ -538,7 +532,6 @@ end
 
 ---@param up? boolean
 function M:scroll(up)
-	---@cast self.win integer
 	vim.api.nvim_win_call(self.win, function()
 		vim.cmd(("normal! %d%s"):format(vim.wo[self.win].scroll, up and SCROLL_UP or SCROLL_DOWN))
 	end)
@@ -678,7 +671,6 @@ function M:set_title(title, pos)
 	end
 	-- Don't try to update if the relative window is invalid.
 	-- It will be fixed once a full update is done.
-	---@cast self.win integer
 	local relative_win = vim.api.nvim_win_get_config(self.win).win
 	if relative_win and not vim.api.nvim_win_is_valid(relative_win) then
 		return
@@ -737,7 +729,6 @@ function M:scratch()
 		vim.bo[self.buf].syntax = ""
 	end
 	if self:win_valid() then
-		---@cast self.win integer
 		vim.api.nvim_win_set_buf(self.win, self.buf)
 	end
 end
@@ -752,11 +743,9 @@ function M:open_win()
 	end
 	local opts = self:win_opts()
 	if position == "float" then
-		---@cast self.buf integer
 		self.win = vim.api.nvim_open_win(self.buf, enter, opts)
 	elseif position == "current" then
 		self.win = vim.api.nvim_get_current_win()
-		---@cast self.buf integer
 		vim.api.nvim_win_set_buf(self.win, self.buf)
 	else --split
 		local parent = self.opts.win and vim.api.nvim_win_is_valid(self.opts.win) and self.opts.win or 0
@@ -788,7 +777,6 @@ function M:open_win()
 			self.win = vim.api.nvim_get_current_win()
 		end)
 		if enter then
-			---@cast self.win integer
 			vim.api.nvim_set_current_win(self.win)
 		end
 		vim.schedule(function()
@@ -830,9 +818,7 @@ end
 
 function M:update()
 	if self:valid() then
-		---@cast self.buf integer
 		Utils.bo(self.buf, self.opts.bo or {})
-		---@cast self.win integer
 		Utils.wo(self.win, self.opts.wo or {})
 		if self:is_floating() then
 			local opts = self:win_opts()
@@ -843,7 +829,6 @@ function M:update()
 end
 
 function M:on_current_tab()
-	---@cast self.win integer
 	return self:win_valid() and vim.api.nvim_get_current_tabpage() == vim.api.nvim_win_get_tabpage(self.win)
 end
 
@@ -864,7 +849,6 @@ function M:show()
 	-- OPTIM: prevent treesitter or syntax highlighting to attach on FileType if it's not already enabled
 	local optim_hl = not vim.b[self.buf].ts_highlight and vim.bo[self.buf].syntax == ""
 	vim.b[self.buf].ts_highlight = optim_hl or vim.b[self.buf].ts_highlight
-	---@cast self.buf integer
 	Utils.bo(self.buf, self.opts.bo or {})
 	vim.b[self.buf].ts_highlight = not optim_hl and vim.b[self.buf].ts_highlight or nil
 
@@ -901,7 +885,6 @@ function M:show()
 		---@diagnostic disable-next-line: need-check-nil
 		self.opts.wo.winblend = 0
 	end
-	---@cast self.win integer
 	Utils.wo(self.win, self.opts.wo or {})
 	if self.opts.on_win then
 		self.opts.on_win(self)
@@ -950,7 +933,6 @@ function M:fixbuf()
 		return
 	end
 
-	---@cast self.win integer
 	local buf = vim.api.nvim_win_get_buf(self.win)
 
 	-- same buffer
@@ -981,14 +963,12 @@ function M:fixbuf()
 	end
 
 	if main then
-		---@cast self.buf integer
 		vim.api.nvim_win_set_buf(self.win, self.buf)
 		vim.api.nvim_win_set_buf(main, buf)
 		vim.api.nvim_set_current_win(main)
 		vim.cmd.stopinsert()
 	else
 		-- no main window found, so close this window
-		---@cast self.buf integer
 		vim.api.nvim_win_set_buf(self.win, self.buf)
 		vim.schedule(function()
 			vim.cmd.stopinsert()
@@ -1002,10 +982,8 @@ end
 
 ---@param buf integer
 function M:set_buf(buf)
-	---@diagnostic disable-next-line: call-non-callable
 	assert(self:valid(), "Window is not valid")
 	self.buf = buf
-	---@cast self.win integer
 	vim.api.nvim_win_set_buf(self.win, buf)
 	Utils.wo(self.win, self.opts.wo or {})
 end
@@ -1032,7 +1010,6 @@ function M:map()
 			opts.desc = opts.desc or desc
 		else
 			rhs = function()
-				---@diagnostic disable-next-line: call-non-callable, need-check-nil
 				return spec[2](self)
 			end
 		end
@@ -1080,7 +1057,6 @@ function M:add_padding()
 end
 
 function M:is_floating()
-	---@cast self.win integer
 	return self:valid() and vim.api.nvim_win_get_config(self.win).zindex ~= nil
 end
 
@@ -1155,7 +1131,6 @@ end
 ---@param from? integer 1-indexed, inclusive
 ---@param to? integer 1-indexed, inclusive
 function M:lines(from, to)
-	---@cast self.buf integer
 	return self:buf_valid() and vim.api.nvim_buf_get_lines(self.buf, from and from - 1 or 0, to or -1, false) or {}
 end
 
@@ -1167,8 +1142,6 @@ end
 
 ---@return { height: integer, width: integer }
 function M:parent_size()
-	---@diagnostic disable-next-line: unnecessary-if
-	---@cast self.opts.win integer
 	if self.opts.relative == "win" and vim.api.nvim_win_is_valid(self.opts.win) then
 		return {
 			height = vim.api.nvim_win_get_height(self.opts.win),
@@ -1259,7 +1232,6 @@ function M:border_size()
 	local border = self:border() or { "" }
 	border = type(border) == "string" and borders[border] or border
 	border = type(border) == "string" and { "x" } or border
-	---@diagnostic disable-next-line: call-non-callable
 	assert(type(border) == "table", "Invalid border type")
 	---@cast border string[]
 	while #border < 8 do
@@ -1313,7 +1285,6 @@ function M:win_valid()
 	return self.win and vim.api.nvim_win_is_valid(self.win)
 end
 function M:valid()
-	---@cast self.win integer
 	return self:win_valid() and self:buf_valid() and vim.api.nvim_win_get_buf(self.win) == self.buf
 end
 
@@ -1348,7 +1319,6 @@ function M:dim(parent)
 	---@param ps integer parent size
 	local function pos(p, s, ps, border_from, border_to)
 		p = type(p) == "function" and p(self) or p
-		---@diagnostic disable-next-line: unnecessary-if
 		---@cast p number?
 		if self.opts.relative == "cursor" then
 			return p or 0

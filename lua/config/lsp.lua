@@ -1,6 +1,4 @@
-local ignored_lsps = {}
-
-Utils.lsp.enable_lsps(ignored_lsps)
+require("toolchain").setup()
 
 local keys = {
 	{
@@ -57,14 +55,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		-- [signature help]
 		if client:supports_method("textDocument/signatureHelp") then
       -- stylua: ignore
-			---@diagnostic disable-next-line: call-non-callable
 	Utils.keymap({"gK", function() return vim.lsp.buf.signature_help() end, buf = bufnr, desc = "Signature Help",})
 		end
 
 		-- [inlay hint]
 		if client:supports_method("textDocument/inlayHint") then
 			vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-			---@diagnostic disable-next-line: call-non-callable
 			Utils.keymap({
 				"<leader>uh",
 				function()
@@ -78,7 +74,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		-- [codelens]
 		if client:supports_method("textDocument/codeLens") then
 			vim.lsp.codelens.enable(true, { bufnr = bufnr })
-			---@diagnostic disable-next-line: call-non-callable
 			Utils.keymap({
 				"<leader>cc",
 				function()
@@ -89,7 +84,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			})
 		end
 
-		---@diagnostic disable-next-line: call-non-callable
 		Utils.keymap({
 			"<leader>cA",
 			Utils.lsp.action.source,

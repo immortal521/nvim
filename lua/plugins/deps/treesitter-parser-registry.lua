@@ -1,6 +1,6 @@
 ---@type LazyPluginSpec
 return {
 	"neovim-treesitter/treesitter-parser-registry",
-  enabled = false,
+	enabled = false,
 	lazy = true,
 }

@@ -304,7 +304,6 @@ function M.check(win)
 	local opts = vim.tbl_deep_extend(
 		"force",
 		---@diagnostic disable-next-line: param-type-mismatch
-		---@diagnostic disable-next-line: generic-constraint-mismatch
 		vim.deepcopy(is_repeat and config.animate_repeat or config.animate),
 		{
 			int = true,
@@ -363,7 +362,6 @@ function M.check(win)
 
 			vim.cmd(("keepjumps normal! %s"):format(table.concat(commands, "")))
 
-			---@diagnostic disable-next-line: preferred-local-alias
 			if vim.v.count ~= count then
 				local cursor = vim.api.nvim_win_get_cursor(win)
 				vim.cmd(("keepjumps normal! %dzh"):format(count))

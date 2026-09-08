@@ -65,7 +65,7 @@ end
 ---@param opts? {
 ---  installed?: boolean,
 ---  configured?: boolean,
----  attached?: boolean|number
+---  attached?: boolean|number,
 ---}
 function M.source(opts)
 	opts = opts or {}

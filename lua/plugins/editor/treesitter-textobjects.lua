@@ -21,6 +21,7 @@ return {
 		if not ok or TSTextObjects == nil then
 			return
 		end
+		---@diagnostic disable-next-line: param-type-mismatch
 		TSTextObjects.setup(opts)
 
 		local TSTextObjectsRepeat = require("nvim-treesitter-textobjects.repeatable_move")

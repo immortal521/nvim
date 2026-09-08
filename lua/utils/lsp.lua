@@ -45,7 +45,6 @@ M.hover = function(config)
 	vim.lsp.buf_request_all(0, "textDocument/hover", function(client)
 		return vim.lsp.util.make_position_params(nil, client.offset_encoding)
 	end, function(results, context)
-		---@diagnostic disable-next-line: call-non-callable
 		local bufnr = assert(context.bufnr)
 		if vim.api.nvim_get_current_buf() ~= bufnr then
 			return
@@ -75,7 +74,6 @@ M.hover = function(config)
 		local format = "markdown"
 
 		for client_id, result in pairs(filtered) do
-			---@diagnostic disable-next-line: call-non-callable
 			local client = assert(vim.lsp.get_clients({ id = client_id })[1])
 			if nresults > 1 then
 				contents[#contents + 1] = string.format("# %s", client.name)
@@ -148,7 +146,6 @@ M.root_markers_with_field = function(root_files, new_names, field, fname)
 	local found = vim.fs.find(new_names, { path = path, upward = true, type = "file" })
 
 	for _, f in ipairs(found or {}) do
-		---@diagnostic disable-next-line: call-non-callable
 		-- Match the given `field`.
 		local file = assert(io.open(f, "r"))
 		for line in file:lines() do

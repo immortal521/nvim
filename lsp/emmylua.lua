@@ -11,7 +11,7 @@ local root_markers = {
 	".git",
 }
 
----@type vim.lsp.config
+---@type vim.lsp.Config
 return {
 	cmd = { "emmylua_ls" },
 	filetypes = { "lua" },

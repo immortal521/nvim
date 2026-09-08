@@ -10,12 +10,7 @@ return {
 			"InsertLeave",
 		},
 
-		linters_by_ft = {
-			go = { "golangcilint" },
-			vue = { "eslint", "oxlint" },
-			javascript = { "eslint", "oxlint" },
-			typescript = { "eslint", "oxlint" },
-		},
+		linters_by_ft = require("toolchain").get_linters(),
 
 		---@class LintLinter
 		---@field condition? fun(ctx: { filename: string, dirname: string }): boolean
@@ -122,7 +117,6 @@ return {
 			names = vim.tbl_filter(function(name)
 				local linter = lint.linters[name]
 				if not linter then
-					---@diagnostic disable-next-line: call-non-callable
 					Utils.log.info("Linter not found: " .. name, { title = "linter" })
 				end
 				return linter and not (type(linter) == "table" and linter.condition and not linter.condition(ctx))

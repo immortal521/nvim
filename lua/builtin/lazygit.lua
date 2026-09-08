@@ -140,7 +140,6 @@ local function get_color(v)
 				---@diagnostic disable-next-line: undefined-field
 				hl_color = hl and hl.bg or hl.background
 			end
-			---@diagnostic disable-next-line: unnecessary-if
 			if hl_color then
 				table.insert(color, string.format("#%06x", hl_color))
 			end
@@ -179,7 +178,6 @@ local function update_config(opts)
 	for k, v in pairs(opts.theme) do
 		if type(k) == "number" then
 			local color = get_color(v)
-			---@diagnostic disable-next-line: unnecessary-if
 			-- LazyGit uses color 241 a lot, so also set it to a nice color
 			-- pcall, since some terminals don't like this
 			if vim.api.nvim_ui_send then -- 0.12+: routed to the TUI host terminal, no-op for GUIs
@@ -226,14 +224,12 @@ end
 -- and integrate with the current neovim instance
 ---@param opts? builtin.lazygit.Config
 function M.open(opts)
-	---@diagnostic disable-next-line: generic-constraint-mismatch
 	---@type builtin.lazygit.Config
 	opts = Builtin.config.get("lazygit", defaults, opts)
 
 	local cmd = { "lazygit" }
 	vim.list_extend(cmd, opts.args or {})
 
-	---@diagnostic disable-next-line: unnecessary-if
 	if opts.configure then
 		if dirty then
 			update_config(opts)

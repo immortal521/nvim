@@ -121,6 +121,14 @@ return {
 			desc = "Notification History",
 		},
 
+		{
+			"<leader>cL",
+			function()
+				require("sources.language").picker()
+			end,
+			desc = "Language Config",
+		},
+
 		-- find
 		{
 			"<leader>fb",

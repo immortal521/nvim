@@ -29,6 +29,20 @@ local langs = {
 	"zig",
 }
 
+local language_treesitter = require("toolchain").get_treesitter()
+local parsers = vim.deepcopy(langs)
+local filetypes = vim.deepcopy(langs)
+for _, parser in ipairs(language_treesitter.parsers) do
+	if not vim.tbl_contains(parsers, parser) then
+		parsers[#parsers + 1] = parser
+	end
+end
+for _, filetype in ipairs(language_treesitter.filetypes) do
+	if not vim.tbl_contains(filetypes, filetype) then
+		filetypes[#filetypes + 1] = filetype
+	end
+end
+
 ---@type LazyPluginSpec
 return {
 	"nvim-treesitter/nvim-treesitter",
@@ -39,7 +53,7 @@ return {
 	opts = {},
 	init = function()
 		vim.api.nvim_create_autocmd({ "FileType" }, {
-			pattern = langs,
+			pattern = filetypes,
 			callback = function()
 				vim.treesitter.start()
 				vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
@@ -51,6 +65,6 @@ return {
 	config = function(_, opts)
 		local TS = require("nvim-treesitter")
 		TS.setup(opts)
-		TS.install(langs)
+		TS.install(parsers)
 	end,
 }
