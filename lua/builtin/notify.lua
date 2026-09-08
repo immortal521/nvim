@@ -90,6 +90,7 @@ local defaults = {
 ---@field closing? boolean
 ---@field message string
 ---@field border_hl string
+---@field stack_gap integer
 local stacks = { NE = {}, SE = {} }
 local ids = { NE = {}, SE = {} }
 local namespace = vim.api.nvim_create_namespace("BuiltinNotify")
@@ -320,7 +321,6 @@ end
 
 local function reflow(anchor)
 	local stack = stacks[anchor]
-	local gap = 1
 	local cursor = anchor == "NE" and 1 or vim.o.lines - 1
 	local direction = anchor == "NE" and 1 or -1
 	for _, entry in ipairs(stack) do
@@ -330,7 +330,8 @@ local function reflow(anchor)
 			else
 				animate_row(entry, cursor)
 			end
-			cursor = cursor + direction * (entry.height + 2 + gap)
+			local border_rows = entry.win.opts.border and 2 or 0
+			cursor = cursor + direction * (entry.height + border_rows + entry.stack_gap)
 		end
 	end
 end
@@ -484,6 +485,7 @@ local function render(entry, message, level, opts)
 	end
 	local height = math.max(1, math.min(#rendered_lines, math.floor(vim.o.lines * 0.4)))
 	entry.height = height
+	entry.stack_gap = opts.border and 1 or 0
 	entry.win.opts.height = height
 	entry.win.opts.width = window_width
 	entry.win.opts.ft = opts.markdown == false and "builtin_notify" or "markdown"
@@ -563,7 +565,14 @@ function M.notify(message, level, opts)
 	end
 
 	next_id = next_id + 1
-	entry = { id = opts.id, anchor = anchor, height = 1, generation = 0, message = "" }
+	entry = {
+		id = opts.id,
+		anchor = anchor,
+		height = 1,
+		generation = 0,
+		message = "",
+		stack_gap = opts.border and 1 or 0,
+	}
 	local initial_level = (level_names[level] or "Info"):lower()
 	entry.border_hl = opts.border_hl[initial_level] or opts.border_hl.info or "FloatBorder"
 	entry.win = Builtin.win({

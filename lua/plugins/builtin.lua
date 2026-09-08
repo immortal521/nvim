@@ -36,7 +36,7 @@ return {
 			easing = "outQuad",
 			-- 堆叠重排动画。[可选值："slide"、"none"]
 			-- 多个通知时由 notify 自动立即重排，避免窗口短暂重叠。
-			-- reflow_animation = "slide",
+			reflow_animation = "slide",
 			-- 堆叠重排时间，单位为毫秒。[可选值：正整数]
 			reflow_duration = 180,
 			-- 堆叠重排曲线。[可选值：同 easing]
