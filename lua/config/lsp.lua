@@ -41,6 +41,28 @@ Utils.keymap.add(keys)
 
 local grp = vim.api.nvim_create_augroup("SetupLSP", { clear = true })
 
+vim.api.nvim_create_autocmd("LspProgress", {
+	group = grp,
+	callback = function(event)
+		local data = event.data or {}
+		local params = data.params or {}
+		local value = params.value or {}
+		local client = vim.lsp.get_client_by_id(data.client_id)
+		local title = value.title or (client and client.name) or "LSP"
+		local message = value.message or (value.kind == "end" and "Done" or "Loading")
+		local content = title .. ": " .. message
+		if value.percentage then
+			content = ("%s (%d%%)"):format(content, value.percentage)
+		end
+		local token = tostring(params.token or title)
+		Builtin.notify.fidget(content, vim.log.levels.INFO, {
+			id = "lsp:" .. tostring(data.client_id) .. ":" .. token,
+			mode = "replace",
+			timeout = value.kind == "end" and 2000 or false,
+		})
+	end,
+})
+
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = grp,
 	callback = function(event)

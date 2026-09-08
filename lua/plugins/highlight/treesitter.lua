@@ -32,6 +32,8 @@ local langs = {
 local language_treesitter = require("toolchain").get_treesitter()
 local parsers = vim.deepcopy(langs)
 local filetypes = vim.deepcopy(langs)
+local installing = {}
+local reported = {}
 for _, parser in ipairs(language_treesitter.parsers) do
 	if not vim.tbl_contains(parsers, parser) then
 		parsers[#parsers + 1] = parser
@@ -48,9 +50,9 @@ local function start_treesitter(buf)
 		return true
 	end
 
-	local ok = pcall(vim.treesitter.start, buf)
+	local ok, err = pcall(vim.treesitter.start, buf)
 	if not ok then
-		return false
+		return false, err
 	end
 
 	vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
@@ -63,8 +65,48 @@ local function start_treesitter(buf)
 	return true
 end
 
+local function notify_failure(parser, err)
+	if reported[parser] then
+		return
+	end
+	reported[parser] = true
+	vim.notify(
+		("Treesitter parser '%s' could not be started: %s"):format(parser, tostring(err)),
+		vim.log.levels.WARN,
+		{ title = "Treesitter" }
+	)
+end
+
+local function request_install(buf)
+	local filetype = vim.bo[buf].filetype
+	local parser = vim.treesitter.language.get_lang(filetype) or filetype
+	if installing[parser] then
+		return parser
+	end
+
+	local ok, treesitter = pcall(require, "nvim-treesitter")
+	if not ok then
+		return parser
+	end
+
+	installing[parser] = true
+	local installed, err = pcall(treesitter.install, { parser }, { summary = false })
+	if not installed then
+		installing[parser] = nil
+		notify_failure(parser, err)
+	end
+	return parser
+end
+
 local function start_when_ready(buf, attempts)
-	if start_treesitter(buf) or attempts >= 300 then
+	local ok, err = start_treesitter(buf)
+	if ok then
+		return
+	end
+
+	local parser = request_install(buf)
+	if attempts >= 300 then
+		notify_failure(parser, err)
 		return
 	end
 	vim.defer_fn(function()
@@ -77,7 +119,7 @@ return {
 	"nvim-treesitter/nvim-treesitter",
 	branch = "main",
 	build = ":TSUpdate",
-	event = { "BufEdit", "VeryLazy" },
+	event = { "BufReadPre", "BufNewFile", "VeryLazy" },
 	-- dependencies = { "neovim-treesitter/treesitter-parser-registry" },
 	opts = {},
 	init = function()
@@ -91,6 +133,11 @@ return {
 	config = function(_, opts)
 		local TS = require("nvim-treesitter")
 		TS.setup(opts)
-		TS.install(parsers)
+		local ok, err = pcall(TS.install, parsers, { summary = true })
+		if not ok then
+			vim.notify(("Treesitter parser installation failed: %s"):format(err), vim.log.levels.ERROR, {
+				title = "Treesitter",
+			})
+		end
 	end,
 }

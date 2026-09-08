@@ -7,6 +7,20 @@
 - `toolchain/mason.lua` 将 LSP、formatter、linter 名称映射为 Mason 包名，并保留调试和辅助工具。
 - `toolchain/init.lua` 聚合这些配置，供 LSP、Conform、nvim-lint、Mason、Treesitter 和 fzf source 使用。
 
+公共入口由 `require("toolchain")` 提供：
+
+| 方法 | 返回内容 |
+| --- | --- |
+| `setup()` | 注册按 `FileType` 延迟启用 LSP 的自动命令。 |
+| `get_formatters()` | 从语言规格聚合 `filetype -> formatter[]`。 |
+| `get_formatter_configs()` | 返回工具规格提供的 Conform formatter 条件。 |
+| `get_linters()` | 从语言规格聚合 `filetype -> linter[]`。 |
+| `get_treesitter()` | 返回需要安装的 parser 和用于启动 parser 的 filetype。 |
+| `get_mason_packages()` | 返回语言工具和额外工具对应的 Mason 包名。 |
+
+语言规格只描述语言与工具的关系；工具条件、LSP 启动参数和 UI 行为分别由
+对应的 `tool/specs/`、`lsp/` 和插件配置负责。
+
 ## 目录结构
 
 ```text
@@ -70,6 +84,9 @@ Treesitter 插件会把规格中的 parser 和 filetype 自动加入现有基础
 `typescriptreact`、`markdown.mdx` 等 Neovim filetype 不会被误当作 parser。
 未拆分为语言规格的额外 parser 仍由 `lua/plugins/highlight/treesitter.lua`
 保留。
+
+Treesitter 在打开文件前加载插件并异步安装 parser。若当前 buffer 启动失败，
+会再次请求对应 parser 的安装并重试；安装或启动连续失败后会通过通知报告错误。
 
 LSP 的具体命令、root、settings 和特殊行为仍放在顶层 `lsp/` 目录：
 
@@ -136,6 +153,10 @@ lua/toolchain/tool/specs/oxfmt.lua
 Conform 当前仍使用 formatter 列表的默认行为：如果多个 formatter 条件同时
 满足，且调用时没有设置 `stop_after_first = true`，Conform 可能按顺序执行多个
 formatter。工具规格只决定工具是否可用，不改变这个执行策略。
+
+formatter 是否安装由 Mason 包列表决定，formatter 是否对当前项目生效由
+Conform 的 `condition` 决定；这两个判断相互独立。某个 formatter 被语言规格
+声明，并不表示它在每个项目中都会运行。
 
 跨语言的兼容映射仍由 `toolchain/lang/init.lua` 维护：
 
@@ -220,3 +241,12 @@ nvim --headless -u NONE \
 
 `<leader>cL` 显示语言名和 filetype，预览显示语言规格源码，默认选择直接
 打开对应的 `toolchain/lang/specs/<语言名>.lua` 文件。
+
+## 与其他模块的关系
+
+- `lua/config/lsp.lua` 调用 `toolchain.setup()`，并负责 LSP 的缓冲区绑定、进度事件和快捷键。
+- `lua/plugins/formatting.lua` 使用 formatter 聚合结果和工具条件。
+- `lua/plugins/linting.lua` 使用 linter 聚合结果。
+- `lua/plugins/highlight/treesitter.lua` 使用 parser 聚合结果，并在 parser 缺失时触发安装和重试。
+- `lua/plugins/lsp/mason.lua` 使用 Mason 包聚合结果，在 Mason 注册表刷新后安装缺失包。
+- `lua/sources/language.lua` 读取语言规格列表，不需要手动维护语言索引。

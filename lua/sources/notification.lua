@@ -64,23 +64,49 @@ function M.source()
 
 	local items = {}
 	local seen_messages = {}
+	local groups = {}
+	local group_order = {}
 	for _, item in ipairs(history) do
-		local lvl_info = LEVEL_CONFIG[item.level] or { ansi = "\27[90m [" .. tostring(item.level) .. "]\27[0m" }
+		local title = item.title and item.title[1] or "Notify"
+		local backend = item.backend or "notify"
+		local key = backend .. "\31" .. title
+		local group = groups[key]
+		if not group then
+			group = {
+				backend = backend,
+				count = 0,
+				latest = item,
+				messages = {},
+			}
+			groups[key] = group
+			group_order[#group_order + 1] = group
+		end
+		group.count = group.count + 1
+		group.messages[#group.messages + 1] = type(item.message) == "table" and table.concat(item.message, "\n")
+			or tostring(item.message)
+	end
+
+	for _, group in ipairs(group_order) do
+		local item = group.latest
 		local title = item.title and item.title[1] or "Notify"
 		local time = item.title and item.title[2] or ""
-		local msg_str = type(item.message) == "table" and table.concat(item.message, " ") or tostring(item.message)
-		-- fzf 的每个条目必须占一行；预览仍使用 raw.message 保留原始换行。
+		local lvl_info = LEVEL_CONFIG[item.level] or { ansi = "\27[90m [" .. tostring(item.level) .. "]\27[0m" }
+		local msg_str = table.concat(vim.tbl_map(tostring, group.messages), " | ")
+		-- fzf 的每个条目必须占一行；预览保留同一来源的完整消息列表。
 		msg_str = msg_str:gsub("[\r\n]+", " ")
-
-		-- 列表格式：级别、标题、时间和消息均保持可搜索文本；来源在 preview 中展示。
-		local display = string.format("%s  %-15s \27[90m%-8s\27[0m %s", lvl_info.ansi, title, time, msg_str)
-
+		local display_title = group.count > 1 and (title .. " (" .. group.count .. ")") or title
+		local display = string.format("%s  %-15s \27[90m%-8s\27[0m %s", lvl_info.ansi, display_title, time, msg_str)
+		local raw = vim.deepcopy(item)
+		raw.message = group.messages
+		raw.backend = group.backend
 		items[#items + 1] = {
-			raw = item,
-			title = title,
+			raw = raw,
+			title = display_title,
 			display = display,
 		}
-		seen_messages[msg_str] = true
+		for _, message in ipairs(group.messages) do
+			seen_messages[tostring(message):gsub("[\r\n]+", " ")] = true
+		end
 	end
 
 	-- bus 启动前产生的 :messages 不会经过 msg_show 订阅，补入尚未记录的行。

@@ -20,12 +20,15 @@
 ---@field markdown? boolean 是否启用 Markdown 语法高亮
 
 ---@class builtin.notify.NotifyOpts: builtin.notify.Options
----@field title? string
----@field icon? string
+---@field title? string|false
+---@field icon? string|false
 ---@field id? string
 ---@field replace? boolean
 ---@field mode? "append"|"replace"
 ---@field backend? "notify"|"fidget"
+---@field message_hl? string|table<string, string>
+---@field transparent? boolean
+---@field auto_width? boolean
 
 local M = {}
 
@@ -73,7 +76,7 @@ local defaults = {
 	markdown = true,
 	backends = {
 		notify = { enabled = true, anchor = "NE" },
-		fidget = { enabled = true, anchor = "SE" },
+		fidget = { enabled = true, anchor = "SE", border = false, title = false },
 	},
 }
 
@@ -95,6 +98,8 @@ local configured = false
 local options = vim.deepcopy(defaults)
 local history = {}
 local history_id = 0
+local interaction_namespace = vim.api.nvim_create_namespace("BuiltinNotifyInteraction")
+local interaction_configured = false
 
 local function anchor_of(opts)
 	return opts.anchor == "SE" and "SE" or "NE"
@@ -168,9 +173,12 @@ local function set_geometry(entry, width, row, col)
 		zindex = config.zindex,
 	})
 	if entry.border_hl then
+		local normal_hl = entry.normal_hl or "NormalFloat"
 		vim.api.nvim_set_option_value(
 			"winhighlight",
-			("Normal:NormalFloat,NormalNC:NormalFloat,FloatBorder:%s,FloatTitle:%s"):format(
+			("Normal:%s,NormalNC:%s,FloatBorder:%s,FloatTitle:%s"):format(
+				normal_hl,
+				normal_hl,
 				entry.border_hl,
 				entry.border_hl
 			),
@@ -198,7 +206,10 @@ end
 
 local function apply_border(entry)
 	if entry.win:valid() and entry.border_hl then
-		entry.win.opts.wo.winhighlight = ("Normal:NormalFloat,NormalNC:NormalFloat,FloatBorder:%s,FloatTitle:%s"):format(
+		local normal_hl = entry.normal_hl or "NormalFloat"
+		entry.win.opts.wo.winhighlight = ("Normal:%s,NormalNC:%s,FloatBorder:%s,FloatTitle:%s"):format(
+			normal_hl,
+			normal_hl,
 			entry.border_hl,
 			entry.border_hl
 		)
@@ -314,7 +325,11 @@ local function reflow(anchor)
 	local direction = anchor == "NE" and 1 or -1
 	for _, entry in ipairs(stack) do
 		if entry.win:valid() then
-			animate_row(entry, cursor)
+			if #stack > 1 then
+				set_position(entry, cursor)
+			else
+				animate_row(entry, cursor)
+			end
 			cursor = cursor + direction * (entry.height + 2 + gap)
 		end
 	end
@@ -346,12 +361,16 @@ local function remove(anchor, index, animate)
 end
 
 local function arm_timer(entry, timeout)
+	entry.timeout = timeout
 	entry.generation = entry.generation + 1
 	local generation = entry.generation
 	if entry.timer then
 		entry.timer:stop()
 		entry.timer:close()
 		entry.timer = nil
+	end
+	if entry.hovered then
+		return
 	end
 	if timeout == false or not timeout or timeout <= 0 then
 		return
@@ -372,6 +391,52 @@ local function arm_timer(entry, timeout)
 	end, timeout)
 end
 
+local function set_hovered_window(win)
+	for _, stack in pairs(stacks) do
+		for _, entry in ipairs(stack) do
+			local hovered = entry.win and entry.win.win == win
+			if hovered and not entry.hovered then
+				entry.hovered = true
+				if entry.timer then
+					entry.timer:stop()
+					entry.timer:close()
+					entry.timer = nil
+				end
+			elseif not hovered and entry.hovered then
+				entry.hovered = false
+				arm_timer(entry, entry.timeout)
+			end
+		end
+	end
+end
+
+local function setup_interaction()
+	if interaction_configured then
+		return
+	end
+	interaction_configured = true
+	vim.o.mousemoveevent = true
+	vim.on_key(function(key)
+		if key == vim.keycode("<MouseMove>") then
+			set_hovered_window(vim.fn.getmousepos().winid)
+		end
+	end, interaction_namespace)
+
+	local group = vim.api.nvim_create_augroup("BuiltinNotifyInteraction", { clear = true })
+	vim.api.nvim_create_autocmd("WinEnter", {
+		group = group,
+		callback = function()
+			set_hovered_window(vim.api.nvim_get_current_win())
+		end,
+	})
+	vim.api.nvim_create_autocmd("WinLeave", {
+		group = group,
+		callback = function()
+			set_hovered_window(nil)
+		end,
+	})
+end
+
 local function render(entry, message, level, opts)
 	local text = type(message) == "string" and message or vim.inspect(message)
 	if opts.mode == "append" and entry.message and entry.message ~= "" then
@@ -379,13 +444,26 @@ local function render(entry, message, level, opts)
 	end
 	entry.message = text
 	local lines = vim.split(text, "\n", { plain = true })
-	local title = opts.title or level_names[level] or "Notification"
-	local icon = opts.icon or icons[level] or icons[levels.INFO]
+	local show_title = opts.title ~= false
+	local title = show_title and (opts.title or level_names[level] or "Notification") or nil
+	local show_icon = opts.icon ~= false and (show_title or opts.icon ~= nil)
+	local icon = show_icon and (opts.icon or icons[level] or icons[levels.INFO]) or nil
+	if show_icon and not show_title then
+		lines[1] = icon .. " " .. lines[1]
+	end
 	local level_name = (level_names[level] or "Info"):lower()
 	local border_hl = opts.border_hl[level_name] or opts.border_hl.info or "FloatBorder"
 	local padding = math.max(0, opts.padding or 0)
 	local pad = string.rep(" ", padding)
-	local content_width = math.max(1, width_for(opts) - 2 * padding)
+	local window_width = width_for(opts)
+	if opts.auto_width then
+		local longest = 1
+		for _, line in ipairs(lines) do
+			longest = math.max(longest, vim.fn.strdisplaywidth(line))
+		end
+		window_width = math.min(window_width, longest + 2 * padding)
+	end
+	local content_width = math.max(1, window_width - 2 * padding)
 	local function fit_line(line)
 		line = tostring(line)
 		if vim.fn.strdisplaywidth(line) > content_width then
@@ -393,38 +471,63 @@ local function render(entry, message, level, opts)
 		end
 		return line .. string.rep(" ", math.max(0, content_width - vim.fn.strdisplaywidth(line)))
 	end
-	local type_line = pad .. fit_line((" %s  %s "):format(icon, title)) .. pad
-	-- Neovim 只提供 Markdown 语法高亮，不会把 `---` 绘制成图形分隔线。
-	-- 使用等宽线字符，确保没有 Markdown 渲染器时仍然可见。
-	local separator = pad .. string.rep("─", content_width) .. pad
-	local rendered_lines = { type_line, separator }
+	local rendered_lines = {}
+	if show_title then
+		local type_line = pad .. fit_line((" %s  %s "):format(icon, title)) .. pad
+		-- Neovim 只提供 Markdown 语法高亮，不会把 `---` 绘制成图形分隔线。
+		-- 使用等宽线字符，确保没有 Markdown 渲染器时仍然可见。
+		local separator = pad .. string.rep("─", content_width) .. pad
+		rendered_lines = { type_line, separator }
+	end
 	for _, line in ipairs(lines) do
 		rendered_lines[#rendered_lines + 1] = pad .. fit_line(line) .. pad
 	end
 	local height = math.max(1, math.min(#rendered_lines, math.floor(vim.o.lines * 0.4)))
 	entry.height = height
 	entry.win.opts.height = height
-	entry.win.opts.width = width_for(opts)
+	entry.win.opts.width = window_width
 	entry.win.opts.ft = opts.markdown == false and "builtin_notify" or "markdown"
 	vim.bo[entry.win.buf].filetype = entry.win.opts.ft
 	entry.border_hl = border_hl
-	entry.win.opts.wo.winhighlight = ("Normal:NormalFloat,NormalNC:NormalFloat,FloatBorder:%s,FloatTitle:%s"):format(
+	local normal_hl = opts.transparent and "Normal" or "NormalFloat"
+	entry.normal_hl = normal_hl
+	entry.win.opts.wo.winhighlight = ("Normal:%s,NormalNC:%s,FloatBorder:%s,FloatTitle:%s"):format(
+		normal_hl,
+		normal_hl,
 		border_hl,
 		border_hl
 	)
-	entry.win:set_title(icon .. " " .. title)
+	entry.win:set_title(show_title and ((show_icon and icon .. " ") or "") .. title or "")
 	vim.bo[entry.win.buf].modifiable = true
 	vim.api.nvim_buf_clear_namespace(entry.win.buf, namespace, 0, -1)
 	vim.api.nvim_buf_set_lines(entry.win.buf, 0, -1, false, rendered_lines)
-	vim.api.nvim_buf_add_highlight(entry.win.buf, namespace, border_hl, 0, 0, -1)
-	vim.api.nvim_buf_add_highlight(entry.win.buf, namespace, border_hl, 1, 0, -1)
+	if show_title then
+		vim.api.nvim_buf_add_highlight(entry.win.buf, namespace, border_hl, 0, 0, -1)
+		vim.api.nvim_buf_add_highlight(entry.win.buf, namespace, border_hl, 1, 0, -1)
+	end
+	local message_hl = opts.message_hl
+	if type(message_hl) == "table" then
+		message_hl = message_hl[level_name] or message_hl.info
+	end
+	if not message_hl and not show_title then
+		message_hl = border_hl
+	end
+	if message_hl then
+		local first_message_line = show_title and 2 or 0
+		for line = first_message_line, #rendered_lines - 1 do
+			vim.api.nvim_buf_add_highlight(entry.win.buf, namespace, message_hl, line, 0, -1)
+		end
+	end
 	vim.bo[entry.win.buf].modifiable = false
 	entry.win:update()
 	apply_border(entry)
 end
 
 local function record_history(message, level, opts)
-	local title = opts.title or level_names[level] or "Notification"
+	local title = opts.title == false and (opts.backend == "fidget" and "Fidget" or "")
+		or opts.title
+		or level_names[level]
+		or "Notification"
 	history_id = history_id + 1
 	table.insert(history, {
 		id = history_id,
@@ -444,7 +547,9 @@ end
 ---@return builtin.win
 function M.notify(message, level, opts)
 	level = level or levels.INFO
-	opts = vim.tbl_extend("force", {}, options, opts or {})
+	local requested_opts = opts or {}
+	local backend_opts = options.backends and options.backends[requested_opts.backend or "notify"] or {}
+	opts = vim.tbl_extend("force", {}, options, backend_opts, requested_opts)
 	record_history(message, level, opts)
 	local anchor = anchor_of(opts)
 	local index = opts.id and ids[anchor][opts.id]
@@ -469,7 +574,7 @@ function M.notify(message, level, opts)
 		width = width_for(opts),
 		height = 1,
 		border = opts.border,
-		focusable = false,
+		focusable = true,
 		enter = false,
 		zindex = opts.zindex,
 		wo = {
@@ -561,12 +666,23 @@ function M.success(message, opts)
 end
 
 function M.fidget(message, level, opts)
-	opts = vim.tbl_extend("force", { anchor = "SE", backend = "fidget" }, opts or {})
+	local fidget_opts = options.backends and options.backends.fidget or {}
+	opts = vim.tbl_extend("force", {
+		anchor = fidget_opts.anchor or "SE",
+		backend = "fidget",
+		title = false,
+		icon = fidget_opts.icon,
+		padding = fidget_opts.padding or 0,
+		width = fidget_opts.width,
+		max_width = fidget_opts.max_width,
+		transparent = true,
+		auto_width = true,
+		markdown = fidget_opts.markdown,
+		border = fidget_opts.border,
+		border_hl = fidget_opts.border_hl,
+		message_hl = fidget_opts.message_hl,
+	}, opts or {})
 	return M.notify(message, level or levels.INFO, opts)
-end
-
-local function skipped_message(kind)
-	return vim.tbl_contains({ "search_count", "search_cmd", "completion", "wildlist", "showmode", "empty" }, kind)
 end
 
 local function setup_notify_backend(backend_opts)
@@ -578,7 +694,6 @@ local function setup_notify_backend(backend_opts)
 			"notify",
 			"msg.clear",
 		},
-		prefix = { "msg.show." },
 		min_level = levels.TRACE,
 		handler = function(message)
 			if message.tag == "msg.clear" then
@@ -593,18 +708,6 @@ local function setup_notify_backend(backend_opts)
 				M.notify(message.content, message.level, notify_opts)
 				return
 			end
-			local data = message.data or {}
-			if skipped_message(data.kind) then
-				return
-			end
-			local id = data.kind == "echomsg" and data.kind or (data.replace_last and tostring(message.id) or nil)
-			M.notify(message.content, message.level, {
-				anchor = backend_opts.anchor,
-				backend = "notify",
-				id = id,
-				mode = data.append and "append" or "replace",
-				title = data.title or "Messages",
-			})
 		end,
 	})
 end
@@ -641,7 +744,15 @@ local function setup_fidget_backend(backend_opts)
 				backend = "fidget",
 				id = message.tag,
 				mode = modes[message.tag] or "replace",
-				title = "Messages",
+				title = false,
+				icon = backend_opts.icon,
+				padding = backend_opts.padding or 0,
+				transparent = true,
+				auto_width = true,
+				markdown = backend_opts.markdown,
+				border = backend_opts.border,
+				border_hl = backend_opts.border_hl,
+				message_hl = backend_opts.message_hl,
 			})
 		end,
 	})
@@ -653,6 +764,7 @@ function M.setup(opts)
 	end
 	configured = true
 	options = vim.tbl_deep_extend("force", options, opts or {})
+	setup_interaction()
 	Builtin.bus.setup()
 	local backends = options.backends or {}
 	setup_notify_backend(backends.notify or {})

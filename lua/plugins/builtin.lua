@@ -18,10 +18,6 @@ return {
 			timeout = 2000,
 			-- 默认堆叠位置。[可选值："NE"（右上）、"SE"（右下）]
 			anchor = "NE",
-			-- 内容宽度，单位为列。[可选值：正整数]
-			width = 50,
-			-- 最大宽度占编辑器列数的比例。[可选值：0 到 1 的数字]
-			max_width = 0.45,
 			-- 内容与边框之间的水平空白列数。[可选值：大于或等于 0 的整数]
 			padding = 1,
 			-- 浮动窗口边框样式。[可选值："rounded"、"single"、"double"、"solid"、false]
@@ -39,6 +35,7 @@ return {
 			-- 动画曲线。[可选值："linear"、"inQuad"、"outQuad"、"inOutQuad"、"inCubic"、"outCubic"、"inSine"、"outSine"、"inBack"、"outBack"]
 			easing = "outQuad",
 			-- 堆叠重排动画。[可选值："slide"、"none"]
+			-- 多个通知时由 notify 自动立即重排，避免窗口短暂重叠。
 			-- reflow_animation = "slide",
 			-- 堆叠重排时间，单位为毫秒。[可选值：正整数]
 			reflow_duration = 180,
@@ -46,8 +43,25 @@ return {
 			reflow_easing = "outQuad",
 			-- 不同 backend 的开关和默认堆叠位置。[可选值：enabled 为 true/false，anchor 为 "NE"/"SE"]
 			backends = {
-				notify = { enabled = true, anchor = "NE" },
-				fidget = { enabled = true, anchor = "SE" },
+				notify = {
+					enabled = true,
+					anchor = "NE",
+					-- notify 的固定宽度配置只作用于 notify backend。
+					width = 50,
+					max_width = 0.45,
+				},
+				fidget = {
+					enabled = true,
+					anchor = "SE",
+					-- fidget 只显示透明文本；需要时可设置 icon 字符。
+					border = false,
+					title = false,
+					icon = false,
+					padding = 1,
+					markdown = true,
+					width = 999,
+					max_width = 0.95,
+				},
 			},
 			-- 各通知级别的类型栏和边框高亮组名称。[可选值：任意已定义的高亮组名]
 			border_hl = {
