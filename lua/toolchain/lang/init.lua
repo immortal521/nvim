@@ -16,9 +16,56 @@
 
 local M = {}
 local specs_dir = vim.fs.joinpath(vim.fn.stdpath("config"), "lua", "toolchain", "lang", "specs")
+
 local languages = {} ---@type table<string, LanguageSpec>
 local lsp_enabled = {} ---@type table<string, boolean>
+
 local spec_names = {}
+
+local function add_unique(list, value)
+	if not vim.tbl_contains(list, value) then
+		list[#list + 1] = value
+	end
+end
+
+local function extend_unique(list, values)
+	for _, value in ipairs(values) do
+		add_unique(list, value)
+	end
+end
+
+---@param definition LanguageSpec
+---@param callback fun(filetype: string)
+local function each_filetype(definition, callback)
+	for _, filetype in ipairs(definition.filetypes) do
+		callback(filetype)
+	end
+end
+
+---@param field string
+---@param filetypes_field? string
+---@return table<string, string[]>
+local function collect_by_filetype(field, filetypes_field)
+	local result = {}
+
+	for _, definition in pairs(languages) do
+		local values = definition[field]
+		if not values then
+			goto continue
+		end
+
+		local filetypes = definition[filetypes_field] or definition.filetypes
+
+		for _, filetype in ipairs(filetypes) do
+			result[filetype] = result[filetype] or {}
+			extend_unique(result[filetype], values)
+		end
+
+		::continue::
+	end
+
+	return result
+end
 
 for name, kind in vim.fs.dir(specs_dir) do
 	if kind == "file" and name:sub(-4) == ".lua" then
@@ -27,12 +74,13 @@ for name, kind in vim.fs.dir(specs_dir) do
 end
 
 table.sort(spec_names)
-for _, language in ipairs(spec_names) do
-	local ok, definition = pcall(require, "toolchain.lang.specs." .. language)
+
+for _, name in ipairs(spec_names) do
+	local ok, definition = pcall(require, "toolchain.lang.specs." .. name)
 	if ok and type(definition) == "table" and vim.islist(definition.filetypes) and #definition.filetypes > 0 then
-		languages[language] = definition
+		languages[name] = definition
 	else
-		vim.notify(("Invalid language specification: %s.lua"):format(language), vim.log.levels.WARN)
+		vim.notify(("Invalid language specification: %s.lua"):format(name), vim.log.levels.WARN)
 	end
 end
 
@@ -43,59 +91,37 @@ end
 
 ---@return table<string, string[]>
 function M.get_formatters()
-	local result = {}
-	for _, definition in pairs(languages) do
-		for _, filetype in ipairs(definition.filetypes) do
-			if definition.formatters then
-				result[filetype] = result[filetype] or {}
-				for _, formatter in ipairs(definition.formatters) do
-					if not vim.tbl_contains(result[filetype], formatter) then
-						result[filetype][#result[filetype] + 1] = formatter
-					end
-				end
-			end
-		end
-	end
-	result.graphql = { "prettier", "biome", "oxfmt" }
-	result.handlebars = { "prettier", "biome", "oxfmt" }
-	result.luau = { "stylua" }
+	local result = collect_by_filetype("formatters")
+
+	vim.tbl_extend("force", result, {
+		graphql = { "prettier", "biome", "oxfmt" },
+		handlebars = { "prettier", "biome", "oxfmt" },
+		luau = { "stylua" },
+	})
+
 	return result
 end
 
 ---@return table<string, string[]>
 function M.get_linters()
-	local result = {}
-	for _, definition in pairs(languages) do
-		if definition.linters then
-			for _, filetype in ipairs(definition.lint_filetypes or definition.filetypes) do
-				result[filetype] = result[filetype] or {}
-				for _, linter in ipairs(definition.linters) do
-					if not vim.tbl_contains(result[filetype], linter) then
-						result[filetype][#result[filetype] + 1] = linter
-					end
-				end
-			end
-		end
-	end
-	return result
+	return collect_by_filetype("linters", "lint_filetypes")
 end
 
 ---@return { parsers: string[], filetypes: string[] }
 function M.get_treesitter()
-	local result = { parsers = {}, filetypes = {} }
+	local result = {
+		parsers = {},
+		filetypes = {},
+	}
 	for _, definition in pairs(languages) do
-		if definition.treesitter then
-			for _, parser in ipairs(definition.treesitter) do
-				if not vim.tbl_contains(result.parsers, parser) then
-					result.parsers[#result.parsers + 1] = parser
-				end
-			end
-			for _, filetype in ipairs(definition.filetypes) do
-				if not vim.tbl_contains(result.filetypes, filetype) then
-					result.filetypes[#result.filetypes + 1] = filetype
-				end
-			end
+		if not definition.treesitter then
+			goto continue
 		end
+		extend_unique(result.parsers, definition.treesitter)
+		each_filetype(definition, function(filetype)
+			add_unique(result.filetypes, filetype)
+		end)
+		::continue::
 	end
 	return result
 end
@@ -103,14 +129,14 @@ end
 ---仅在打开对应文件类型时启用该语言声明的 LSP。
 ---@param filetype string
 function M.enable_lsp(filetype)
-	for _, item in pairs(languages) do
-		if vim.tbl_contains(item.filetypes, filetype) then
-			for _, name in ipairs(item.lsp or {}) do
-				if not lsp_enabled[name] then
-					vim.lsp.enable(name)
-					lsp_enabled[name] = true
-				end
-			end
+	local definition = M.get_by_filetype(filetype)
+	if not definition or not definition.lsp then
+		return
+	end
+	for _, name in ipairs(definition.lsp) do
+		if not lsp_enabled[name] then
+			vim.lsp.enable(name)
+			lsp_enabled[name] = true
 		end
 	end
 end
@@ -132,20 +158,26 @@ end
 function M.get_by_filetype(filetype)
 	local result
 	for _, definition in pairs(languages) do
-		if vim.tbl_contains(definition.filetypes, filetype) then
-			result = result or { filetypes = {} }
-			vim.list_extend(result.filetypes, definition.filetypes)
-			for _, field in ipairs({ "formatters", "linters", "lsp", "treesitter" }) do
-				if definition[field] then
-					result[field] = result[field] or {}
-					for _, value in ipairs(definition[field]) do
-						if not vim.tbl_contains(result[field], value) then
-							result[field][#result[field] + 1] = value
-						end
-					end
-				end
+		if not vim.tbl_contains(definition.filetypes, filetype) then
+			goto continue
+		end
+		result = result or {
+			filetypes = {},
+		}
+		extend_unique(result.filetypes, definition.filetypes)
+
+		for _, field in ipairs({
+			"formatters",
+			"linters",
+			"lsp",
+			"treesitter",
+		}) do
+			if definition[field] then
+				result[field] = result[field] or {}
+				extend_unique(result[field], definition[field])
 			end
 		end
+		::continue::
 	end
 	return result
 end

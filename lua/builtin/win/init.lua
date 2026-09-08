@@ -395,7 +395,7 @@ function M:toggle_help(opts)
 	local win = M.new(M.resolve({ style = "help" }, opts.win or {}, {
 		show = false,
 		focusable = false,
-		zindex = self.opts.zindex or 50 + 1,
+		zindex = (self.opts.zindex or 50) + 1,
 		bo = { filetype = "core_win_help" },
 	}))
 	self:on("WinClosed", function()
@@ -1090,10 +1090,10 @@ function M:drop()
 	if not backdrop.transparent then
 		if Utils.hlgroup.is_transparent() then
 			---@diagnostic disable-next-line: assign-type-mismatch
-			bg = nil
+			bg = "NONE"
 		else
 			---@diagnostic disable-next-line: param-type-mismatch
-			bg = Utils.hlgroup.blend(Utils.hlgroup.color("Normal", "bg"), bg, winblend or 0 / 100)
+			bg = Utils.hlgroup.blend(Utils.hlgroup.color("Normal", "bg"), bg, (winblend or 0) / 100)
 		end
 		winblend = 0
 	end

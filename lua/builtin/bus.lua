@@ -12,7 +12,14 @@
 ---@field min_level? integer
 ---@field handler fun(message: builtin.bus.Message)
 
+---@class builtin.bus
+---@field setup fun()
+---@field register_subscriber fun(id: string, spec: builtin.bus.SubscriberSpec): boolean
+---@field register_observer fun(id: string, callback: fun(message: builtin.bus.Message))
+---@field unsubscribe fun(id: string)
+---@field emit fun(tag: string, level: integer, content: any, data?: table): builtin.bus.Message
 local M = {}
+
 local subscribers = {}
 local observers = {}
 local next_id = 0

@@ -69,7 +69,10 @@ function M.source()
 	for _, item in ipairs(history) do
 		local title = item.title and item.title[1] or "Notify"
 		local backend = item.backend or "notify"
-		local key = backend .. "\31" .. title
+		local key = tostring(item.id)
+		if backend == "fidget" and item.append then
+			key = backend .. "\31" .. (item.notification_id or title)
+		end
 		local group = groups[key]
 		if not group then
 			group = {
@@ -82,30 +85,38 @@ function M.source()
 			group_order[#group_order + 1] = group
 		end
 		group.count = group.count + 1
-		group.messages[#group.messages + 1] = type(item.message) == "table" and table.concat(item.message, "\n")
-			or tostring(item.message)
+		group.messages[#group.messages + 1] = {
+			index = item.index or item.id,
+			text = type(item.message) == "table" and table.concat(item.message, "\n") or tostring(item.message),
+		}
 	end
 
 	for _, group in ipairs(group_order) do
+		table.sort(group.messages, function(a, b)
+			return a.index < b.index
+		end)
 		local item = group.latest
 		local title = item.title and item.title[1] or "Notify"
 		local time = item.title and item.title[2] or ""
 		local lvl_info = LEVEL_CONFIG[item.level] or { ansi = "\27[90m [" .. tostring(item.level) .. "]\27[0m" }
-		local msg_str = table.concat(vim.tbl_map(tostring, group.messages), " | ")
+		local messages = vim.tbl_map(function(message)
+			return message.text
+		end, group.messages)
+		local msg_str = table.concat(messages, " | ")
 		-- fzf 的每个条目必须占一行；预览保留同一来源的完整消息列表。
 		msg_str = msg_str:gsub("[\r\n]+", " ")
 		local display_title = group.count > 1 and (title .. " (" .. group.count .. ")") or title
 		local display = string.format("%s  %-15s \27[90m%-8s\27[0m %s", lvl_info.ansi, display_title, time, msg_str)
 		local raw = vim.deepcopy(item)
-		raw.message = group.messages
+		raw.message = messages
 		raw.backend = group.backend
 		items[#items + 1] = {
 			raw = raw,
 			title = display_title,
 			display = display,
 		}
-		for _, message in ipairs(group.messages) do
-			seen_messages[tostring(message):gsub("[\r\n]+", " ")] = true
+		for _, message in ipairs(messages) do
+			seen_messages[message:gsub("[\r\n]+", " ")] = true
 		end
 	end
 
