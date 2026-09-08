@@ -25,6 +25,9 @@ local observers = {}
 local next_id = 0
 local initialized = false
 local ui_namespace
+local queue = {}
+local flush_scheduled = false
+local flushing = false
 
 local function message_text(content)
 	local chunks = {}
@@ -118,6 +121,60 @@ function M.unsubscribe(id)
 	observers[id] = nil
 end
 
+local function dispatch(message)
+	for _, callback in pairs(observers) do
+		local ok, err = pcall(callback, message)
+		if not ok then
+			vim.schedule(function()
+				vim.api.nvim_echo(
+					{ { ("Builtin bus observer failed: %s"):format(err), "ErrorMsg" } },
+					true,
+					{ err = true }
+				)
+			end)
+		end
+	end
+	for _, spec in pairs(subscribers) do
+		if interested(spec, message) then
+			local ok, err = pcall(spec.handler, message)
+			if not ok then
+				vim.schedule(function()
+					vim.api.nvim_echo(
+						{ { ("Builtin bus subscriber failed: %s"):format(err), "ErrorMsg" } },
+						true,
+						{ err = true }
+					)
+				end)
+			end
+		end
+	end
+end
+
+local function flush()
+	flush_scheduled = false
+	if flushing then
+		return
+	end
+	flushing = true
+	while #queue > 0 do
+		local message = table.remove(queue, 1)
+		dispatch(message)
+	end
+	flushing = false
+	if #queue > 0 then
+		flush_scheduled = true
+		vim.schedule(flush)
+	end
+end
+
+local function schedule_flush()
+	if flush_scheduled then
+		return
+	end
+	flush_scheduled = true
+	vim.schedule(flush)
+end
+
 ---@param tag string
 ---@param level integer
 ---@param content any
@@ -136,23 +193,8 @@ function M.emit(tag, level, content, data)
 		data = data or {},
 		timestamp = vim.uv.now(),
 	}
-	for _, callback in pairs(observers) do
-		callback(message)
-	end
-	for _, spec in pairs(subscribers) do
-		if interested(spec, message) then
-			local ok, err = pcall(spec.handler, message)
-			if not ok then
-				vim.schedule(function()
-					vim.api.nvim_echo(
-						{ { ("Builtin bus subscriber failed: %s"):format(err), "ErrorMsg" } },
-						true,
-						{ err = true }
-					)
-				end)
-			end
-		end
-	end
+	queue[#queue + 1] = message
+	schedule_flush()
 	return message
 end
 

@@ -41,6 +41,30 @@ Utils.keymap.add(keys)
 
 local grp = vim.api.nvim_create_augroup("SetupLSP", { clear = true })
 
+local lsp_progress = {}
+local lsp_progress_timer
+
+local function flush_lsp_progress()
+	lsp_progress_timer = nil
+	for client_id, progress in pairs(lsp_progress) do
+		Builtin.notify.fidget(progress.content, vim.log.levels.INFO, {
+			id = "lsp:" .. tostring(client_id),
+			mode = "replace",
+			timeout = progress.done and 2000 or false,
+		})
+		if progress.done then
+			lsp_progress[client_id] = nil
+		end
+	end
+end
+
+local function queue_lsp_progress()
+	if lsp_progress_timer then
+		return
+	end
+	lsp_progress_timer = vim.defer_fn(flush_lsp_progress, 100)
+end
+
 vim.api.nvim_create_autocmd("LspProgress", {
 	group = grp,
 	callback = function(event)
@@ -55,11 +79,31 @@ vim.api.nvim_create_autocmd("LspProgress", {
 			content = ("%s (%d%%)"):format(content, value.percentage)
 		end
 		local token = tostring(params.token or title)
-		Builtin.notify.fidget(content, vim.log.levels.INFO, {
-			id = "lsp:" .. tostring(data.client_id) .. ":" .. token,
-			mode = "replace",
-			timeout = value.kind == "end" and 2000 or false,
-		})
+		local progress = lsp_progress[data.client_id]
+		if not progress then
+			progress = { tokens = {}, order = {} }
+			lsp_progress[data.client_id] = progress
+		end
+		if value.kind == "end" then
+			progress.tokens[token] = nil
+		else
+			if not progress.tokens[token] then
+				progress.order[#progress.order + 1] = token
+			end
+			progress.tokens[token] = content
+		end
+		local contents = {}
+		for _, active_token in ipairs(progress.order) do
+			if progress.tokens[active_token] then
+				contents[#contents + 1] = progress.tokens[active_token]
+			end
+		end
+		progress.content = table.concat(contents, "\n")
+		progress.done = next(progress.tokens) == nil
+		if progress.done and progress.content == "" then
+			progress.content = content
+		end
+		queue_lsp_progress()
 	end,
 })
 

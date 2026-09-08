@@ -4,7 +4,7 @@ vim.api.nvim_set_hl(0, "NotifyBackground", {
 ---@type LazyPluginSpec
 return {
 	"rcarriga/nvim-notify",
-	enabled = false,
+	enabled = true,
 	---@type notify.Config
 	opts = {
 		max_width = 50,

@@ -13,7 +13,7 @@ return {
 		},
 		notify = {
 			-- 是否在 UIEnter 阶段接管 vim.notify。[可选值：true、false]
-			enabled = true,
+			enabled = false,
 			-- 通知停留时间，单位为毫秒。[可选值：正整数、0、false]
 			timeout = 2000,
 			-- 默认堆叠位置。[可选值："NE"（右上）、"SE"（右下）]
@@ -23,7 +23,7 @@ return {
 			-- 浮动窗口边框样式。[可选值："rounded"、"single"、"double"、"solid"、false]
 			border = "rounded",
 			-- 未单独指定进入或退出动画时使用的动画。[可选值："fade"、"slide"、"fade_slide"、"none"]
-			animation = "slide",
+			animation = "none",
 			-- 进入动画。[可选值："fade"、"slide"、"fade_slide"、"none"]
 			-- enter_animation = "slide",
 			-- 退出动画。[可选值："fade"、"slide"、"fade_slide"、"none"]

@@ -25,11 +25,37 @@
 ---@field id? string
 ---@field replace? boolean
 ---@field mode? "append"|"replace"
+---@field append? boolean
 ---@field backend? "notify"|"fidget"
+---@field focusable? boolean
 ---@field message_hl? string|table<string, string>
 ---@field transparent? boolean
 ---@field auto_width? boolean
 
+---@class builtin.notify.HistoryEntry
+---@field id integer
+---@field level string
+---@field backend string
+---@field title string[]
+---@field message string
+---@field notification_id? string
+---@field append boolean
+---@field index integer
+
+---@class builtin.notify
+---@field setup fun(opts?: builtin.notify.Options)
+---@field notify fun(message: any, level?: integer, opts?: builtin.notify.NotifyOpts): builtin.win
+---@field info fun(message: any, opts?: builtin.notify.NotifyOpts): builtin.win
+---@field warn fun(message: any, opts?: builtin.notify.NotifyOpts): builtin.win
+---@field error fun(message: any, opts?: builtin.notify.NotifyOpts): builtin.win
+---@field debug fun(message: any, opts?: builtin.notify.NotifyOpts): builtin.win
+---@field trace fun(message: any, opts?: builtin.notify.NotifyOpts): builtin.win
+---@field success fun(message: any, opts?: builtin.notify.NotifyOpts): builtin.win
+---@field fidget fun(message: any, level?: integer, opts?: builtin.notify.NotifyOpts): builtin.win
+---@field history fun(): builtin.notify.HistoryEntry[]
+---@field clear_history fun()
+---@field dismiss fun(id: string)
+---@field dismiss_all fun(opts?: { anchor?: "NE"|"SE" })
 local M = {}
 
 local levels = vim.log.levels
@@ -91,6 +117,7 @@ local defaults = {
 ---@field message string
 ---@field border_hl string
 ---@field stack_gap integer
+---@field interactive boolean
 local stacks = { NE = {}, SE = {} }
 local ids = { NE = {}, SE = {} }
 local namespace = vim.api.nvim_create_namespace("BuiltinNotify")
@@ -104,6 +131,10 @@ local interaction_configured = false
 
 local function anchor_of(opts)
 	return opts.anchor == "SE" and "SE" or "NE"
+end
+
+local function is_visual_mode()
+	return vim.api.nvim_get_mode().mode:find("^[vV\22]") ~= nil
 end
 
 local function width_for(opts)
@@ -132,47 +163,42 @@ local function set_position(entry, row, col)
 	if not entry.win:valid() then
 		return
 	end
+	if is_visual_mode() then
+		return
+	end
 	entry.win.opts.row = row or entry.win.opts.row
 	entry.win.opts.col = col or entry.win.opts.col
 	local config = vim.api.nvim_win_get_config(entry.win.win)
-	config.relative = "editor"
-	config.anchor = entry.win.opts.anchor
-	config.row = entry.win.opts.row
-	config.col = entry.win.opts.col
-	vim.api.nvim_win_set_config(entry.win.win, {
+	config = vim.tbl_deep_extend("force", config, {
 		relative = "editor",
 		anchor = entry.win.opts.anchor,
 		row = entry.win.opts.row,
 		col = entry.win.opts.col,
-		width = config.width,
-		height = config.height,
-		border = config.border,
-		title = config.title,
-		title_pos = config.title_pos,
-		zindex = config.zindex,
+		focusable = entry.interactive,
 	})
+	vim.api.nvim_win_set_config(entry.win.win, config)
 end
 
 local function set_geometry(entry, width, row, col)
 	if not entry.win:valid() then
 		return
 	end
+	if is_visual_mode() then
+		return
+	end
 	entry.win.opts.width = width or entry.win.opts.width
 	entry.win.opts.row = row or entry.win.opts.row
 	entry.win.opts.col = col or entry.win.opts.col
 	local config = vim.api.nvim_win_get_config(entry.win.win)
-	vim.api.nvim_win_set_config(entry.win.win, {
+	config = vim.tbl_deep_extend("force", config, {
 		relative = "editor",
 		anchor = entry.win.opts.anchor,
 		row = entry.win.opts.row,
 		col = entry.win.opts.col,
 		width = entry.win.opts.width,
-		height = config.height,
-		border = config.border,
-		title = config.title,
-		title_pos = config.title_pos,
-		zindex = config.zindex,
+		focusable = entry.interactive,
 	})
+	vim.api.nvim_win_set_config(entry.win.win, config)
 	if entry.border_hl then
 		local normal_hl = entry.normal_hl or "NormalFloat"
 		vim.api.nvim_set_option_value(
@@ -399,7 +425,7 @@ end
 local function set_hovered_window(win)
 	for _, stack in pairs(stacks) do
 		for _, entry in ipairs(stack) do
-			local hovered = entry.win and entry.win.win == win
+			local hovered = entry.interactive and entry.win and entry.win.win == win
 			if hovered and not entry.hovered then
 				entry.hovered = true
 				if entry.timer then
@@ -440,11 +466,36 @@ local function setup_interaction()
 			set_hovered_window(nil)
 		end,
 	})
+	vim.api.nvim_create_autocmd("ModeChanged", {
+		group = group,
+		callback = function()
+			if not is_visual_mode() then
+				vim.schedule(function()
+					reflow("NE")
+					reflow("SE")
+				end)
+			end
+		end,
+	})
+end
+
+local function highlight_line(buf, hl_group, line)
+	local text = vim.api.nvim_buf_get_lines(buf, line, line + 1, false)[1] or ""
+	if text == "" then
+		return
+	end
+	vim.api.nvim_buf_set_extmark(buf, namespace, line, 0, {
+		end_row = line,
+		end_col = -1,
+		hl_group = hl_group,
+		priority = 200,
+		strict = false,
+	})
 end
 
 local function render(entry, message, level, opts)
 	local text = type(message) == "string" and message or vim.inspect(message)
-	if opts.mode == "append" and entry.message and entry.message ~= "" then
+	if (opts.append == true or opts.mode == "append") and entry.message and entry.message ~= "" then
 		text = entry.message .. "\n" .. text
 	end
 	entry.message = text
@@ -503,13 +554,15 @@ local function render(entry, message, level, opts)
 		border_hl,
 		border_hl
 	)
-	entry.win:set_title(show_title and ((show_icon and icon .. " ") or "") .. title or "")
+	if not is_visual_mode() then
+		entry.win:set_title(show_title and ((show_icon and icon .. " ") or "") .. title or "")
+	end
 	vim.bo[entry.win.buf].modifiable = true
 	vim.api.nvim_buf_clear_namespace(entry.win.buf, namespace, 0, -1)
 	vim.api.nvim_buf_set_lines(entry.win.buf, 0, -1, false, rendered_lines)
 	if show_title then
-		vim.api.nvim_buf_add_highlight(entry.win.buf, namespace, border_hl, 0, 0, -1)
-		vim.api.nvim_buf_add_highlight(entry.win.buf, namespace, border_hl, 1, 0, -1)
+		highlight_line(entry.win.buf, border_hl, 0)
+		highlight_line(entry.win.buf, border_hl, 1)
 	end
 	local message_hl = opts.message_hl
 	if type(message_hl) == "table" then
@@ -521,15 +574,18 @@ local function render(entry, message, level, opts)
 	if message_hl then
 		local first_message_line = show_title and 2 or 0
 		for line = first_message_line, #rendered_lines - 1 do
-			vim.api.nvim_buf_add_highlight(entry.win.buf, namespace, message_hl, line, 0, -1)
+			highlight_line(entry.win.buf, message_hl, line)
 		end
 	end
 	vim.bo[entry.win.buf].modifiable = false
-	entry.win:update()
+	if not is_visual_mode() then
+		entry.win:update()
+	end
 	apply_border(entry)
 end
 
 local function record_history(message, level, opts)
+	local append = opts.append == true or opts.mode == "append"
 	local title = opts.title == false and (opts.backend == "fidget" and "Fidget" or "")
 		or opts.title
 		or level_names[level]
@@ -541,6 +597,9 @@ local function record_history(message, level, opts)
 		backend = opts.backend or "notify",
 		title = { title, os.date("%H:%M:%S") },
 		message = type(message) == "string" and message or vim.inspect(message),
+		notification_id = opts.id,
+		append = append,
+		index = history_id,
 	})
 	if #history > 500 then
 		table.remove(history, 1)
@@ -575,6 +634,7 @@ function M.notify(message, level, opts)
 		height = 1,
 		generation = 0,
 		message = "",
+		interactive = opts.backend ~= "fidget" and opts.focusable ~= false,
 		stack_gap = 0,
 	}
 	local initial_level = (level_names[level] or "Info"):lower()
@@ -587,7 +647,7 @@ function M.notify(message, level, opts)
 		width = width_for(opts),
 		height = 1,
 		border = opts.border,
-		focusable = true,
+		focusable = entry.interactive,
 		enter = false,
 		zindex = opts.zindex,
 		wo = {
@@ -683,6 +743,10 @@ function M.fidget(message, level, opts)
 	opts = vim.tbl_extend("force", {
 		anchor = fidget_opts.anchor or "SE",
 		backend = "fidget",
+		animation = "none",
+		enter_animation = "none",
+		leave_animation = "none",
+		reflow_animation = "none",
 		title = false,
 		icon = fidget_opts.icon,
 		padding = fidget_opts.padding or 0,
@@ -694,6 +758,7 @@ function M.fidget(message, level, opts)
 		border = fidget_opts.border,
 		border_hl = fidget_opts.border_hl,
 		message_hl = fidget_opts.message_hl,
+		focusable = false,
 	}, opts or {})
 	return M.notify(message, level or levels.INFO, opts)
 end
@@ -755,6 +820,10 @@ local function setup_fidget_backend(backend_opts)
 			M.notify(message.content, message.level, {
 				anchor = backend_opts.anchor,
 				backend = "fidget",
+				animation = "none",
+				enter_animation = "none",
+				leave_animation = "none",
+				reflow_animation = "none",
 				id = message.tag,
 				mode = modes[message.tag] or "replace",
 				title = false,
@@ -766,6 +835,7 @@ local function setup_fidget_backend(backend_opts)
 				border = backend_opts.border,
 				border_hl = backend_opts.border_hl,
 				message_hl = backend_opts.message_hl,
+				focusable = false,
 			})
 		end,
 	})

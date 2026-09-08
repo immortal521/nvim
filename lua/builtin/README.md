@@ -123,14 +123,14 @@ lua_ls: Indexing (45%)
 `Builtin.notify.history()` 返回通知历史。`lua/sources/notification.lua` 还会
 读取 bus 初始化前产生的 `:messages`，补入尚未记录的消息。
 
-`<leader>n` 打开的通知 source 会按 `backend + title` 合并条目：
+`<leader>n` 打开的通知 source 默认不合并 notify 条目：
 
-- 列表中显示一个合并项和消息数量。
-- 预览中保留同一来源的完整消息。
-- notify、fidget 和补入的 `messages` 会分别保留来源。
+- `append = true` 的 fidget 历史记录，按 `notification_id` 合并为一个条目。
+- 合并内容按历史 `index` 顺序追加，预览中保留完整消息列表。
+- notify、replace 模式的 fidget 和补入的 `messages` 都分别保留。
 
-如果新增 backend，需要同时决定它的 bus 标签、历史 backend 名称、显示样式和
-fzf 合并键，避免不同来源被错误合并。
+如果新增 backend，需要同时决定它的 bus 标签、历史 backend 名称和显示样式；只有明确
+需要追加的 fidget 消息才应设置 `append = true`，并提供稳定的 `id`。
 
 ## 验证
 
