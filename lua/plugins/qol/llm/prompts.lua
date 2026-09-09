@@ -28,14 +28,19 @@ NOTE:
 
 Rules:
 - Format: `type: concise description`
-- Infer the intent of the changes and describe their purpose or behavioral impact, not just implementation details.
-- Choose the type and wording that best reflect the actual change.
-- Add concise bullets only when useful to clarify important changes; otherwise omit them.
-- Leave one blank line before bullets.
-- Be factual, specific, and terse.
+- Describe the overall purpose or behavioral impact, not just
+  implementation details.
+- Choose the type and wording based on the actual changes.
+- If there are multiple meaningful changes, add concise bullets;
+  otherwise omit them.
+- Bullets must describe distinct changes, not repeat the title.
+- Put one blank line before bullets.
+- Keep the message factual, specific, and terse.
+- Base it strictly on the diff; do not invent intent or changes.
 - Use recent commits only as a style reference.
-- Base the message on the diff; do not invent intent or changes unsupported by it.
-- Output only the commit message. No explanation, Markdown, quotes, or code fences.
+- Keep every line at most 72 characters.
+- Output only the commit message, with no Markdown, quotes,
+  explanations, or commentary.
 
 ```diff
 %s
