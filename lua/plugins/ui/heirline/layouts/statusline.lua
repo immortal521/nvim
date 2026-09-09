@@ -1,5 +1,5 @@
-local common = require("heirline.components.common")
-local statusline = require("heirline.components.statusline")
+local common = require("plugins.ui.heirline.components.common")
+local statusline = require("plugins.ui.heirline.components.statusline")
 
 local has_branch = function()
 	return vim.b.minigit_summary ~= nil

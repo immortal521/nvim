@@ -1,6 +1,6 @@
 local icons = require("config.icons")
 local utils = require("heirline.utils")
-local tabline = require("heirline.components.tabline")
+local tabline = require("plugins.ui.heirline.components.tabline")
 
 local buflist_cache = {}
 local get_bufs = function()

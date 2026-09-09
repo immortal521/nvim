@@ -1,4 +1,4 @@
-local common = require("heirline.components.common")
+local common = require("plugins.ui.heirline.components.common")
 
 return {
 	init = function(self)
