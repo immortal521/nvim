@@ -8,7 +8,7 @@ return {
 	opts = {
 		-- 通知由 nvim-notify 接管，避免 Noice 与其重复覆盖 vim.notify。
 		notify = {
-			enabled = true,
+			enabled = false,
 		},
 		lsp = {
 			progress = {

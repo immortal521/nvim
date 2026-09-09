@@ -5,8 +5,6 @@
 ---@field buf builtin.buf
 ---@field animate builtin.animate
 ---@field scroll builtin.scroll
----@field notify builtin.notify
----@field bus builtin.bus
 local M = {}
 
 setmetatable(M, {
@@ -24,7 +22,6 @@ _G.Builtin = M
 ---@field terminal? builtin.terminal.Config|{}
 ---@field win? builtin.win.Config|{}
 ---@field scroll? builtin.scroll.Config|{}
----@field notify? builtin.notify.Options|{}
 ---@field animate? builtin.animate.Config|{}
 ---@field bus? table
 local config = {}
@@ -113,7 +110,7 @@ function M.setup(opts)
 	end
 
 	local events = {
-		UIEnter = { "bus", "notify", "scroll" },
+		UIEnter = { "scroll" },
 	}
 
 	---@param event string
