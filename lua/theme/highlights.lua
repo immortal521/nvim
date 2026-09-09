@@ -8,7 +8,6 @@ function M.setup(palette, transparent)
 	local bg_deep = transparent and "NONE" or palette.bg_deep
 	local bg_highlight = transparent and "NONE" or palette.bg_highlight
 
-	-- Float 专用背景与边框处理
 	local float_bg = transparent and "NONE" or palette.float.bg
 	local float_border = palette.float.border
 
@@ -101,7 +100,7 @@ function M.setup(palette, transparent)
 		Boolean = { fg = palette.peach, bold = true },
 		Float = { fg = palette.peach },
 
-		Identifier = { fg = palette.primary }, -- 标识符作为核心联动主色
+		Identifier = { fg = palette.primary },
 		Function = { fg = palette.blue, bold = true },
 		Statement = { fg = palette.purple },
 		Conditional = { fg = palette.purple, italic = true, bold = true },

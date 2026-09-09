@@ -2,10 +2,9 @@ local M = {}
 
 M.url = "https://github.com/rcarriga/nvim-notify"
 
----HEX 颜色混合辅助函数
----@param foreground string 十六进制前景色 (#RRGGBB)
----@param alpha number 0.0 ~ 1.0 的混合比例
----@param background string 十六进制背景色 (#RRGGBB)
+---@param foreground string
+---@param alpha number
+---@param background string
 ---@return string 十六进制混合色
 local function blend(foreground, alpha, background)
 	local function rgb(c)
@@ -42,31 +41,26 @@ function M.get(palette, opts)
 	return {
 		NotifyBackground = { fg = palette.fg, bg = bg_color },
 
-		-- DEBUG
 		NotifyDEBUGBody = { fg = palette.fg, bg = bg_color },
 		NotifyDEBUGBorder = { fg = blend(debug_color, 0.3, bg_base), bg = bg_color },
 		NotifyDEBUGIcon = { fg = debug_color },
 		NotifyDEBUGTitle = { fg = debug_color, bold = true },
 
-		-- ERROR
 		NotifyERRORBody = { fg = palette.fg, bg = bg_color },
 		NotifyERRORBorder = { fg = blend(err_color, 0.3, bg_base), bg = bg_color },
 		NotifyERRORIcon = { fg = err_color },
 		NotifyERRORTitle = { fg = err_color, bold = true },
 
-		-- INFO
 		NotifyINFOBody = { fg = palette.fg, bg = bg_color },
 		NotifyINFOBorder = { fg = blend(info_color, 0.3, bg_base), bg = bg_color },
 		NotifyINFOIcon = { fg = info_color },
 		NotifyINFOTitle = { fg = info_color, bold = true },
 
-		-- TRACE
 		NotifyTRACEBody = { fg = palette.fg, bg = bg_color },
 		NotifyTRACEBorder = { fg = blend(trace_color, 0.3, bg_base), bg = bg_color },
 		NotifyTRACEIcon = { fg = trace_color },
 		NotifyTRACETitle = { fg = trace_color, bold = true },
 
-		-- WARN
 		NotifyWARNBody = { fg = palette.fg, bg = bg_color },
 		NotifyWARNBorder = { fg = blend(warn_color, 0.3, bg_base), bg = bg_color },
 		NotifyWARNIcon = { fg = warn_color },

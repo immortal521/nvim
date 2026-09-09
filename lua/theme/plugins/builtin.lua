@@ -18,7 +18,6 @@ function M.get(palette, opts)
 	local border = palette.border_highlight or palette.border or palette.fg_gutter
 
 	return {
-		-- Builtin 窗口组件的基础语义组。
 		BuiltinNormal = "NormalFloat",
 		BuiltinNormalNC = "NormalFloat",
 		BuiltinTitle = "FloatTitle",
@@ -33,7 +32,6 @@ function M.get(palette, opts)
 		BuiltinWinSeparator = "WinSeparator",
 		BuiltinActiveBorder = { fg = border, bg = float_bg },
 
-		-- 通知的边框、标题和分隔线共用同一语义色。
 		BuiltinNotifyErrorBorder = { fg = notify_error, bg = float_bg, bold = true },
 		BuiltinNotifyWarnBorder = { fg = notify_warn, bg = float_bg, bold = true },
 		BuiltinNotifyInfoBorder = { fg = notify_info, bg = float_bg, bold = true },

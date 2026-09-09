@@ -73,7 +73,7 @@ local hsluv = require("theme.hsluv")
 
 local day_brightness = 0.3
 
----RGB 辅助转换
+---RGB transform
 ---@param color string
 ---@return number[]
 local function rgb(color)
@@ -85,13 +85,13 @@ local function rgb(color)
 	}
 end
 
----RGB 色彩混合 (Alpha Blend)
+---RGB (Alpha Blend)
 ---@param foreground string
 ---@param alpha number|string
 ---@param background string
 ---@return string
 local function blend(foreground, alpha, background)
-	alpha = type(alpha) == "string" and (tonumber(alpha, 16) or 0 / 0xff) or alpha
+	alpha = type(alpha) == "string" and ((tonumber(alpha, 16) or 0) / 0xff) or alpha
 	local bg = rgb(background)
 	local fg = rgb(foreground)
 
@@ -103,7 +103,7 @@ local function blend(foreground, alpha, background)
 	return string.format("#%02x%02x%02x", channel(1), channel(2), channel(3))
 end
 
----Tokyonight 原生 Invert 逻辑
+---Tokyonight Invert logic
 ---@param color any
 ---@return any
 local function invert(color)
@@ -155,43 +155,38 @@ local dark = {
 	primary_dim = "#436fcd",
 	primary_bright = "#a1c2ff",
 
-	-- =========================================================================
-	-- Extended Catppuccin Syntax Accents (标准功能与高亮全色阶)
-	-- =========================================================================
-	rosewater = "#f2d5cf", -- Winbar 高亮 / 特殊标点
-	flamingo = "#eebebe", -- 变量引用 / 弱强调标签
-	pink = "#fca7ea", -- 预处理指令 / 宏 / 装饰标签
-	mauve = "#ca9ee6", -- 特殊结构体 / 转义字符 / 正则
-	purple = "#c099ff", -- 逻辑关键字 (if/return)
-	red = "#ff757f", -- 错误 / 破坏性操作 / 声明
-	red_dim = "#c53b53", -- 暗红 / 弱化报错
-	maroon = "#ea999c", -- 异常捕获 / 强提示
-	peach = "#ef9f76", -- 函数参数 / 变量名
-	orange = "#ff966c", -- 数字 / 常量 / 布尔值
-	yellow = "#ffc777", -- 类名 / 构造函数
-	green = "#c3e88d", -- 字符串
-	green_dim = "#a6d189", -- 弱高亮绿 / 文档注解代码
-	green_bright = "#4fd6be", -- 高亮绿 / 格式化符号
-	teal = "#4fd6be", -- 结构体属性 / 成员访问
-	sky = "#99d1db", -- 路径 / 模块导入
-	sapphire = "#85c1dc", -- 内置类型 / 特殊函数
-	blue = "#82aaff", -- 标准蓝色：用于普通函数 / 方法调用
-	blue_dim = "#3e68d7", -- 辅助深蓝 / UI装饰
-	blue_bright = "#65bcff", -- 超链接 / 强高亮蓝
-	lavender = "#babbf1", -- 接口 / 泛型 / 成员变量
-	cyan = "#86e1fc", -- 类型声明 / 运算符
+	rosewater = "#f2d5cf",
+	flamingo = "#eebebe",
+	pink = "#fca7ea",
+	mauve = "#ca9ee6",
+	purple = "#c099ff",
+	red = "#ff757f",
+	red_dim = "#c53b53",
+	maroon = "#ea999c",
+	peach = "#ef9f76",
+	orange = "#ff966c",
+	yellow = "#ffc777",
+	green = "#c3e88d",
+	green_dim = "#a6d189",
+	green_bright = "#4fd6be",
+	teal = "#4fd6be",
+	sky = "#99d1db",
+	sapphire = "#85c1dc",
+	blue = "#82aaff",
+	blue_dim = "#3e68d7",
+	blue_bright = "#65bcff",
+	lavender = "#babbf1",
+	cyan = "#86e1fc",
 
 	comment = "#636da6",
 	terminal_black = "#444a73",
 
-	-- Git Status (其中 change 改为联动基调色)
 	git = {
 		add = "#b8db87",
 		change = "#78a9ff",
 		delete = "#e26a75",
 	},
 
-	-- Diagnostics (其中 info 改为联动基调色)
 	diag = {
 		error = "#ff757f",
 		warn = "#ffc777",
@@ -203,7 +198,6 @@ local dark = {
 		bg_hint = blend("#4fd6be", 0.15, "#1b1d2b"),
 	},
 
-	-- Diff Controls (其中 change 和 text 改为联动基调色)
 	diff = {
 		add = blend("#b8db87", 0.18, "#1b1d2b"),
 		change = blend("#78a9ff", 0.18, "#1b1d2b"),
@@ -212,18 +206,18 @@ local dark = {
 	},
 }
 
----根据 Tokyonight 官方 invert 算法生成 Light 调色盘
 ---@param base theme.Palette
 ---@return theme.Palette
 local function generate_light(base)
 	local colors = vim.deepcopy(base)
 	colors = invert(colors)
 
-	-- 根据转置后的主背景与文本颜色重新计算特定叠加层，确保平滑
+	-- Recalculate specific overlays based on the transposed primary
+	-- background and text colors to ensure smooth blending.
 	colors.bg_dim = blend(colors.bg, 0.9, colors.fg)
 	colors.bg_deep = blend(colors.bg_dim, 0.9, colors.fg)
 
-	-- 重新混合带有透明度的背景（防止混合基底错位）
+	-- Reblend backgrounds with transparency to prevent misalignment of the blending base.
 	colors.diag.bg_error = blend(colors.diag.error, 0.15, colors.bg)
 	colors.diag.bg_warn = blend(colors.diag.warn, 0.15, colors.bg)
 	colors.diag.bg_info = blend(colors.diag.info, 0.15, colors.bg)

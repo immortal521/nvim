@@ -14,7 +14,6 @@ function M.get(palette, opts)
 	local border_active = palette.border_highlight or primary
 
 	return {
-		-- 级联窗口背景与基本文本
 		MiniFilesNormal = { fg = float_fg, bg = float_bg },
 		MiniFilesDirectory = { fg = primary, bold = true },
 		MiniFilesFile = { fg = float_fg },
