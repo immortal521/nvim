@@ -98,8 +98,6 @@ end
 function M.setup(opts)
 	opts = opts or {}
 	local defaults = {
-		bus = { enabled = true },
-		notify = { enabled = true },
 		scroll = { enabled = false },
 	}
 	config = vim.tbl_deep_extend("force", defaults, config, opts)
