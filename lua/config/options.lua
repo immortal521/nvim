@@ -23,6 +23,7 @@ end
 -- 核心编辑器行为 (Editing Behavior)
 -------------------------------------------------------------------------------
 opt.autowrite = true -- 自动保存
+opt.autoread = true
 opt.undofile = true -- 开启持久化撤销
 opt.undolevels = 10000 -- 最大撤销步数
 opt.updatetime = 200 -- 响应时间（影响插件触发速度）
