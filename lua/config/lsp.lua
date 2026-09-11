@@ -126,10 +126,13 @@ vim.diagnostic.config({
 	underline = true,
 	virtual_text = {
 		spacing = 4,
-		source = "if_many",
+		source = true,
 		prefix = "●",
 	},
-	float = { severity_sort = true },
+	float = {
+		severity_sort = true,
+		source = true,
+	},
 	severity_sort = true,
 	signs = {
 		text = {
