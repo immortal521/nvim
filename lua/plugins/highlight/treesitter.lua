@@ -130,14 +130,4 @@ return {
 			end,
 		})
 	end,
-	config = function(_, opts)
-		local TS = require("nvim-treesitter")
-		TS.setup(opts)
-		local ok, err = pcall(TS.install, parsers, { summary = true })
-		if not ok then
-			vim.notify(("Treesitter parser installation failed: %s"):format(err), vim.log.levels.ERROR, {
-				title = "Treesitter",
-			})
-		end
-	end,
 }
