@@ -3,7 +3,7 @@ return {
 	filetypes = {
 		"nu",
 	},
-	lsp = {
-		"nushell",
-	},
+	-- lsp = {
+	-- "nushell",
+	-- },
 }
