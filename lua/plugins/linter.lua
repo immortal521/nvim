@@ -12,47 +12,8 @@ return {
 
 		linters_by_ft = require("toolchain").get_linters(),
 
-		---@class LintLinter
-		---@field condition? fun(ctx: { filename: string, dirname: string }): boolean
-
 		---@type table<string, LintLinter>
-		linters = {
-			eslint = {
-				condition = function(ctx)
-					local eslint_config_files = {
-						".eslintrc.js",
-						".eslintrc.cjs",
-						".eslintrc.json",
-						".eslintrc.yaml",
-						".eslintrc.yml",
-						"eslint.config.js",
-						"eslint.config.mjs",
-						"eslint.config.cjs",
-					}
-
-					for _, name in ipairs(eslint_config_files) do
-						if vim.fs.find(name, { path = ctx.dirname, upward = true })[1] then
-							return true
-						end
-					end
-
-					return false
-				end,
-			},
-			oxlint = {
-				condition = function(ctx)
-					local oxlint_config_files = { ".oxlintrc.json" }
-
-					for _, name in ipairs(oxlint_config_files) do
-						if vim.fs.find(name, { path = ctx.dirname, upward = true })[1] then
-							return true
-						end
-					end
-
-					return false
-				end,
-			},
-		},
+		linters = require("toolchain").get_linter_configs(),
 	},
 	config = function(_, opts)
 		local M = {}

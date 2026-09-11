@@ -1,5 +1,9 @@
+---@class LintLinter
+---@field condition? fun(ctx: { filename: string, dirname: string }): boolean
+
 ---@class ToolSpec
 ---@field formatter? conform.FormatterConfigOverride Formatter override passed to Conform.
+---@field linter? LintLinter Linter override passed to nvim-lint.
 
 local M = {}
 local specs_dir = vim.fs.joinpath(vim.fn.stdpath("config"), "lua", "toolchain", "tool", "specs")
@@ -23,6 +27,17 @@ function M.get_formatter_configs()
 	for name, definition in pairs(tools) do
 		if definition.formatter then
 			result[name] = vim.deepcopy(definition.formatter)
+		end
+	end
+	return result
+end
+
+---@return table<string, LintLinter>
+function M.get_linter_configs()
+	local result = {}
+	for name, definition in pairs(tools) do
+		if definition.linter then
+			result[name] = vim.deepcopy(definition.linter)
 		end
 	end
 	return result

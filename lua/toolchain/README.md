@@ -15,6 +15,7 @@
 | `get_formatters()` | 从语言规格聚合 `filetype -> formatter[]`。 |
 | `get_formatter_configs()` | 返回工具规格提供的 Conform formatter 条件。 |
 | `get_linters()` | 从语言规格聚合 `filetype -> linter[]`。 |
+| `get_linter_configs()` | 返回工具规格提供的 nvim-lint linter 条件。 |
 | `get_treesitter()` | 返回需要安装的 parser 和用于启动 parser 的 filetype。 |
 | `get_mason_packages()` | 返回语言工具和额外工具对应的 Mason 包名。 |
 
@@ -149,6 +150,26 @@ lua/toolchain/tool/specs/oxfmt.lua
 
 修改工具配置文件探测规则时，只修改对应工具规格，不要把条件逻辑重新写回
 `lua/plugins/formatting.lua`。
+
+Linter 也遵循相同规则。语言规格中的 `linters` 只声明语言使用哪些 linter，
+工具规格中的 `linter.condition` 决定该 linter 在当前项目中是否启用。条件由
+`nvim-lint` 在实际 lint 时根据当前文件路径执行。
+
+当前带项目配置条件的 linter：
+
+- ESLint：找到 ESLint 配置文件后才生效。
+- Oxlint：找到 `.oxlintrc.json` 后才生效。
+
+这些条件位于：
+
+```text
+lua/toolchain/tool/specs/eslint.lua
+lua/toolchain/tool/specs/oxlint.lua
+```
+
+修改 linter 配置文件探测规则时，只修改对应工具规格，不要把条件逻辑写回
+`lua/plugins/linting.lua`。`lua/plugins/linting.lua` 只负责注册 linter、执行
+lint 和发布诊断。
 
 Conform 当前仍使用 formatter 列表的默认行为：如果多个 formatter 条件同时
 满足，且调用时没有设置 `stop_after_first = true`，Conform 可能按顺序执行多个

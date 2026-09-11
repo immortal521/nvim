@@ -20,6 +20,10 @@ function M.get_linters()
 	return M.lang.get_linters()
 end
 
+function M.get_linter_configs()
+	return M.tool.get_linter_configs()
+end
+
 function M.get_treesitter()
 	return M.lang.get_treesitter()
 end
