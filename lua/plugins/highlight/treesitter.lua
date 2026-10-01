@@ -1,50 +1,19 @@
--- stylua: ignore
-local langs = {
-	"bash", "bibtex",
-	"c", "cpp", "cmake",
-	"clojure",
-	"css",
-	"diff", "dockerfile",
-	"ecma", "elixir", "erlang",
-	"fish",
-	"git_config", "gitcommit", "gitattributes", "gitignore", "git_rebase",
-	"go", "gomod", "gowork", "gosum",
-	"graphql",
-  "haskell", "html", "html_tags",
-	"http",
-	"java", "javascript", "jsdoc", "json", "jsx",
-	"kotlin",
-	"latex", "lua", "luadoc", "luap",
-	"make", "markdown", "markdown_inline",
-	"nim", "ninja", "nu", "nix",
-	"ocaml",
-	"php", "proto", "python",
-	"query",
-	"regex", "ron", "ruby", "rust",
-	"scss", "sql", "swift",
-	"toml", "tsx", "typescript",
-	"vim", "vimdoc", "vue",
-	"xml",
-	"yaml",
-	"zig",
-}
+local toolchain = require("toolchain")
 
-local language_treesitter = require("toolchain").get_treesitter()
-local parsers = vim.deepcopy(langs)
-local filetypes = vim.deepcopy(langs)
+local language_treesitter = toolchain.get_treesitter()
+local filetypes = language_treesitter.filetypes
+
 local installing = {}
 local reported = {}
-for _, parser in ipairs(language_treesitter.parsers) do
-	if not vim.tbl_contains(parsers, parser) then
-		parsers[#parsers + 1] = parser
-	end
-end
+
 for _, filetype in ipairs(language_treesitter.filetypes) do
 	if not vim.tbl_contains(filetypes, filetype) then
 		filetypes[#filetypes + 1] = filetype
 	end
 end
 
+---@param buf integer
+---@return boolean, any?
 local function start_treesitter(buf)
 	if not vim.api.nvim_buf_is_valid(buf) or vim.bo[buf].filetype == "" then
 		return true
@@ -59,12 +28,16 @@ local function start_treesitter(buf)
 	for _, win in ipairs(vim.fn.win_findbuf(buf)) do
 		if vim.api.nvim_win_is_valid(win) then
 			vim.api.nvim_set_option_value("foldexpr", "v:lua.vim.treesitter.foldexpr()", { win = win })
-			vim.api.nvim_set_option_value("foldmethod", "expr", { win = win })
+			vim.api.nvim_set_option_value("foldmethod", "expr", {
+				win = win,
+			})
 		end
 	end
 	return true
 end
 
+---@param parser string
+---@param err any
 local function notify_failure(parser, err)
 	if reported[parser] then
 		return
@@ -77,27 +50,52 @@ local function notify_failure(parser, err)
 	)
 end
 
+---@param buf integer
+---@return string
 local function request_install(buf)
 	local filetype = vim.bo[buf].filetype
-	local parser = vim.treesitter.language.get_lang(filetype) or filetype
-	if installing[parser] then
-		return parser
+	local root_parser = vim.treesitter.language.get_lang(filetype) or filetype
+
+	local definition = toolchain.get_language_by_filetype(filetype)
+	local parsers = definition and definition.treesitter
+
+	if not parsers or #parsers == 0 then
+		parsers = { root_parser }
+	end
+
+	local pending = {}
+
+	for _, parser in ipairs(parsers) do
+		if not installing[parser] then
+			installing[parser] = true
+			pending[#pending + 1] = parser
+		end
+	end
+
+	if #pending == 0 then
+		return root_parser
 	end
 
 	local ok, treesitter = pcall(require, "nvim-treesitter")
 	if not ok then
-		return parser
+		for _, parser in ipairs(pending) do
+			installing[parser] = nil
+		end
+		return root_parser
 	end
 
-	installing[parser] = true
-	local installed, err = pcall(treesitter.install, { parser }, { summary = false })
+	local installed, err = pcall(treesitter.install, pending, { summary = false })
 	if not installed then
-		installing[parser] = nil
-		notify_failure(parser, err)
+		for _, parser in ipairs(pending) do
+			installing[parser] = nil
+			notify_failure(root_parser, err)
+		end
 	end
-	return parser
+	return root_parser
 end
 
+---@param buf integer
+---@param attempts integer
 local function start_when_ready(buf, attempts)
 	local ok, err = start_treesitter(buf)
 	if ok then
@@ -123,7 +121,12 @@ return {
 	-- dependencies = { "neovim-treesitter/treesitter-parser-registry" },
 	opts = {},
 	init = function()
-		vim.api.nvim_create_autocmd({ "FileType" }, {
+		local group = vim.api.nvim_create_augroup("ToolchainTreesitter", {
+			clear = true,
+		})
+
+		vim.api.nvim_create_autocmd("FileType", {
+			group = group,
 			pattern = filetypes,
 			callback = function(event)
 				start_when_ready(event.buf, 0)

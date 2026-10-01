@@ -134,9 +134,17 @@ function M.enable_lsp(filetype)
 		return
 	end
 	for _, name in ipairs(definition.lsp) do
-		if not lsp_enabled[name] then
+		if not lsp_enabled[name] and require("toolchain.mason").is_installed(name) then
 			vim.lsp.enable(name)
 			lsp_enabled[name] = true
+		end
+	end
+end
+
+function M.enable_for_open_buffers()
+	for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+		if vim.api.nvim_buf_is_loaded(bufnr) then
+			M.enable_lsp(vim.bo[bufnr].filetype)
 		end
 	end
 end

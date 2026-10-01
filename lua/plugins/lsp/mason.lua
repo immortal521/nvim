@@ -40,8 +40,12 @@ return {
 				for _, tool in ipairs(require("toolchain").get_mason_packages()) do
 					if mr.has_package(tool) then
 						local p = mr.get_package(tool)
-						if not p:is_installed() then
-							p:install()
+						if not p:is_installed() and not p:is_installing() then
+							p:install(nil, function(success)
+								if success then
+									vim.schedule(require("toolchain").lang.enable_for_open_buffers)
+								end
+							end)
 						end
 					else
 						vim.notify(("Mason package not found: %s"):format(tool), vim.log.levels.WARN)

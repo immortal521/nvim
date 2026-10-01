@@ -74,6 +74,17 @@ local function add(result, seen, name)
 	end
 end
 
+---@param name string
+---@return boolean
+function M.is_installed(name)
+	local package = packages[name]
+	if not package then
+		return true
+	end
+	local ok, registry = pcall(require, "mason-registry")
+	return ok and registry.has_package(package) and registry.get_package(package):is_installed()
+end
+
 ---@return string[]
 function M.get_packages()
 	local result = {}

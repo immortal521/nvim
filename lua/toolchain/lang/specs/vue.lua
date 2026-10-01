@@ -20,5 +20,7 @@ return {
 	},
 	treesitter = {
 		"vue",
+		"css",
+		"scss",
 	},
 }

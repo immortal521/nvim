@@ -28,6 +28,12 @@ function M.get_treesitter()
 	return M.lang.get_treesitter()
 end
 
+---@param filetype string
+---@return LanguageSpec?
+function M.get_language_by_filetype(filetype)
+	return M.lang.get_by_filetype(filetype)
+end
+
 function M.get_mason_packages()
 	return M.mason.get_packages()
 end
