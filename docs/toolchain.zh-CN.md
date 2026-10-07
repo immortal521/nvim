@@ -1,5 +1,9 @@
 # Toolchain 配置
 
+[English](toolchain.md) | [简体中文](toolchain.zh-CN.md)
+
+[返回主文档](../README.zh-CN.md) · [功能与排错](configuration.zh-CN.md)
+
 `lua/toolchain` 是语言和开发工具配置的统一入口：
 
 - `toolchain/lang/specs/*.lua` 描述语言、filetype、LSP、Treesitter，以及该语言使用的 formatter/linter 名称。
@@ -16,7 +20,8 @@
 | `get_formatter_configs()` | 返回工具规格提供的 Conform formatter 条件。 |
 | `get_linters()` | 从语言规格聚合 `filetype -> linter[]`。 |
 | `get_linter_configs()` | 返回工具规格提供的 nvim-lint linter 条件。 |
-| `get_treesitter()` | 返回需要安装的 parser 和用于启动 parser 的 filetype。 |
+| `get_treesitter()` | 返回语言规格声明的 parser 和用于启动 parser 的 filetype。 |
+| `get_language_by_filetype(ft)` | 合并声明该 filetype 的语言规格；不存在时返回 nil。 |
 | `get_mason_packages()` | 返回语言工具和额外工具对应的 Mason 包名。 |
 
 语言规格只描述语言与工具的关系；工具条件、LSP 启动参数和 UI 行为分别由
@@ -27,7 +32,6 @@
 ```text
 lua/toolchain/
 ├── init.lua
-├── README.md
 ├── mason.lua
 ├── lang/
 │   ├── init.lua
@@ -45,8 +49,8 @@ lua/toolchain/
 
 语言和工具规格目录中的每个 `.lua` 文件都会被自动扫描。不要在这两个
 `specs/` 目录中放置模板 Lua 文件、测试文件或返回非规格内容的 Lua 文件，
-否则启动时会被当作配置加载并产生警告。文档和模板应放在 `toolchain/`
-根目录或 Markdown 文件中。
+否则启动时会被当作配置加载并产生警告。工具链文档放在 `docs/`，
+模板应放在规格目录之外或 Markdown 文件中。
 
 ## 语言规格
 
@@ -80,14 +84,14 @@ return {
 即使只有一个值也使用数组形式，例如 `{ "stylua" }`。同一 filetype 被多个
 语言规格声明时，formatter、linter、LSP 和 Treesitter 聚合查询会去重。
 
-Treesitter 插件会把规格中的 parser 和 filetype 自动加入现有基础列表。parser
-只传给 `TS.install()`，filetype 只用于 `FileType` 自动命令；因此
-`typescriptreact`、`markdown.mdx` 等 Neovim filetype 不会被误当作 parser。
-未拆分为语言规格的额外 parser 仍由 `lua/plugins/highlight/treesitter.lua`
-保留。
+Treesitter 插件从规格取得 filetype 列表，为这些类型注册 `FileType` 回调，
+先尝试启动已有 parser，失败后再安装该语言规格声明的 parser。当前没有额外
+基础 parser 列表，也不会在启动时一次性安装全部语言的 parser。
+`typescriptreact`、`markdown.mdx` 是 filetype，不会直接当作规格中的 parser 名称。
 
-Treesitter 在打开文件前加载插件并异步安装 parser。若当前 buffer 启动失败，
-会再次请求对应 parser 的安装并重试；安装或启动连续失败后会通过通知报告错误。
+插件在 `BufReadPre`、`BufNewFile` 或 `VeryLazy` 加载；安装后每 100ms 重试
+启动，达到 300 次后报告失败。成功后启用 Treesitter 缩进与可见窗口的折叠表达式。
+没有 `treesitter` 字段的语言不会进入此自动启动列表。
 
 LSP 的具体命令、root、settings 和特殊行为仍放在顶层 `lsp/` 目录：
 
@@ -149,11 +153,11 @@ lua/toolchain/tool/specs/oxfmt.lua
 ```
 
 修改工具配置文件探测规则时，只修改对应工具规格，不要把条件逻辑重新写回
-`lua/plugins/formatting.lua`。
+`lua/plugins/formatter.lua`。
 
 Linter 也遵循相同规则。语言规格中的 `linters` 只声明语言使用哪些 linter，
 工具规格中的 `linter.condition` 决定该 linter 在当前项目中是否启用。条件由
-`nvim-lint` 在实际 lint 时根据当前文件路径执行。
+本配置的 linter 回调在调用 `lint.try_lint()` 前根据当前文件路径执行。
 
 当前带项目配置条件的 linter：
 
@@ -168,8 +172,7 @@ lua/toolchain/tool/specs/oxlint.lua
 ```
 
 修改 linter 配置文件探测规则时，只修改对应工具规格，不要把条件逻辑写回
-`lua/plugins/linting.lua`。`lua/plugins/linting.lua` 只负责注册 linter、执行
-lint 和发布诊断。
+`lua/plugins/linter.lua`。后者负责合并配置、筛选工具和触发 lint。
 
 Conform 当前仍使用 formatter 列表的默认行为：如果多个 formatter 条件同时
 满足，且调用时没有设置 `stop_after_first = true`，Conform 可能按顺序执行多个
@@ -179,11 +182,45 @@ formatter 是否安装由 Mason 包列表决定，formatter 是否对当前项�
 Conform 的 `condition` 决定；这两个判断相互独立。某个 formatter 被语言规格
 声明，并不表示它在每个项目中都会运行。
 
-跨语言的兼容映射仍由 `toolchain/lang/init.lua` 维护：
+Luau 通过语言规格使用 `stylua`。GraphQL 和 Handlebars 当前没有 formatter
+映射；需要时在语言规格中添加对应工具。
 
-- `graphql`：`prettier`、`biome`、`oxfmt`
-- `handlebars`：`prettier`、`biome`、`oxfmt`
-- `luau`：`stylua`
+## 当前语言清单
+
+下表列出规格中的 formatter、CLI linter 与 LSP 声明；声明仍受工具可用性、
+服务自身 filetype/root 和安装条件限制。Web 格式化组合指 `prettier → biome → oxfmt`。
+
+| 规格 / filetype | Formatter | CLI linter | LSP |
+| --- | --- | --- | --- |
+| bash / bash, sh | shfmt | shellcheck | bash-language-server |
+| c / c | clang_format | — | clangd |
+| cpp / cpp | clang_format | — | clangd |
+| css / css, scss, less | Web 组合 | — | css-lsp, css-variables-language-server, emmet-language-server, stylelint-language-server, tailwindcss, biome, oxfmt |
+| dart / dart | — | — | dartls |
+| go / go | goimports, gofumpt | golangcilint | gopls |
+| html / html | Web 组合 | — | html, emmet-language-server, stylelint-language-server, tailwindcss, biome, oxfmt |
+| java / java | — | — | jdtls（仅声明命令） |
+| javascript / javascript, javascriptreact | Web 组合 | eslint, oxlint（仅 javascript） | vtsls, biome, oxlint, cssmodules-language-server, oxfmt |
+| json / json, jsonc | Web 组合 | — | jsonls, biome, oxfmt |
+| kotlin / kotlin | — | — | kotlin-lsp |
+| lua / lua | stylua | selene | lua_ls |
+| luau / luau | stylua | — | luau-lsp |
+| markdown / markdown, markdown.mdx | Web 组合 | — | tailwindcss, oxfmt |
+| nix / nix | nixfmt | — | rnix |
+| nu / nu | — | — | —（nushell 声明被注释） |
+| python / python | ruff_format, isort, yapf | — | pyright, ruff |
+| qml / qml, qmljs | — | — | qmlls |
+| rust / rust | rustfmt | — | rust_analyzer, bacon-ls |
+| sql / sql | sqruff | — | — |
+| toml / toml | taplo | — | tombi |
+| typescript / typescript, typescriptreact | Web 组合 | eslint, oxlint（仅 typescript） | vtsls, biome, oxlint, oxfmt |
+| vue / vue | Web 组合 | eslint, oxlint | vue_ls, vtsls, stylelint-language-server, tailwindcss, biome, oxfmt |
+| xml / xml, svg | xmlformatter | — | — |
+| yaml / yaml | Web 组合 | — | — |
+
+Parser 声明为 bash、c、cpp、go、java、javascript、json、kotlin、lua、
+markdown/markdown_inline、nix、python、rust、toml、typescript/tsx、vue/css/scss、
+xml、yaml。CSS、Dart、HTML、Luau、Nu、QML、SQL 规格没有 `treesitter` 字段。
 
 ## Lint 规则
 
@@ -218,15 +255,17 @@ lint_filetypes = { "typescript" },
 - 改变语言使用哪些工具：修改语言规格的 `formatters` 或 `linters`。
 - 改变工具是否可用：修改 `toolchain/tool/specs/<tool>.lua` 的条件。
 - 改变 LSP 命令、root 或 settings：修改 `lsp/<名称>.lua`。
-- 改变 Treesitter 基础语言列表：修改 `lua/plugins/highlight/treesitter.lua`。
-- 改变跨语言兼容 formatter：修改 `lua/toolchain/lang/init.lua` 的显式映射。
+- 改变 Treesitter parser/filetype：修改语言规格的 `treesitter` / `filetypes`。
+- 改变 Treesitter 启动、安装与重试机制：修改 `lua/plugins/highlight/treesitter.lua`。
+- 添加 formatter 关联：在语言规格的 `formatters` 中声明。
 
 不要把项目路径写入语言或工具规格；这些规格必须能复用在不同工作区。
 
 ## Mason 自动安装
 
-启动时 Mason 会调用 `toolchain.get_mason_packages()`，根据当前语言规格中
-实际声明的 LSP、formatter 和 linter 自动安装对应包。Mason 包名与运行时
+`VeryLazy` 阶段的 Mason registry 回调会调用 `toolchain.get_mason_packages()`，
+根据当前语言规格中实际声明且有名称映射的 LSP、formatter 和 linter 安装对应包。
+这不是仅针对当前已打开语言的安装列表。Mason 包名与运行时
 名称可能不同，例如：
 
 | 运行时名称 | Mason 包名 |
@@ -244,6 +283,15 @@ lint_filetypes = { "typescript" },
 没有打开而被移除。Mason 注册表刷新失败或包不存在时，安装动作由 Mason
 自身报告失败，不会阻止语言规格加载。
 
+LSP 则按 `FileType` 启用：有名称映射时，必须先在 Mason 中安装；无映射时
+`is_installed()` 直接返回 true，后续仍取决于命令是否可执行。安装成功后会
+重试已打开 buffer 的服务。`dartls` 无 Mason 映射，需要 Dart SDK；`rustfmt`
+也未映射，应自行准备。ESLint 没有包名映射，CLI lint 需要项目或 PATH 提供。
+`bacon-ls` 没有名称映射，但已列入额外安装清单。
+
+`lsp/emmylua.lua`、`lsp/nushell.lua`、`lsp/stylua.lua` 当前没有被语言规格启用。
+Java 声明了 `jdtls`，其配置仅为 `cmd = "jdtls"`，没有项目 workspace 或调试集成。
+
 ## 验证
 
 ```sh
@@ -255,7 +303,7 @@ git diff --check
 
 ```sh
 nvim --headless -u NONE \
-  '+set rtp^=/home/immortal/.config/nvim' \
+  '+lua vim.opt.rtp:prepend(vim.fn.stdpath("config"))' \
   '+lua local tc=require("toolchain"); assert(#tc.lang.source_items() > 0); assert(tc.get_formatter_configs().prettier); print("toolchain specs passed")' \
   '+qa!'
 ```
@@ -266,8 +314,8 @@ nvim --headless -u NONE \
 ## 与其他模块的关系
 
 - `lua/config/lsp.lua` 调用 `toolchain.setup()`，并负责 LSP 的缓冲区绑定、进度事件和快捷键。
-- `lua/plugins/formatting.lua` 使用 formatter 聚合结果和工具条件。
-- `lua/plugins/linting.lua` 使用 linter 聚合结果。
+- `lua/plugins/formatter.lua` 使用 formatter 聚合结果和工具条件；当前仅配置手动格式化。
+- `lua/plugins/linter.lua` 使用 linter 聚合结果，在读文件、写文件、离开插入模式时触发。
 - `lua/plugins/highlight/treesitter.lua` 使用 parser 聚合结果，并在 parser 缺失时触发安装和重试。
 - `lua/plugins/lsp/mason.lua` 使用 Mason 包聚合结果，在 Mason 注册表刷新后安装缺失包。
 - `lua/sources/language.lua` 读取语言规格列表，不需要手动维护语言索引。
